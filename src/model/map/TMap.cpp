@@ -1,6 +1,10 @@
 #include "types/TPoint.h"
 #include "model/map/TMap.h"
 
+TMap::TMap()
+{
+}
+
 TMap::~TMap()
 {
 }

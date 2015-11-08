@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Lineage" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/Lineage" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+					<Add option="-g" />
+					<Add option="-DBOOST_ALL_DYN_LINK" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-lboost_log_setup -lboost_log -lboost_system -lboost_date_time -lboost_filesystem -lboost_thread -lboost_program_options" />
+					<Add directory="/usr/lib" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/Lineage" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include/types" />
+					<Add directory="include/model" />
+					<Add directory="include/model/map" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++0x" />
+			<Add option="-Wall" />
+		</Compiler>
+		<Unit filename="include/configure/TConfig.h" />
+		<Unit filename="include/foundation/TException.hpp" />
+		<Unit filename="include/foundation/TLog.hpp" />
+		<Unit filename="include/foundation/exceptTag.h" />
+		<Unit filename="include/model/TLocation.h" />
+		<Unit filename="include/model/TObject.h" />
+		<Unit filename="include/model/map/TMap.h" />
+		<Unit filename="include/model/map/TWorldMap.h" />
+		<Unit filename="include/types/TPoint.h" />
+		<Unit filename="include/types/TRectangle.h" />
+		<Unit filename="include/utils/TDice.h" />
+		<Unit filename="include/utils/TIntRange.h" />
+		<Unit filename="include/utils/TRandom.h" />
+		<Unit filename="src/configure/TConfig.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/model/TLocation.cpp" />
+		<Unit filename="src/model/TObject.cpp" />
+		<Unit filename="src/model/map/TMap.cpp" />
+		<Unit filename="src/model/map/TWorldMap.cpp" />
+		<Unit filename="src/types/TPoint.cpp" />
+		<Unit filename="src/types/TRectangle.cpp" />
+		<Extensions>
+			<envvars />
+			<code_completion />
+			<lib_finder disable_auto="1" />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
