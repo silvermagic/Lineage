@@ -8,7 +8,9 @@
 #include <boost/log/utility/setup/file.hpp>
 #include <boost/log/sources/severity_channel_logger.hpp>
 #include <boost/log/sources/record_ostream.hpp>
+#include <boost/log/utility/setup/common_attributes.hpp>
 #include <boost/format.hpp>
+#include <boost/serialization/singleton.hpp>
 
 namespace Lineage{ namespace log {
 
@@ -93,9 +95,23 @@ private:
   decltype(logging::add_file_log(keywords::file_name)) _sink;
 };
 
-class TLoggerMgr
+class TLogger : public boost::serialization::singleton<TLogger>
 {
+public:
+  TLogger() { logging::add_common_attributes(); }
+  virtual ~TLogger() { _logMap.clear(); }
+  const TLog& getLogger(std::string module)
+  {
+    if (!_logMap[module])
+    {
+      _logMap[module] = std::make_shared<TLog>(module);
+    }
+    return *(_logMap[module]);
+  }
+protected:
+  std::map<std::string, std::shared_ptr<TLog>> _logMap;
 };
 
+#define Logger TLogger::get_mutable_instance()
 }}
 #endif

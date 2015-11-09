@@ -5,10 +5,10 @@
 
 int main()
 {
-  TObject obj;
-  TConfig cfg;
-  Lineage::log::TLog log("main");
-  log.log(Lineage::log::severity_level::normal, "%s", "test");
+  //TObject obj;
+  //TConfig cfg;
+  auto _log = Lineage::log::Logger.getLogger("main");
+  _log.log(Lineage::log::severity_level::normal, "%s", "test");
   try
   {
     //throw Lineage::execption::TExecption(Lineage::execption::exceptTag::normal, "test");

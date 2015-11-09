@@ -8,9 +8,8 @@ enum exceptTag
   normal
 };
 
-std::string exceptFormat[] =
-{
-  "%s"
+std::map<exceptTag, std::string>::value_type exceptFormat[] = {
+  std::map<exceptTag, std::string>::value_type(normal, "%s")
 };
 
 }}

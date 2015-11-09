@@ -11,7 +11,7 @@
 1443407767 source:/home/fanweidong/workspace/Lineage/src/main.cpp
 	"TPoint.h"
 
-1446739451 source:/home/sm/gitProject/Lineage/src/configure/TConfig.cpp
+1447081561 source:/home/sm/gitProject/Lineage/src/configure/TConfig.cpp
 	<iostream>
 	<fstream>
 	<boost/program_options.hpp>
@@ -29,7 +29,7 @@
 1446659980 /home/sm/gitProject/Lineage/include/configure/TConfig.h
 	<string>
 
-1447002536 source:/home/sm/gitProject/Lineage/src/main.cpp
+1447088048 source:/home/sm/gitProject/Lineage/src/main.cpp
 	"model/TObject.h"
 	"configure/TConfig.h"
 	"foundation/TLog.hpp"
@@ -45,7 +45,7 @@
 1446657422 /home/sm/gitProject/Lineage/include/types/TPoint.h
 	<string>
 
-1447000255 /home/sm/gitProject/Lineage/include/foundation/TLog.hpp
+1447088528 /home/sm/gitProject/Lineage/include/foundation/TLog.hpp
 	<boost/log/core.hpp>
 	<boost/log/expressions.hpp>
 	<boost/log/attributes.hpp>
@@ -53,6 +53,7 @@
 	<boost/log/utility/setup/file.hpp>
 	<boost/log/sources/severity_channel_logger.hpp>
 	<boost/log/sources/record_ostream.hpp>
+	<boost/log/utility/setup/common_attributes.hpp>
 	<boost/format.hpp>
 
 1446739674 source:/home/sm/gitProject/Lineage/src/model/map/TMap.cpp
@@ -94,5 +95,5 @@
 	<boost/format.hpp>
 	"foundation/exceptTag.h"
 
-1447000239 /home/sm/gitProject/Lineage/include/foundation/exceptTag.h
+1447081320 /home/sm/gitProject/Lineage/include/foundation/exceptTag.h
 

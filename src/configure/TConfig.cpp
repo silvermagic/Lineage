@@ -287,11 +287,11 @@ void TConfig::Validate()
 {
   if(!TIntRange::includes(ALT_ITEM_DELETION_RANGE, 0, 5))
   {
-    //throw boost::exception() << err_str("ItemDeletionRange 的设定值超出( 0 ~ 5 )范围");
+    throw std::out_of_range("ItemDeletionRange的设定值超出( 0 ~ 5 )范围");
   }
 
   if(!TIntRange::includes(ALT_ITEM_DELETION_TIME, 1, 35791))
   {
-    //throw boost::exception() << err_str("ItemDeletionTime 的设定值超出( 1 ~ 35791 )范围");
+    throw std::out_of_range("ItemDeletionTime的设定值超出( 1 ~ 35791 )范围");
   }
 }
