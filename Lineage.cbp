@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
+				<Option projectIncludeDirsRelation="2" />
 				<Compiler>
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
@@ -19,7 +20,7 @@
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
-					<Add option="-lboost_log_setup -lboost_log -lboost_system -lboost_date_time -lboost_filesystem -lboost_thread -lboost_program_options" />
+					<Add option="-lPocoFoundation -lPocoUtil" />
 					<Add directory="/usr/lib" />
 				</Linker>
 			</Target>
@@ -44,9 +45,6 @@
 			<Add option="-Wall" />
 		</Compiler>
 		<Unit filename="include/configure/TConfig.h" />
-		<Unit filename="include/foundation/TException.hpp" />
-		<Unit filename="include/foundation/TLog.hpp" />
-		<Unit filename="include/foundation/exceptTag.h" />
 		<Unit filename="include/model/TLocation.h" />
 		<Unit filename="include/model/TObject.h" />
 		<Unit filename="include/model/map/TMap.h" />

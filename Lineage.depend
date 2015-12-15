@@ -11,38 +11,38 @@
 1443407767 source:/home/fanweidong/workspace/Lineage/src/main.cpp
 	"TPoint.h"
 
-1447081561 source:/home/sm/gitProject/Lineage/src/configure/TConfig.cpp
-	<iostream>
+1450199881 source:/home/sm/gitProject/Lineage/src/configure/TConfig.cpp
 	<fstream>
-	<boost/program_options.hpp>
+	<sstream>
+	"Poco/Util/PropertyFileConfiguration.h"
 	"utils/TIntRange.h"
 	"configure/TConfig.h"
 
-1446658617 /home/sm/gitProject/Lineage/include/utils/TIntRange.h
+1449667821 /home/sm/gitProject/Lineage/include/utils/TIntRange.h
 	<boost/format.hpp>
 	"utils/TRandom.h"
 
-1446530886 /home/sm/gitProject/Lineage/include/utils/TRandom.h
-	<ctime>
-	<boost/random/mersenne_twister.hpp>
+1450195059 /home/sm/gitProject/Lineage/include/utils/TRandom.h
+	"Poco/Random.h"
 
-1446659980 /home/sm/gitProject/Lineage/include/configure/TConfig.h
+1449667821 /home/sm/gitProject/Lineage/include/configure/TConfig.h
 	<string>
 
-1447088048 source:/home/sm/gitProject/Lineage/src/main.cpp
+1450195308 source:/home/sm/gitProject/Lineage/src/main.cpp
+	<iostream>
 	"model/TObject.h"
 	"configure/TConfig.h"
-	"foundation/TLog.hpp"
-	"foundation/TException.hpp"
+	"Poco/Util/PropertyFileConfiguration.h"
+	"Poco/Util/LoggingConfigurator.h"
 
-1446656916 /home/sm/gitProject/Lineage/include/model/TObject.h
+1449667821 /home/sm/gitProject/Lineage/include/model/TObject.h
 	"model/TLocation.h"
 
-1446654338 /home/sm/gitProject/Lineage/include/model/TLocation.h
+1449667821 /home/sm/gitProject/Lineage/include/model/TLocation.h
 	<memory>
 	"types/TPoint.h"
 
-1446657422 /home/sm/gitProject/Lineage/include/types/TPoint.h
+1449667821 /home/sm/gitProject/Lineage/include/types/TPoint.h
 	<string>
 
 1447088528 /home/sm/gitProject/Lineage/include/foundation/TLog.hpp
@@ -56,39 +56,39 @@
 	<boost/log/utility/setup/common_attributes.hpp>
 	<boost/format.hpp>
 
-1446739674 source:/home/sm/gitProject/Lineage/src/model/map/TMap.cpp
+1449667821 source:/home/sm/gitProject/Lineage/src/model/map/TMap.cpp
 	"types/TPoint.h"
 	"model/map/TMap.h"
 
-1446739691 /home/sm/gitProject/Lineage/include/model/map/TMap.h
+1449667821 /home/sm/gitProject/Lineage/include/model/map/TMap.h
 	<string>
 	<memory>
 
-1446657835 source:/home/sm/gitProject/Lineage/src/model/map/TWorldMap.cpp
+1449667821 source:/home/sm/gitProject/Lineage/src/model/map/TWorldMap.cpp
 	"model/map/TWorldMap.h"
 
-1446657919 /home/sm/gitProject/Lineage/include/model/map/TWorldMap.h
+1449667821 /home/sm/gitProject/Lineage/include/model/map/TWorldMap.h
 	<map>
 	<memory>
 
-1446658475 source:/home/sm/gitProject/Lineage/src/model/TLocation.cpp
+1449667821 source:/home/sm/gitProject/Lineage/src/model/TLocation.cpp
 	"model/map/TMap.h"
 	"model/TLocation.h"
 
-1446658371 source:/home/sm/gitProject/Lineage/src/model/TObject.cpp
+1449667821 source:/home/sm/gitProject/Lineage/src/model/TObject.cpp
 	"model/TObject.h"
 
-1446657509 source:/home/sm/gitProject/Lineage/src/types/TPoint.cpp
+1449667821 source:/home/sm/gitProject/Lineage/src/types/TPoint.cpp
 	<algorithm>
 	<cmath>
 	<boost/format.hpp>
 	"types/TPoint.h"
 
-1443426816 source:/home/sm/gitProject/Lineage/src/types/TRectangle.cpp
+1449667821 source:/home/sm/gitProject/Lineage/src/types/TRectangle.cpp
 	"types/TPoint.h"
 	"types/TRectangle.h"
 
-1443430126 /home/sm/gitProject/Lineage/include/types/TRectangle.h
+1449667821 /home/sm/gitProject/Lineage/include/types/TRectangle.h
 
 1447002464 /home/sm/gitProject/Lineage/include/foundation/TException.hpp
 	<exception>

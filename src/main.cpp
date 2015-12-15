@@ -1,18 +1,20 @@
+#include <iostream>
 #include "model/TObject.h"
 #include "configure/TConfig.h"
-#include "foundation/TLog.hpp"
-#include "foundation/TException.hpp"
+#include "Poco/Util/PropertyFileConfiguration.h"
+#include "Poco/Util/LoggingConfigurator.h"
+
+using Poco::Util::PropertyFileConfiguration;
+using Poco::Util::LoggingConfigurator;
 
 int main()
 {
-  //TObject obj;
-  //TConfig cfg;
-  auto _log = Lineage::log::Logger.getLogger("main");
-  _log.log(Lineage::log::severity_level::normal, "%s", "test");
+  TObject obj;
+  Poco::AutoPtr<PropertyFileConfiguration> pcfg =  new PropertyFileConfiguration("./log.properties");
+  LoggingConfigurator logcfg;
+  logcfg.configure(pcfg);
   try
   {
-    //throw Lineage::execption::TExecption(Lineage::execption::exceptTag::normal, "test");
-    throw Lineage::execption::TExecption("test");
   }
   catch(std::exception &e)
   {
