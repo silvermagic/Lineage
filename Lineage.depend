@@ -28,12 +28,13 @@
 1449667821 /home/sm/gitProject/Lineage/include/configure/TConfig.h
 	<string>
 
-1450195308 source:/home/sm/gitProject/Lineage/src/main.cpp
+1450365806 source:/home/sm/gitProject/Lineage/src/main.cpp
 	<iostream>
 	"model/TObject.h"
 	"configure/TConfig.h"
 	"Poco/Util/PropertyFileConfiguration.h"
 	"Poco/Util/LoggingConfigurator.h"
+	"utils/TPerformanceTimer.h"
 
 1449667821 /home/sm/gitProject/Lineage/include/model/TObject.h
 	"model/TLocation.h"
@@ -64,12 +65,17 @@
 	<string>
 	<memory>
 
-1449667821 source:/home/sm/gitProject/Lineage/src/model/map/TWorldMap.cpp
+1450365719 source:/home/sm/gitProject/Lineage/src/model/map/TWorldMap.cpp
+	<iostream>
+	"utils/TPerformanceTimer.h"
+	"model/map/TMap.h"
 	"model/map/TWorldMap.h"
 
-1449667821 /home/sm/gitProject/Lineage/include/model/map/TWorldMap.h
+1450359449 /home/sm/gitProject/Lineage/include/model/map/TWorldMap.h
 	<map>
 	<memory>
+	"Poco/Mutex.h"
+	"Poco/Logger.h"
 
 1449667821 source:/home/sm/gitProject/Lineage/src/model/TLocation.cpp
 	"model/map/TMap.h"
@@ -96,4 +102,7 @@
 	"foundation/exceptTag.h"
 
 1447081320 /home/sm/gitProject/Lineage/include/foundation/exceptTag.h
+
+1450366290 /home/sm/gitProject/Lineage/include/utils/TPerformanceTimer.h
+	"Poco/Timestamp.h"
 

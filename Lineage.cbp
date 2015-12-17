@@ -18,10 +18,11 @@
 					<Add option="-g" />
 					<Add option="-DBOOST_ALL_DYN_LINK" />
 					<Add directory="include" />
+					<Add directory="include/utils" />
 				</Compiler>
 				<Linker>
 					<Add option="-lPocoFoundation -lPocoUtil" />
-					<Add directory="/usr/lib" />
+					<Add directory="/usr/local/lib" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -34,6 +35,7 @@
 					<Add directory="include/types" />
 					<Add directory="include/model" />
 					<Add directory="include/model/map" />
+					<Add directory="include/utils" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -53,6 +55,7 @@
 		<Unit filename="include/types/TRectangle.h" />
 		<Unit filename="include/utils/TDice.h" />
 		<Unit filename="include/utils/TIntRange.h" />
+		<Unit filename="include/utils/TPerformanceTimer.h" />
 		<Unit filename="include/utils/TRandom.h" />
 		<Unit filename="src/configure/TConfig.cpp" />
 		<Unit filename="src/main.cpp" />
