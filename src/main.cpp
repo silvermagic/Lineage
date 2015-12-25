@@ -3,10 +3,13 @@
 #include "configure/TConfig.h"
 #include "Poco/Util/PropertyFileConfiguration.h"
 #include "Poco/Util/LoggingConfigurator.h"
+#include "L1DatabaseFactory.h"
 //#include "utils/TPerformanceTimer.h"
 
 using Poco::Util::PropertyFileConfiguration;
 using Poco::Util::LoggingConfigurator;
+
+TConfig CONFIG;
 
 int main()
 {
@@ -16,10 +19,9 @@ int main()
 		Poco::AutoPtr<PropertyFileConfiguration> pcfg =  new PropertyFileConfiguration("./config/log.properties");
 		LoggingConfigurator logcfg;
 		logcfg.configure(pcfg);
+		CONFIG.load();
 
-		TConfig cfg;
-		cfg.load();
-
+    Poco::Data::Session ses = L1DatabaseFactory::getInstance().getConnection();
 		/*std::cout << cfg.PRINCE_MAX_HP << std::endl;
 
     TPerformanceTimer timer;

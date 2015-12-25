@@ -37,7 +37,7 @@ TWorldMap::TWorldMap()
 std::shared_ptr<TWorldMap> TWorldMap::getInstance()
 {
 	Mutex::ScopedLock lock(_mapMtx);
-	if (_instance == NULL)
+	if (!_instance)
 	{
 		_instance = std::make_shared<TWorldMap>();
 	}

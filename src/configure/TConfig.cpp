@@ -88,11 +88,12 @@ void TConfig::load()
   CMD_ACTIVE = pcfg->getBool("CmdActive", false); //CMD互动指令
   Announcements_Cycle_Time = pcfg->getInt("AnnouncementsCycleTime", 30); //循环时间设置 (单位:分钟)
   Announcements_Cycle_Modify_Time = pcfg->getBool("AnnounceTimeDisplay", false); //自动显示公告修改时间
-  DB_DRIVER = pcfg->getString("Driver", "com.mysql.jdbc.Driver"); //数据库驱动程序
+  /*DB_DRIVER = pcfg->getString("Driver", "com.mysql.jdbc.Driver"); //数据库驱动程序
   DB_URL = pcfg->getString("URL", "jdbc:mysql://localhost/l1jdb?useUnicode=true&characterEncoding=utf8"); //数据库路径
   DB_LOGIN = pcfg->getString("Login", "root"); //数据库账号
   DB_PASSWORD = pcfg->getString("Password", "root"); //数据库密码
-  DETECT_DB_RESOURCE_LEAKS = pcfg->getBool("EnableDatabaseResourceLeaksDetection", false); //数据库资源泄漏检测
+  DETECT_DB_RESOURCE_LEAKS = pcfg->getBool("EnableDatabaseResourceLeaksDetection", false); //数据库资源泄漏检测*/
+  DB_CONN = pcfg->getString("DbConn", "host=localhost;port=3306;user=root;password=123456;db=mysql;compress=true;auto-reconnect=true"); //数据库链接字串
   MYSQL_AUTO_BACKUP = pcfg->getInt("MysqlAutoBackup", 0); //MySQL定时自动备份
   COMPRESS_G_ZIP = pcfg->getBool("CompressGzip", false); //备份的输出SQL是否启用GZip压缩
   RATE_XP = pcfg->getDouble("RateXp", 1.0); //经验值倍率

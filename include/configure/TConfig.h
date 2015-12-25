@@ -54,11 +54,12 @@ public:
   bool CMD_ACTIVE;
   int Announcements_Cycle_Time;
   bool Announcements_Cycle_Modify_Time;
-  std::string DB_DRIVER;
+  /*std::string DB_DRIVER;
   std::string DB_URL;
   std::string DB_LOGIN;
   std::string DB_PASSWORD;
-  bool DETECT_DB_RESOURCE_LEAKS;
+  bool DETECT_DB_RESOURCE_LEAKS;*/
+  std::string DB_CONN;
   int MYSQL_AUTO_BACKUP;
   bool COMPRESS_G_ZIP;
   double RATE_XP;
