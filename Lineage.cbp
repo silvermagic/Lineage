@@ -19,6 +19,7 @@
 					<Add option="-DBOOST_ALL_DYN_LINK" />
 					<Add directory="include" />
 					<Add directory="include/utils" />
+					<Add directory="include/model/map" />
 				</Compiler>
 				<Linker>
 					<Add option="-lPocoFoundation -lPocoUtil" />
@@ -50,6 +51,8 @@
 		<Unit filename="include/model/TLocation.h" />
 		<Unit filename="include/model/TObject.h" />
 		<Unit filename="include/model/map/TMap.h" />
+		<Unit filename="include/model/map/TMapReader.h" />
+		<Unit filename="include/model/map/TTextMapReader.h" />
 		<Unit filename="include/model/map/TWorldMap.h" />
 		<Unit filename="include/types/TPoint.h" />
 		<Unit filename="include/types/TRectangle.h" />
@@ -62,6 +65,8 @@
 		<Unit filename="src/model/TLocation.cpp" />
 		<Unit filename="src/model/TObject.cpp" />
 		<Unit filename="src/model/map/TMap.cpp" />
+		<Unit filename="src/model/map/TMapReader.cpp" />
+		<Unit filename="src/model/map/TTextMapReader.cpp" />
 		<Unit filename="src/model/map/TWorldMap.cpp" />
 		<Unit filename="src/types/TPoint.cpp" />
 		<Unit filename="src/types/TRectangle.cpp" />

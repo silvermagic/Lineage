@@ -3,8 +3,8 @@
 
 #include <map>
 #include <memory>
-#include "Poco/Mutex.h"
-#include "Poco/Logger.h"
+#include <Poco/Mutex.h>
+#include <Poco/Logger.h>
 
 using Poco::Mutex;
 using Poco::Logger;
@@ -23,8 +23,8 @@ public:
 
 protected:
   std::map<int, std::shared_ptr<TMap>> _maps;
-  static std::shared_ptr<TWorldMap> _instance;
   static Mutex _mapMtx;
+  static std::shared_ptr<TWorldMap> _instance;
   static Logger& _log;
 };
 

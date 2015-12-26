@@ -5,7 +5,7 @@
 
 Mutex TWorldMap::_mapMtx;
 std::shared_ptr<TWorldMap> TWorldMap::_instance;
-Logger& TWorldMap::_log = Logger::get("lineage.TWorldMap");
+Logger& TWorldMap::_log = Poco::Logger::get("lineage.TWorldMap");
 
 TWorldMap::TWorldMap()
 {

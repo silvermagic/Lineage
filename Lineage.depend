@@ -28,13 +28,20 @@
 1451024767 /home/sm/gitProject/Lineage/include/configure/TConfig.h
 	<string>
 
+<<<<<<< HEAD
 1451026665 source:/home/sm/gitProject/Lineage/src/main.cpp
+=======
+1450445988 source:/home/sm/gitProject/Lineage/src/main.cpp
+>>>>>>> 新增文本地图读取方法
 	<iostream>
 	"model/TObject.h"
 	"configure/TConfig.h"
 	"Poco/Util/PropertyFileConfiguration.h"
 	"Poco/Util/LoggingConfigurator.h"
+<<<<<<< HEAD
 	"L1DatabaseFactory.h"
+=======
+>>>>>>> 新增文本地图读取方法
 
 1450936899 /home/sm/gitProject/Lineage/include/model/TObject.h
 	"model/TLocation.h"
@@ -65,17 +72,25 @@
 	<string>
 	<memory>
 
+<<<<<<< HEAD
 1451025849 source:/home/sm/gitProject/Lineage/src/model/map/TWorldMap.cpp
+=======
+1451093461 source:/home/sm/gitProject/Lineage/src/model/map/TWorldMap.cpp
+>>>>>>> 新增文本地图读取方法
 	<iostream>
 	"utils/TPerformanceTimer.h"
 	"model/map/TMap.h"
 	"model/map/TWorldMap.h"
 
+<<<<<<< HEAD
 1450936899 /home/sm/gitProject/Lineage/include/model/map/TWorldMap.h
+=======
+1451093661 /home/sm/gitProject/Lineage/include/model/map/TWorldMap.h
+>>>>>>> 新增文本地图读取方法
 	<map>
 	<memory>
-	"Poco/Mutex.h"
-	"Poco/Logger.h"
+	<Poco/Mutex.h>
+	<Poco/Logger.h>
 
 1450936899 source:/home/sm/gitProject/Lineage/src/model/TLocation.cpp
 	"model/map/TMap.h"
@@ -106,6 +121,7 @@
 1450931179 /home/sm/gitProject/Lineage/include/utils/TPerformanceTimer.h
 	"Poco/Timestamp.h"
 
+<<<<<<< HEAD
 1438665659 /usr/local/include/Poco/Util/PropertyFileConfiguration.h
 	"Poco/Util/Util.h"
 	"Poco/Util/MapConfiguration.h"
@@ -924,4 +940,28 @@
 
 1451032142 /home/sm/gitProject/Lineage/include/templates/L1Item.h
 	<string>
+=======
+1451092869 source:/home/sm/gitProject/Lineage/src/model/map/TMapReader.cpp
+	"TMapReader.h"
+	"model/map/TTextMapReader.h"
+	"configure/TConfig.h"
+
+1451092856 /home/sm/gitProject/Lineage/include/model/map/TMapReader.h
+	<map>
+	<memory>
+
+1451093642 /home/sm/gitProject/Lineage/include/model/map/TTextMapReader.h
+	<list>
+	<boost/multi_array.hpp>
+	<Poco/Logger.h>
+	"model/map/TMapReader.h"
+
+1451093762 source:/home/sm/gitProject/Lineage/src/model/map/TTextMapReader.cpp
+	<fstream>
+	<boost/lexical_cast.hpp>
+	<Poco/String.h>
+	<Poco/StringTokenizer.h>
+	<Poco/DirectoryIterator.h>
+	"TTextMapReader.h"
+>>>>>>> 新增文本地图读取方法
 
