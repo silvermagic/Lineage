@@ -1,4 +1,4 @@
-#include "model/map/TMap.h"
+#include "model/map/L1Map.h"
 #include "model/TLocation.h"
 
 TLocation::TLocation()
@@ -9,7 +9,7 @@ TLocation::TLocation(int x, int y, int mapId)
 {
 }
 
-TLocation::TLocation(int x, int y, std::shared_ptr<TMap> map)
+TLocation::TLocation(int x, int y, std::shared_ptr<L1Map> map)
 {
 }
 
@@ -21,7 +21,7 @@ TLocation::TLocation(const TPoint& pt, int mapId)
 {
 }
 
-TLocation::TLocation(const TPoint& pt, std::shared_ptr<TMap> map)
+TLocation::TLocation(const TPoint& pt, std::shared_ptr<L1Map> map)
 {
 }
 
@@ -35,12 +35,12 @@ bool TLocation::equals(const TLocation& loc)
   return false;
 }
 
-const std::shared_ptr<TMap> TLocation::getMap()
+const std::shared_ptr<L1Map> TLocation::geL1Map()
 {
-  return std::const_pointer_cast<TMap>(_map);
+  return std::const_pointer_cast<L1Map>(_map);
 }
 
-unsigned int TLocation::getMapId()
+unsigned int TLocation::geL1MapId()
 {
   return 0;
 }
@@ -69,7 +69,7 @@ void TLocation::set(int x, int y, int mapId)
 {
 }
 
-void TLocation::set(int x, int y, std::shared_ptr<TMap> map)
+void TLocation::set(int x, int y, std::shared_ptr<L1Map> map)
 {
 }
 
@@ -81,15 +81,15 @@ void TLocation::set(const TPoint& pt, unsigned int mapId)
 {
 }
 
-void TLocation::set(const TPoint& pt, std::shared_ptr<TMap> map)
+void TLocation::set(const TPoint& pt, std::shared_ptr<L1Map> map)
 {
 }
 
-void TLocation::setMap(unsigned int mapId)
+void TLocation::seL1Map(unsigned int mapId)
 {
 }
 
-void TLocation::setMap(std::shared_ptr<TMap> map)
+void TLocation::seL1Map(std::shared_ptr<L1Map> map)
 {
 }
 

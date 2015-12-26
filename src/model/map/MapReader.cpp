@@ -1,10 +1,10 @@
-#include "TMapReader.h"
-#include "model/map/TTextMapReader.h"
+#include "model/map/MapReader.h"
+#include "model/map/TextMapReader.h"
 #include "configure/TConfig.h"
 
 extern TConfig Config;
 
-std::shared_ptr<TMapReader> getDefaultReader()
+std::shared_ptr<MapReader> getDefaultReader()
 {
 	/*if (Config.LOAD_V2_MAP_FILES)
 	{
@@ -14,5 +14,5 @@ std::shared_ptr<TMapReader> getDefaultReader()
 	{
 		return std::make_shared<CachedMapReader>();
 	}*/
-	return std::make_shared<TTextMapReader>();
+	return std::make_shared<TextMapReader>();
 }

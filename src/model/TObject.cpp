@@ -18,12 +18,12 @@ const TLocation& TObject::getLocation()
   return _loc;
 }
 
-const std::shared_ptr<TMap> TObject::getMap()
+const std::shared_ptr<L1Map> TObject::geL1Map()
 {
-  return _loc.getMap();
+  return _loc.geL1Map();
 }
 
-unsigned int TObject::getMapId()
+unsigned int TObject::geL1MapId()
 {
   return 0;
 }
@@ -77,11 +77,11 @@ void TObject::setLocation(const TLocation& loc)
 {
 }
 
-void TObject::setMap(unsigned int mapId)
+void TObject::seL1Map(unsigned int mapId)
 {
 }
 
-void TObject::setMap(std::shared_ptr<TMap> map)
+void TObject::seL1Map(std::shared_ptr<L1Map> map)
 {
 }
 

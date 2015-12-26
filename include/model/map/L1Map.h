@@ -1,5 +1,5 @@
-#ifndef TMAP_H
-#define TMAP_H
+#ifndef L1Map_H
+#define L1Map_H
 
 /**
 * 从框架的角度看,地图类核心功能就是判断两点之间是否存在障碍影响行走或攻击
@@ -10,11 +10,11 @@
 
 class TPoint;
 
-class TMap
+class L1Map
 {
 public:
-  static std::shared_ptr<TMap> newNull();
-  virtual ~TMap();
+  static std::shared_ptr<L1Map> newNull();
+  virtual ~L1Map();
 
   virtual int getId() = 0;
 	virtual int getX() = 0;
@@ -82,14 +82,14 @@ public:
 	virtual bool isNull();
 
 protected:
-  TMap();
+  L1Map();
 };
 
-class TNullMap : public TMap
+class L1NullMap : public L1Map
 {
 public:
-  TNullMap();
-  virtual ~TNullMap();
+  L1NullMap();
+  virtual ~L1NullMap();
 
   int getId();
   int getX();
@@ -133,4 +133,4 @@ public:
 	bool isNull();
 };
 
-#endif // TMAP_H
+#endif // L1Map_H

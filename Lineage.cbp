@@ -12,19 +12,13 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Option projectLinkerOptionsRelation="2" />
-				<Option projectIncludeDirsRelation="2" />
+				<Option projectIncludeDirsRelation="0" />
+				<Option projectLibDirsRelation="2" />
 				<Compiler>
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
 					<Add option="-DBOOST_ALL_DYN_LINK" />
-					<Add directory="include" />
-					<Add directory="include/utils" />
-					<Add directory="include/model/map" />
 				</Compiler>
-				<Linker>
-					<Add option="-lPocoFoundation -lPocoUtil" />
-					<Add directory="/usr/local/lib" />
-				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/Lineage" prefix_auto="1" extension_auto="1" />
@@ -46,28 +40,39 @@
 		<Compiler>
 			<Add option="-std=c++0x" />
 			<Add option="-Wall" />
+			<Add directory="include" />
+			<Add directory="/usr/local/include" />
 		</Compiler>
+		<Linker>
+			<Add option="-lPocoFoundation -lPocoDataMySQL -lPocoData" />
+			<Add option="-lPocoUtil" />
+			<Add directory="/usr/local/lib" />
+		</Linker>
+		<Unit filename="include/L1DatabaseFactory.h" />
 		<Unit filename="include/configure/TConfig.h" />
 		<Unit filename="include/model/TLocation.h" />
 		<Unit filename="include/model/TObject.h" />
-		<Unit filename="include/model/map/TMap.h" />
-		<Unit filename="include/model/map/TMapReader.h" />
-		<Unit filename="include/model/map/TTextMapReader.h" />
-		<Unit filename="include/model/map/TWorldMap.h" />
+		<Unit filename="include/model/map/L1Map.h" />
+		<Unit filename="include/model/map/L1WorldMap.h" />
+		<Unit filename="include/model/map/MapReader.h" />
+		<Unit filename="include/model/map/TextMapReader.h" />
+		<Unit filename="include/templates/L1Item.h" />
 		<Unit filename="include/types/TPoint.h" />
 		<Unit filename="include/types/TRectangle.h" />
 		<Unit filename="include/utils/TDice.h" />
 		<Unit filename="include/utils/TIntRange.h" />
 		<Unit filename="include/utils/TPerformanceTimer.h" />
 		<Unit filename="include/utils/TRandom.h" />
+		<Unit filename="src/L1DatabaseFactory.cpp" />
 		<Unit filename="src/configure/TConfig.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/model/TLocation.cpp" />
 		<Unit filename="src/model/TObject.cpp" />
-		<Unit filename="src/model/map/TMap.cpp" />
-		<Unit filename="src/model/map/TMapReader.cpp" />
-		<Unit filename="src/model/map/TTextMapReader.cpp" />
-		<Unit filename="src/model/map/TWorldMap.cpp" />
+		<Unit filename="src/model/map/L1Map.cpp" />
+		<Unit filename="src/model/map/L1WorldMap.cpp" />
+		<Unit filename="src/model/map/MapReader.cpp" />
+		<Unit filename="src/model/map/TextMapReader.cpp" />
+		<Unit filename="src/templates/L1Item.cpp" />
 		<Unit filename="src/types/TPoint.cpp" />
 		<Unit filename="src/types/TRectangle.cpp" />
 		<Extensions>

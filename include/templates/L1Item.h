@@ -35,7 +35,7 @@ public:
 	int getLightRange();
 	virtual int getLuck();
 	virtual int getMagicDmgModifier();
-	virtual int getMapId();
+	virtual int geL1MapId();
 	virtual int getMaxChargeCount();
 	virtual int getObtainProps();
 	virtual int getObtainPropsTime();

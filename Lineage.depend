@@ -56,10 +56,10 @@
 
 1450445988 eFactory.h"
 
-1449667821 /home/sm/gitProject/Lineage/include/model/TObject.h
+1451095482 /home/sm/gitProject/Lineage/include/model/TObject.h
 	"model/TLocation.h"
 
-1449667821 /home/sm/gitProject/Lineage/include/model/TLocation.h
+1451095484 /home/sm/gitProject/Lineage/include/model/TLocation.h
 	<memory>
 	"types/TPoint.h"
 
@@ -97,11 +97,11 @@
 	<Poco/Mutex.h>
 	<Poco/Logger.h>
 
-1449667821 source:/home/sm/gitProject/Lineage/src/model/TLocation.cpp
-	"model/map/TMap.h"
+1451095480 source:/home/sm/gitProject/Lineage/src/model/TLocation.cpp
+	"model/map/L1Map.h"
 	"model/TLocation.h"
 
-1449667821 source:/home/sm/gitProject/Lineage/src/model/TObject.cpp
+1451095506 source:/home/sm/gitProject/Lineage/src/model/TObject.cpp
 	"model/TObject.h"
 
 1449667821 source:/home/sm/gitProject/Lineage/src/types/TPoint.cpp
@@ -939,10 +939,10 @@
 	"Poco/Configurable.h"
 	"Poco/RefCountedObject.h"
 
-1451094209 source:/home/sm/gitProject/Lineage/src/templates/L1Item.cpp
+1451095500 source:/home/sm/gitProject/Lineage/src/templates/L1Item.cpp
 	"templates/L1Item.h"
 
-1451094209 /home/sm/gitProject/Lineage/include/templates/L1Item.h
+1451095499 /home/sm/gitProject/Lineage/include/templates/L1Item.h
 	<string>
 
 1451094229 source:/home/sm/gitProject/Lineage/src/model/map/TMapReader.cpp
@@ -1014,4 +1014,47 @@
 1438665655 /usr/local/include/Poco/Path.h
 	"Poco/Foundation.h"
 	<vector>
+
+1451095703 source:/home/sm/gitProject/Lineage/src/model/map/L1Map.cpp
+	"types/TPoint.h"
+	"model/map/L1Map.h"
+
+1451095695 /home/sm/gitProject/Lineage/include/model/map/L1Map.h
+	<string>
+	<memory>
+
+1451095592 source:/home/sm/gitProject/Lineage/src/model/map/L1WorldMap.cpp
+	<iostream>
+	"utils/TPerformanceTimer.h"
+	"model/map/L1Map.h"
+	"model/map/L1WorldMap.h"
+
+1451095593 /home/sm/gitProject/Lineage/include/model/map/L1WorldMap.h
+	<map>
+	<memory>
+	<Poco/Mutex.h>
+	<Poco/Logger.h>
+
+1451095921 source:/home/sm/gitProject/Lineage/src/model/map/MapReader.cpp
+	"model/map/MapReader.h"
+	"model/map/TextMapReader.h"
+	"configure/TConfig.h"
+
+1451096081 /home/sm/gitProject/Lineage/include/model/map/MapReader.h
+	<map>
+	<memory>
+
+1451096069 /home/sm/gitProject/Lineage/include/model/map/TextMapReader.h
+	<list>
+	<boost/multi_array.hpp>
+	<Poco/Logger.h>
+	"model/map/MapReader.h"
+
+1451095932 source:/home/sm/gitProject/Lineage/src/model/map/TextMapReader.cpp
+	<fstream>
+	<boost/lexical_cast.hpp>
+	<Poco/String.h>
+	<Poco/StringTokenizer.h>
+	<Poco/DirectoryIterator.h>
+	"model/map/TextMapReader.h"
 

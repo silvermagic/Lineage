@@ -1,13 +1,13 @@
 #include <iostream>
 #include "utils/TPerformanceTimer.h"
-#include "model/map/TMap.h"
-#include "model/map/TWorldMap.h"
+#include "model/map/L1Map.h"
+#include "model/map/L1WorldMap.h"
 
-Mutex TWorldMap::_mapMtx;
-std::shared_ptr<TWorldMap> TWorldMap::_instance;
-Logger& TWorldMap::_log = Poco::Logger::get("lineage.TWorldMap");
+Mutex L1WorldMap::_mapMtx;
+std::shared_ptr<L1WorldMap> L1WorldMap::_instance;
+Logger& L1WorldMap::_log = Poco::Logger::get("lineage.L1WorldMap");
 
-TWorldMap::TWorldMap()
+L1WorldMap::L1WorldMap()
 {
 	TPerformanceTimer timer;
 	std::cout << "╔》正在读取 Map..." << std::endl;
@@ -34,33 +34,33 @@ TWorldMap::TWorldMap()
 	std::cout << "完成!\t\t耗时: " << timer.elapsedTimeMillis() << "\t毫秒" << std::endl;
 }
 
-std::shared_ptr<TWorldMap> TWorldMap::getInstance()
+std::shared_ptr<L1WorldMap> L1WorldMap::getInstance()
 {
 	Mutex::ScopedLock lock(_mapMtx);
 	if (!_instance)
 	{
-		_instance = std::make_shared<TWorldMap>();
+		_instance = std::make_shared<L1WorldMap>();
 	}
 	return _instance;
 }
 
-void TWorldMap::addMap(std::shared_ptr<TMap> map)
+void L1WorldMap::addMap(std::shared_ptr<L1Map> map)
 {
 	Mutex::ScopedLock lock(_mapMtx);
 	_maps[map->getId()] = map;
 }
 
-std::shared_ptr<TMap> TWorldMap::getMap(int mapId)
+std::shared_ptr<L1Map> L1WorldMap::geL1Map(int mapId)
 {
-	std::shared_ptr<TMap> map = _maps[mapId];
+	std::shared_ptr<L1Map> map = _maps[mapId];
 	if (map == NULL)   // 没有地图信息
 	{
-		map = TMap::newNull(); // 返回一个没有任何信息的Map。
+		map = L1Map::newNull(); // 返回一个没有任何信息的Map。
 	}
 	return map;
 }
 
-void TWorldMap::removeMap(int mapId)
+void L1WorldMap::removeMap(int mapId)
 {
 	Mutex::ScopedLock lock(_mapMtx);
 	_maps.erase(mapId);

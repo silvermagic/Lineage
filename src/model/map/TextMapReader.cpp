@@ -3,9 +3,9 @@
 #include <Poco/String.h>
 #include <Poco/StringTokenizer.h>
 #include <Poco/DirectoryIterator.h>
-#include "TTextMapReader.h"
+#include "model/map/TextMapReader.h"
 
-static Logger& _log = Poco::Logger::get("lineage.TTextMapReader");
+static Logger& _log = Poco::Logger::get("lineage.TextMapReader");
 //地图的路径
 std::string MAP_DIR = "./maps/";
 //MAP_INFO 中编号的位置
@@ -611,17 +611,17 @@ int MAP_INFO[][5] =
 	// 旅馆房间
 };
 
-TTextMapReader::TTextMapReader()
+TextMapReader::TextMapReader()
 {
 	//ctor
 }
 
-TTextMapReader::~TTextMapReader()
+TextMapReader::~TextMapReader()
 {
 	//dtor
 }
 
-std::list<int>&& TTextMapReader::listMapIds()
+std::list<int> TextMapReader::lisL1MapIds()
 {
 	std::list<int> ids;
 
@@ -648,9 +648,9 @@ std::list<int>&& TTextMapReader::listMapIds()
 	return ids;
 }
 
-std::map<int, std::shared_ptr<TMap>>&& TTextMapReader::read()
+std::map<int, std::shared_ptr<L1Map>> TextMapReader::read()
 {
-  std::map<int, std::shared_ptr<TMap>> maps;
+  std::map<int, std::shared_ptr<L1Map>> maps;
 
   /*for (final int[] info : MAP_INFO)
 	{
@@ -685,7 +685,7 @@ std::map<int, std::shared_ptr<TMap>>&& TTextMapReader::read()
   return maps;
 }
 
-std::shared_ptr<TMap> TTextMapReader::read(int id)
+std::shared_ptr<L1Map> TextMapReader::read(int id)
 {
   /*for (final int[] info : MAP_INFO)
 	{
@@ -712,10 +712,10 @@ std::shared_ptr<TMap> TTextMapReader::read(int id)
 		}
 	}
 	throw new FileNotFoundException("地图编号: " + id);*/
-	return std::shared_ptr<TMap>();
+	return std::shared_ptr<L1Map>();
 }
 
-boost::multi_array<unsigned char,2> TTextMapReader::read(int mapId, int xSize, int ySize)
+boost::multi_array<unsigned char,2> TextMapReader::read(int mapId, int xSize, int ySize)
 {
   boost::multi_array<unsigned char,2> map(boost::extents[xSize][ySize]);
 

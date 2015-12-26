@@ -14,9 +14,9 @@ public:
   /** 获取对象所在位置 */
   const TLocation& getLocation();
   /** 获取对象所在地图 */
-  const std::shared_ptr<TMap> getMap();
+  const std::shared_ptr<L1Map> geL1Map();
   /** 获取对象所在地图ID */
-  unsigned int getMapId();
+  unsigned int geL1MapId();
   /** 取得与另一个对象间的X轴+Y轴的距离 */
   int getTileDistance(const TObject& obj);
   /** 取得与另一个对象间的X轴或Y轴距离较大值 */
@@ -42,9 +42,9 @@ public:
   /** 设置对象存在在地图上的坐标 */
   void setLocation(const TLocation& loc);
   /** 设定对象所存在的地图ID */
-  void setMap(unsigned int mapId);
+  void seL1Map(unsigned int mapId);
   /** 设定对象所存在的地图 */
-  void setMap(std::shared_ptr<TMap> map);
+  void seL1Map(std::shared_ptr<L1Map> map);
   /** 设定对象在地图上的X轴值 */
   void setX(int x);
   /** 设定对象在地图上的Y轴值 */

@@ -335,7 +335,7 @@ int L1Item::getMagicDmgModifier()
  *
  * @return 值 (会被L1EtcItem覆盖)
  */
-int L1Item::getMapId()
+int L1Item::geL1MapId()
 {
 	return 0;
 }
