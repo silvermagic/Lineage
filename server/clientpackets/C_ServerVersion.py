@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import logging
-from ..serverpackets.S_ServerVersion import S_ServerVersion
+from server.serverpackets.S_ServerVersion import S_ServerVersion
 from ClientBasePacket import ClientBasePacket
 
 class C_ServerVersion(ClientBasePacket):

@@ -4,6 +4,8 @@ import logging,SocketServer
 from Config import Config
 from ClientThread import ClientThread
 from LoginController import LoginController
+from server.datatables.MapsTable import MapsTable
+from server.model.map.WorldMap import WorldMap
 
 
 class ClientHandler(SocketServer.BaseRequestHandler):
@@ -14,7 +16,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 class GameServer():
     def __init__(self):
-        pass
+        MapsTable()
+        WorldMap()
 
     def start(self):
         logging.info("Wait for players to connect in ...")

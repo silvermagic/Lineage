@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import os
-from ..codes import Opcodes
+from server.codes import Opcodes
 from ServerBasePacket import ServerBasePacket
 
 class S_CommonNews(ServerBasePacket):
@@ -11,9 +10,8 @@ class S_CommonNews(ServerBasePacket):
         if not message:
             message = ''
             try:
-                with open('data/announcements.txt', 'r') as fd:
-                    for line in fd:
-                        message += line
+                for line in open('data/announcements.txt', 'rU'):
+                    message += line
             except:
                 pass
             self.writeS(message)

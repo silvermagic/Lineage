@@ -2,7 +2,7 @@
 
 import time
 from Config import Config
-from ..codes import Opcodes
+from server.codes import Opcodes
 from ServerBasePacket import ServerBasePacket
 
 class S_ServerVersion(ServerBasePacket):

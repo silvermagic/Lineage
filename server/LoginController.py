@@ -2,10 +2,10 @@
 
 import time,thread,threading
 from serverpackets import S_ServerMessage
-from utils.Singleton import singleton
+from utils.Singleton import Singleton
 
-@singleton
-class LoginController:
+class LoginController():
+    __metaclass__ = Singleton
     def __init__(self):
         self._lock = threading.Lock()
         self._accounts = {}

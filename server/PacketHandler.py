@@ -3,6 +3,7 @@
 from clientpackets.C_AuthLogin import C_AuthLogin
 from clientpackets.C_ServerVersion import C_ServerVersion
 from clientpackets.C_CommonClick import C_CommonClick
+from clientpackets.C_CreateChar import C_CreateChar
 from server.codes import Opcodes
 
 class PacketHandler:
@@ -17,6 +18,8 @@ class PacketHandler:
             C_AuthLogin(abytes, self._client)
         elif opcode == Opcodes.C_OPCODE_COMMONCLICK:
             C_CommonClick(abytes, self._client)
+        elif opcode == Opcodes.C_OPCODE_NEWCHAR:
+            C_CreateChar(abytes, self._client)
         else:
             pass
 

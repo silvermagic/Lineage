@@ -9,29 +9,29 @@ class ClientBasePacket:
         self._off = 1
 
     def readD(self):
-        ret = struct.unpack_from('<i', self._decryp, self._off)
+        ret = struct.unpack_from('<i', self._decrypt, self._off)
         self._off += 4
-        return  ret[0]
+        return  int(ret[0])
 
     def readC(self):
-        ret = struct.unpack_from('<b', self._decryp, self._off)
+        ret = struct.unpack_from('<b', self._decrypt, self._off)
         self._off += 1
-        return ret[0]
+        return int(ret[0])
 
     def readH(self):
-        ret = struct.unpack_from('<h', self._decryp, self._off)
+        ret = struct.unpack_from('<h', self._decrypt, self._off)
         self._off += 2
-        return  ret[0]
+        return  int(ret[0])
 
     def readCH(self):
-        ret = struct.unpack_from('<i', self._decryp, self._off)
+        ret = struct.unpack_from('<i', self._decrypt, self._off)
         self._off += 3
-        return  ret[0] & 0x00ffffff
+        return  int(ret[0] & 0x00ffffff)
 
     def readF(self):
-        ret = struct.unpack_from('<d', self._decryp, self._off)
+        ret = struct.unpack_from('<d', self._decrypt, self._off)
         self._off += 8
-        return  ret[0]
+        return  float(ret[0])
 
     def readS(self):
         ret = None

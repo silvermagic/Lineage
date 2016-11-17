@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from Config import Config
-from ..Account import Account
-from ..codes import Opcodes
+from server.Account import Account
+from server.codes import Opcodes
 from ServerBasePacket import ServerBasePacket
 
 class S_CharAmount(ServerBasePacket):

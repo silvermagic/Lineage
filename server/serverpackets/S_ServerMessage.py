@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import struct,logging
-from ..codes import Opcodes
+from server.codes import Opcodes
 from ServerBasePacket import ServerBasePacket
 
 class S_ServerMessage(ServerBasePacket):

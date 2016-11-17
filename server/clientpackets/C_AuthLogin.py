@@ -2,10 +2,10 @@
 
 import logging
 from Config import Config
-from ..Account import Account
-from ..LoginController import LoginController
-from ..serverpackets.S_LoginResult import S_LoginResult
-from ..serverpackets.S_CommonNews import S_CommonNews
+from server.Account import Account
+from server.LoginController import LoginController
+from server.serverpackets.S_LoginResult import S_LoginResult
+from server.serverpackets.S_CommonNews import S_CommonNews
 from ClientBasePacket import ClientBasePacket
 
 class C_AuthLogin(ClientBasePacket):

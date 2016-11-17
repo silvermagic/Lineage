@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-import logging
+import logging,time
 from Config import Config
 from Datatables import Session,Characters
-from ..serverpackets.S_CharAmount import S_CharAmount
-from ..serverpackets.S_CharPacks import S_CharPacks
+from server.serverpackets.S_CharAmount import S_CharAmount
+from server.serverpackets.S_CharPacks import S_CharPacks
 from ClientBasePacket import ClientBasePacket
 
 class C_CommonClick(ClientBasePacket):
@@ -24,6 +24,7 @@ class C_CommonClick(ClientBasePacket):
         try:
             with Session() as session:
                 items = session.query(Characters).filter(Characters.account_name == client._account._name).order_by(Characters.objid).all()
+                logging.info('Send account characters...')
                 for item in items:
                     name = item.char_name
                     clanname = item.Clanname
@@ -51,15 +52,15 @@ class C_CommonClick(ClientBasePacket):
                         elif lvl > 127:
                             lvl = 127
 
-                        ac = item.Ac
-                        str = item.Str
-                        dex = item.Dex
-                        con = item.Con
-                        wis = item.Wis
-                        cha = item.Cha
-                        intel = item.Intel
-                        accessLevel = item.AccessLevel
-                        birthday = item.birthday
-                        client.sendPacket(S_CharPacks(name, clanname, type, sex, lawful, currenthp, currentmp, ac, lvl, str, dex, con, wis, cha, intel, accessLevel, birthday.date().timestamp()))
+                    ac = item.Ac
+                    str = item.Str
+                    dex = item.Dex
+                    con = item.Con
+                    wis = item.Wis
+                    cha = item.Cha
+                    intel = item.Intel
+                    accessLevel = item.AccessLevel
+                    birthday = time.mktime(item.birthday.date().timetuple())
+                    client.sendPacket(S_CharPacks(name, clanname, type, sex, lawful, currenthp, currentmp, ac, lvl, str, dex, con, wis, cha, intel, accessLevel, birthday))
         except Exception as e:
             logging.error(e)
