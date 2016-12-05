@@ -18,6 +18,11 @@ class BadNamesList():
             logging.error(e)
 
     def isBadName(self, name):
+        '''
+        检测用户注册的用户名的有效性
+        :param name:用户名(str)
+        :return:True/False
+        '''
         for item in self._nameList:
             if name.lower() == item.lower():
                 return True

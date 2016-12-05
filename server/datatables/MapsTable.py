@@ -31,27 +31,27 @@ class MapsTable():
         logging.debug('loading maps from db...')
         try:
             with Session() as session:
-                for item in session.query(Mapids).all():
-                    data = MapData()
-                    mapId = item.mapid
-                    data.startX = item.startX
-                    data.endX = item.endX
-                    data.startY = item.startY
-                    data.endY = item.endY
-                    data.monster_amount = item.monster_amount
-                    data.dropRate = item.drop_rate
-                    data.isUnderwater = item.underwater
-                    data.isMarkable = item.markable
-                    data.isTeleportable = item.teleportable
-                    data.isEscapable = item.escapable
-                    data.isUseResurrection = item.resurrection
-                    data.isUsePainwand = item.painwand
-                    data.isEnabledDeathPenalty = item.penalty
-                    data.isTakePets = item.take_pets
-                    data.isRecallPets = item.recall_pets
-                    data.isUsableItem = item.usable_item
-                    data.isUsableSkill = item.usable_skill
+                for rs in session.query(Mapids).all():
+                    item = MapData()
+                    mapId = rs.mapid
+                    item.startX = rs.startX
+                    item.endX = rs.endX
+                    item.startY = rs.startY
+                    item.endY = rs.endY
+                    item.monster_amount = rs.monster_amount
+                    item.dropRate = rs.drop_rate
+                    item.isUnderwater = rs.underwater
+                    item.isMarkable = rs.markable
+                    item.isTeleportable = rs.teleportable
+                    item.isEscapable = rs.escapable
+                    item.isUseResurrection = rs.resurrection
+                    item.isUsePainwand = rs.painwand
+                    item.isEnabledDeathPenalty = rs.penalty
+                    item.isTakePets = rs.take_pets
+                    item.isRecallPets = rs.recall_pets
+                    item.isUsableItem = rs.usable_item
+                    item.isUsableSkill = rs.usable_skill
 
-                    self._maps[mapId] = data
+                    self._maps[mapId] = item
         except Exception as e:
             logging.error(e)

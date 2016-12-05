@@ -55,31 +55,31 @@ class CalcStat():
         if baseCon > 15:
             randomhp = baseCon - 15
         if charType == 0:
-            randomhp += 11 + random.randint(0,2)
+            randomhp += 11 + random.randrange(2)
             if baseMaxHp + randomhp > Config.getint('charsettings', 'PrinceMaxHP'):
                 randomhp = Config.getint('charsettings', 'PrinceMaxHP') - baseMaxHp
         elif charType == 1:
-            randomhp += 17 + random.randint(0,2)
+            randomhp += 17 + random.randrange(2)
             if baseMaxHp + randomhp > Config.getint('charsettings', 'KnightMaxHP'):
                 randomhp = Config.getint('charsettings', 'KnightMaxHP') - baseMaxHp
         elif charType == 2:
-            randomhp += 10 + random.randint(0,2)
+            randomhp += 10 + random.randrange(2)
             if baseMaxHp + randomhp > Config.getint('charsettings', 'ElfMaxHP'):
                 randomhp = Config.getint('charsettings', 'ElfMaxHP') - baseMaxHp
         elif charType == 3:
-            randomhp += 7 + random.randint(0,2)
+            randomhp += 7 + random.randrange(2)
             if baseMaxHp + randomhp > Config.getint('charsettings', 'WizardMaxHP'):
                 randomhp = Config.getint('charsettings', 'WizardMaxHP') - baseMaxHp
         elif charType == 4:
-            randomhp += 10 + random.randint(0,2)
+            randomhp += 10 + random.randrange(2)
             if baseMaxHp + randomhp > Config.getint('charsettings', 'DarkelfMaxHP'):
                 randomhp = Config.getint('charsettings', 'DarkelfMaxHP') - baseMaxHp
         elif charType == 5:
-            randomhp += 13 + random.randint(0,2)
+            randomhp += 13 + random.randrange(2)
             if baseMaxHp + randomhp > Config.getint('charsettings', 'DragonKnightMaxHP'):
                 randomhp = Config.getint('charsettings', 'DragonKnightMaxHP') - baseMaxHp
         elif charType == 6:
-            randomhp += 9 + random.randint(0,2)
+            randomhp += 9 + random.randrange(2)
             if baseMaxHp + randomhp > Config.getint('charsettings', 'IllusionistMaxHP'):
                 randomhp = Config.getint('charsettings', 'IllusionistMaxHP') - baseMaxHp
 
@@ -118,7 +118,7 @@ class CalcStat():
         elif baseWis >= 33:
             seedZ = 6
 
-        randommp = random.randint(0, seedY) + 1 + seedZ
+        randommp = random.randrange(seedY) + 1 + seedZ
 
         if charType == 0:
             if baseMaxMp + randommp > Config.getint('charsettings', 'PrinceMaxMP'):

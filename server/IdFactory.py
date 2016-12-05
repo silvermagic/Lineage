@@ -21,6 +21,10 @@ class IdFactory():
         self._lock = threading.Lock()
 
     def nextId(self):
+        '''
+        产生新的天堂对象ID
+        :return:对象ID
+        '''
         with self._lock:
             self._curId += 1
             return self._curId

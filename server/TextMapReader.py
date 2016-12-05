@@ -559,6 +559,11 @@ MAPINFO_END_Y = 4
 
 class TextMapReader():
     def read(self, id = None):
+        '''
+        读取文本中保存的一幅或全部的地图信息
+        :param id:地图ID
+        :return:地图信息集合
+        '''
         logging.debug('read map...')
         if not id:
             _maps = {}
@@ -610,6 +615,13 @@ class TextMapReader():
             raise Exception("MapId: " + id)
 
     def _read(self, mapId, xSize, ySize):
+        '''
+        将描述地图的二维文本映射到内存中的二维数组中
+        :param mapId:地图ID(int)
+        :param xSize:地图的宽度(int)
+        :param ySize:地图的长度(int)
+        :return:描述地图信息的二维数组
+        '''
         _map = []
         for line in open(MAP_DIR + str(mapId) + '.txt', 'U'):
             line = line[:-1]

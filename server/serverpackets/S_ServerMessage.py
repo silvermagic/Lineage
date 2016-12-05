@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import struct,logging
 from server.codes import Opcodes
 from ServerBasePacket import ServerBasePacket
 

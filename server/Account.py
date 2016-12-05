@@ -18,10 +18,23 @@ class Account:
 
     @classmethod
     def encodePassword(cls, rawPassword):
+        '''
+        对原始密码进行加密,先使用SHA加密然后使用Base64加密
+        :param rawPassword:客户登入输入的原始密码(str)
+        :return:加密后的密码
+        '''
         return base64.b64encode(hashlib.sha1(rawPassword.encode('utf8')).digest())
 
     @classmethod
     def create(cls, name, rawPassword, ip, host):
+        '''
+        创建新账户
+        :param name:用户名(str)
+        :param rawPassword:密码(str)
+        :param ip:登入IP(str)
+        :param host:登入HOST(str)
+        :return:新账户(Account/None)
+        '''
         try:
             account = Account()
             account._name = name
@@ -51,6 +64,11 @@ class Account:
 
     @classmethod
     def load(cls, name):
+        '''
+        从数据库加载对应账户信息到内存中
+        :param name:用户名(str)
+        :return:账户信息(Account/None)
+        '''
         account = None
         try:
             with Session() as session:
@@ -76,6 +94,12 @@ class Account:
 
     @classmethod
     def updateLastActive(cls, account, ip):
+        '''
+        更新账户的登入信息
+        :param account:登入账户信息(Account)
+        :param ip:登入IP(str)
+        :return:None
+        '''
         try:
             with Session() as session:
                 session.query(Accounts).filter(Accounts.login == account._name).update({Accounts.lastactive : datetime.now(), Accounts.ip : ip})
@@ -86,6 +110,11 @@ class Account:
 
     @classmethod
     def updateCharacterSlot(cls, account):
+        '''
+        更新账户的角色槽即可创建的最大角色数目
+        :param account:登入账户信息(Account)
+        :return:None
+        '''
         try:
             with Session() as session:
                 session.query(Accounts).filter(Accounts.login == account._name).update({Accounts.character_slot : account._characterSlot})
@@ -95,6 +124,10 @@ class Account:
             logging.error(e)
 
     def countCharacters(self):
+        '''
+        返回账户所拥有的角色数目
+        :return:角色数目(int)
+        '''
         ret = 0
         try:
             with Session() as session:
@@ -106,6 +139,11 @@ class Account:
 
     @classmethod
     def ban(cls, name):
+        '''
+        禁用账户
+        :param name:被禁用的用户名(str)
+        :return:None
+        '''
         try:
             with Session() as session:
                 session.query(Accounts).filter(Accounts.login == name).one_or_none().update({Accounts.banned : 1})
@@ -113,6 +151,11 @@ class Account:
             logging.error(e)
 
     def validatePassword(self, rawPassword):
+        '''
+        验证登入密码是否正确
+        :param rawPassword:用户登入密码(str)
+        :return:True/False
+        '''
         if self._isValid:
             return False
 
@@ -127,4 +170,8 @@ class Account:
         return False
 
     def isGameMaster(self):
+        '''
+        当前账户是否为游戏管理员
+        :return:True/False
+        '''
         return self._accessLevel > 0

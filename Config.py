@@ -13,6 +13,4 @@ def init():
     else:
         Config.set('server', 'ClientLanguageCode', 'GBK')
 
-    if not Config.has_option('altsettings', 'CharacterConfigInServerSide'):
-        Config.set('altsettings', 'CharacterConfigInServerSide', 'True')
-    logging.basicConfig(format='%(levelname)s:%(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(filename)20s(%(funcName)10s):[%(levelname)s] %(message)s', level=logging.DEBUG)

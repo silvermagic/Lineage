@@ -41,6 +41,11 @@ class Point():
         return math.fabs(pt._x - self._x) + math.fabs(pt._y - self._y)
 
     def isInScreen(self, pt):
+        '''
+        判断一个点是否处于当前屏幕内
+        :param pt:待检测的坐标(Point)
+        :return:True/False
+        '''
         dist = self.getTileDistance(pt)
 
         if dist > 17:

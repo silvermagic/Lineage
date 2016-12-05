@@ -7,7 +7,6 @@ from server.BadNamesList import BadNamesList
 from server.IdFactory import IdFactory
 from server.datatables.CharacterTable import CharacterTable
 from server.model.Instance.PcInstance import PcInstance
-from server.model.map.WorldMap import WorldMap
 from server.serverpackets.S_CharCreateStatus import S_CharCreateStatus
 from server.serverpackets.S_NewCharPacket import S_NewCharPacket
 from server.utils.CalcInitHpMp import CalcInitHpMp
@@ -40,7 +39,7 @@ class C_CreateChar(ClientBasePacket):
         if len(name) == 0:
             client.sendPacket(S_CharCreateStatus(S_CharCreateStatus.REASON_INVALID_NAME))
             return
-
+        # todo:
         #if self.isInvalidName(name):
         #    client.sendPacket(S_CharCreateStatus(S_CharCreateStatus.REASON_INVALID_NAME))
         #    return
@@ -108,7 +107,7 @@ class C_CreateChar(ClientBasePacket):
 
         pc._loc._x = LOCX_LIST[pc._type]
         pc._loc._y = LOCY_LIST[pc._type]
-        pc._loc._map =  WorldMap()._maps[MAPID_LIST[pc._type]]
+        pc.setMap(MAPID_LIST[pc._type])
         pc._heading = 0
         pc._lawful = 0
         initHp = CalcInitHpMp.calcInitHp(pc)
@@ -118,9 +117,15 @@ class C_CreateChar(ClientBasePacket):
         pc.addBaseMaxMp(initMp)
         pc.setCurrentMp(initMp)
         pc._accountName = client._account._name
+        # todo:
+        #   1.角色创建广播
+        #   2.pc.isWizard
+        #   3.Beginner
         CharacterTable().storeNewCharacter(pc)
         client.sendPacket(S_NewCharPacket(pc))
         CharacterTable().saveCharStatus(pc)
+        # todo:
+        #   1.pc.refresh()
 
     @classmethod
     def isInvalidName(cls, name):

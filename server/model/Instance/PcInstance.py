@@ -4,6 +4,10 @@ import logging,time
 from datetime import datetime
 from server.model.Character import Character
 from server.model.Karma import Karma
+from server.model.PcInventory import PcInventory
+from server.model.DwarfInventory import DwarfInventory
+from server.model.DwarfForElfInventory import DwarfForElfInventory
+# from server.model.gametime.GameTimeCarrier import GameTimeCarrier
 from server.serverpackets.S_HPUpdate import S_HPUpdate
 from server.serverpackets.S_MPUpdate import S_MPUpdate
 from server.utils.IntRange import IntRange
@@ -106,6 +110,16 @@ class PcInstance(Character):
         self._moveSpeed = 0
         self._braveSpeed = 0
         self._gmInvis = False
+        self._tempCharGfxAtDead = 0
+        self._ghost = False
+        self._isInCharReset = False
+        self._gc = None
+
+        self._inventory = PcInventory(self)
+        self._dwarf = DwarfInventory(self)
+        self._dwarfForElf = DwarfForElfInventory(self)
+        self._party = None
+        self.skillList = []
 
     def sendPackets(self, serverbasepacket):
         if not self._netConnection:
@@ -114,6 +128,10 @@ class PcInstance(Character):
             self._netConnection.sendPacket(serverbasepacket)
         except Exception as e:
             logging.error(e)
+
+    def getExp(self):
+        with self._lock:
+            return self._exp
 
     def setExp(self, exp):
         with self._lock:
@@ -214,6 +232,22 @@ class PcInstance(Character):
         dt = datetime.fromtimestamp(self._birthday).date().timetuple()
         return int(time.mktime(dt))
 
-if __name__ == '__main__':
-    pc = PcInstance()
-    print(pc.__dict__)
+    def logout(self):
+        pass
+
+    '''
+    def beginGameTimeCarrier(self):
+        if not self._gc:
+            self._gc = GameTimeCarrier(self)
+            self._gc.start()
+
+    def save(self):
+        from server.datatables.CharacterTable import CharacterTable
+        if self._ghost:
+            return
+
+        if self._isInCharReset:
+            return
+
+        CharacterTable().storeCharacter(self)
+    '''

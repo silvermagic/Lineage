@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import math,random
-from ..types.Point import Point
+from server.types.Point import Point
 
 class Location(Point):
     def __init__(self, pt = None, map = None):
@@ -20,6 +20,7 @@ class Location(Point):
     def hashCode(self):
         return 7 * self._map.getId() + Point.hashCode(self)
 
+    '''
     @classmethod
     def randomLocation(cls, baseLocation, min, max, isRandomTeleport):
         if min > max:
@@ -67,8 +68,8 @@ class Location(Point):
                 break
 
             trial += 1
-            newX = llocX + random.randint(0, diffX + 1)
-            newY = dlocY + random.randint(0, diffY + 1)
+            newX = llocX + random.randrange(diffX + 1)
+            newY = dlocY + random.randrange(diffY + 1)
 
             newLocation._x = newX
             newLocation._y = newY
@@ -84,3 +85,4 @@ class Location(Point):
                 break
 
         return newLocation
+    '''

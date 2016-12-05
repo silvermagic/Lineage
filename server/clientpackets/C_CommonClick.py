@@ -45,7 +45,7 @@ class C_CommonClick(ClientBasePacket):
                         currentmp = 32767
 
                     lvl = 1
-                    if Config.getboolean('altsettings', 'CharacterConfigInServerSide'):
+                    if Config.getboolean('server', 'CharacterConfigInServerSide'):
                         lvl = item.level
                         if lvl < 1:
                             lvl = 1

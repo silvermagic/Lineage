@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from map.WorldMap import WorldMap
 from Location import Location
 
 class Object():
@@ -13,6 +14,9 @@ class Object():
     def getTileLineDistance(self, obj):
         return self._loc.getTileLineDistance(obj._loc)
 
+    def setMap(self, mapId):
+        if WorldMap()._maps.has_key(mapId):
+            self._loc._map = WorldMap()._maps[mapId]
 
     def getTileDistance(self, obj):
         return self._loc.getTileDistance(obj._loc)
@@ -25,3 +29,6 @@ class Object():
 
     def onTalkAction(self, talkFrom):
         return
+
+    def __eq__(self, other):
+        return self._id == other._id

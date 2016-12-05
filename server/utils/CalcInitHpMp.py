@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 class CalcInitHpMp():
+    '''
+    计算各职业的初始血量和沒量
+    '''
     @classmethod
     def calcInitHp(cls, pc):
         hp = 1

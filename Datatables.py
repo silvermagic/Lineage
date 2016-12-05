@@ -10,21 +10,25 @@ engine = create_engine("mysql+pymysql://root:root@localhost/l1jdb?charset=GBK")
 SessionMaker = scoped_session(sessionmaker(bind=engine))
 
 class Session():
+    def __init__(self):
+        self._s = None
+
     def __enter__(self):
-        return SessionMaker()
+        self._s = SessionMaker()
+        return self._s
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         try:
             if exc_type is None:
                 try:
-                    SessionMaker.commit()
+                    self._s.commit()
                 except:
-                    SessionMaker.rollback()
+                    self._s.rollback()
                     raise
             else:
-                SessionMaker.rollback()
+                self._s.rollback()
         finally:
-            SessionMaker.remove()
+            self._s.remove()
 
 # reflect the tables
 reload(sys)
@@ -62,7 +66,7 @@ Dungeon_Random           = Base.classes.dungeon_random
 Eric_Random_Mob          = Base.classes.eric_random_mob
 Eric_Startcheckwartime   = Base.classes.eric_startcheckwartime
 Etcitem                  = Base.classes.etcitem
-Getback                  = Base.classes.getback
+Getback                 = Base.classes.getback
 Getback_Restart          = Base.classes.getback_restart
 House                    = Base.classes.house
 Inn                      = Base.classes.inn

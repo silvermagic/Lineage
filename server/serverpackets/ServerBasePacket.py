@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import struct,logging
+import struct,logging,ctypes
 from Config import Config
 
 class ServerBasePacket:
@@ -14,10 +14,10 @@ class ServerBasePacket:
         self._bao += struct.pack('<H', value)
 
     def writeC(self, value):
-        self._bao += struct.pack('<B', value)
+        self._bao += struct.pack('<B', value & 0xFF)
 
     def writeL(self, value):
-        self._bao += struct.pack('<L', value & 0xFF)
+        self._bao += struct.pack('<L', int(value & 0xFF))
 
     def writeF(self, value):
         self._bao += struct.pack('<Q', value)
@@ -37,10 +37,13 @@ class ServerBasePacket:
         return len(self._bao) + 2
 
     def getBytes(self):
-        padding = len(self._bao) % 4
-
-        if padding != 0:
-            self.writeByte(bytearray(4 - padding))
+        length = len(self._bao)
+        if  length == 0:
+            self.writeByte(b'\0' * 4)
+        else:
+            padding = length % 4
+            if padding != 0:
+                self.writeByte(b'\0' * (4 - padding))
 
         return self._bao
 

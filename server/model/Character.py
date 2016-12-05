@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import threading
+from server.utils.IntRange import IntRange
 from Object import Object
-from ..utils.IntRange import IntRange
 
 class Character(Object):
     def __init__(self):
@@ -250,7 +250,10 @@ class Character(Object):
             return i - 25
 
     def getSp(self):
-        return int(self._level / 4) + self.getMagicBonus() + self._sp
+        return self.getTrueSp() + self._sp
+
+    def getTrueSp(self):
+        return int(self._level / 4) + self.getMagicBonus()
 
     def addSp(self, i):
         self._sp += i
@@ -259,3 +262,11 @@ class Character(Object):
         with self._lock:
             self._lawful += i
             self._lawful = IntRange.ensure(self._lawful, -32768, 32767)
+
+    def broadcastPacket(self, packet):
+        from server.model.World import World
+        for pc in World().getVisiblePlayer(self):
+            pc.sendPackets(packet)
+
+    def turnOnOffLight(self):
+        pass
