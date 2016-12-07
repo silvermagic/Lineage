@@ -6,6 +6,7 @@ from server.Account import Account
 from server.BadNamesList import BadNamesList
 from server.IdFactory import IdFactory
 from server.datatables.CharacterTable import CharacterTable
+from server.model.Beginner import Beginner
 from server.model.Instance.PcInstance import PcInstance
 from server.serverpackets.S_CharCreateStatus import S_CharCreateStatus
 from server.serverpackets.S_NewCharPacket import S_NewCharPacket
@@ -120,7 +121,7 @@ class C_CreateChar(ClientBasePacket):
         # todo:
         #   1.角色创建广播
         #   2.pc.isWizard
-        #   3.Beginner
+        Beginner().GiveItem(pc)
         CharacterTable().storeNewCharacter(pc)
         client.sendPacket(S_NewCharPacket(pc))
         CharacterTable().saveCharStatus(pc)
