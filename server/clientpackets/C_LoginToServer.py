@@ -2,7 +2,7 @@
 
 import logging
 from Config import Config
-from Datatables import Session,Character_Skills
+from Datatables import Session,character_skills
 from server import ActionCodes
 from server.datatables.CharacterTable import CharacterTable
 from server.datatables.GetBackRestartTable import GetBackRestartTable
@@ -11,15 +11,15 @@ from server.model.World import World
 from server.serverpackets.S_InitialAbilityGrowth import S_InitialAbilityGrowth
 from server.serverpackets.S_LoginToGame import S_LoginToGame
 from server.serverpackets.S_Unknown2 import S_Unknown2
-# from server.serverpackets.S_ActiveSpells import S_ActiveSpells
-# from server.serverpackets.S_Karma import S_Karma
+from server.serverpackets.S_ActiveSpells import S_ActiveSpells
+from server.serverpackets.S_Karma import S_Karma
 from server.serverpackets.S_OwnCharStatus import S_OwnCharStatus
 from server.serverpackets.S_MapID import S_MapID
 from server.serverpackets.S_OwnCharPack import S_OwnCharPack
-# from server.serverpackets.S_SPMR import S_SPMR
+from server.serverpackets.S_SPMR import S_SPMR
 from server.serverpackets.S_CharTitle import S_CharTitle
 from server.serverpackets.S_InvList import S_InvList
-# from server.serverpackets.S_CharacterConfig import S_CharacterConfig
+from server.serverpackets.S_CharacterConfig import S_CharacterConfig
 from ClientBasePacket import ClientBasePacket
 
 class C_LoginToServer(ClientBasePacket):
@@ -75,17 +75,15 @@ class C_LoginToServer(ClientBasePacket):
 
         # todo: 战争血盟复活地点设置
         World().addVisibleObject(pc)
-        # pc.sendPackets(S_ActiveSpells())
-        # pc.sendPackets(S_Karma(pc))
+        pc.sendPackets(S_ActiveSpells())
+        pc.sendPackets(S_Karma(pc))
 
         # pc.beginGameTimeCarrier()
 
         pc.sendPackets(S_OwnCharStatus(pc))
         pc.sendPackets(S_MapID(pc._loc._map._mapId, pc._loc._map._isUnderwater))
-
         pc.sendPackets(S_OwnCharPack(pc))
-
-        # pc.sendPackets(S_SPMR(pc))
+        pc.sendPackets(S_SPMR(pc))
 
         pc.sendPackets(S_CharTitle(pc._id, pc._title))
         # pc.broadcastPacket(S_CharTitle(pc._id, pc._title))
@@ -172,7 +170,7 @@ class C_LoginToServer(ClientBasePacket):
             lv27 = 0
             lv28 = 0
             with Session() as session:
-                for item in session.query(Character_Skills).all():
+                for item in session.query(character_skills).all():
                     pass
         except Exception as e:
             logging.error(e)

@@ -32,8 +32,7 @@ class PacketHandler:
         elif opcode == Opcodes.C_OPCODE_LOGINTOSERVER:
             C_LoginToServer(abytes, self._client)
         elif opcode == Opcodes.C_OPCODE_KEEPALIVE:
-            # C_KeepALIVE(abytes, self._client)
-            pass
+            C_KeepALIVE(abytes, self._client)
         elif opcode == Opcodes.C_OPCODE_LOGINTOSERVEROK:
             C_LoginToServerOK(abytes, self._client)
         else:

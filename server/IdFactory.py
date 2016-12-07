@@ -2,21 +2,21 @@
 
 import threading
 from sqlalchemy import func
-from Datatables import Session,Characters,Character_Items,Character_Teleport,Character_Warehouse,Character_Elf_Warehouse,Clan_Data, Clan_Warehouse,Pets
+from Datatables import Session,characters,character_items,character_teleport,character_warehouse,character_elf_warehouse,clan_data,clan_warehouse,pets
 from utils.Singleton import Singleton
 
 class IdFactory():
     __metaclass__ = Singleton
     def __init__(self):
         with Session() as session:
-            self._curId = max(session.query(func.max(Characters.objid)).scalar(),
-                     session.query(func.max(Character_Items.id)).scalar(),
-                     session.query(func.max(Character_Teleport.id)).scalar(),
-                     session.query(func.max(Character_Warehouse.id)).scalar(),
-                     session.query(func.max(Character_Elf_Warehouse.id)).scalar(),
-                     session.query(func.max(Clan_Data.clan_id)).scalar(),
-                     session.query(func.max(Clan_Warehouse.id)).scalar(),
-                     session.query(func.max(Pets.objid)).scalar(),
+            self._curId = max(session.query(func.max(characters.objid)).scalar(),
+                     session.query(func.max(character_items.id)).scalar(),
+                     session.query(func.max(character_teleport.id)).scalar(),
+                     session.query(func.max(character_warehouse.id)).scalar(),
+                     session.query(func.max(character_elf_warehouse.id)).scalar(),
+                     session.query(func.max(clan_data.clan_id)).scalar(),
+                     session.query(func.max(clan_warehouse.id)).scalar(),
+                     session.query(func.max(pets.objid)).scalar(),
                      0x10000000)
         self._lock = threading.Lock()
 

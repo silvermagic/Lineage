@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from Datatables import Session,Character_Config
+from Datatables import Session,character_config
 from server.codes import Opcodes
 from ServerBasePacket import ServerBasePacket
 
@@ -12,7 +12,7 @@ class S_CharacterConfig(ServerBasePacket):
         data = bytearray()
         try:
             with Session() as session:
-                rs = session.query(Character_Config).filter(Character_Config.object_id == objectId).one()
+                rs = session.query(character_config).filter(character_config.object_id == objectId).one()
                 length = rs.Length
                 data = rs.Data
         except Exception as e:

@@ -2,7 +2,7 @@
 
 import base64,hashlib,logging
 from datetime import datetime
-from Datatables import Session,Accounts,Characters
+from Datatables import Session,accounts,characters
 
 class Account:
     def __init__(self):
@@ -44,7 +44,7 @@ class Account:
             account._banned = False
             account._lastActive = datetime.now()
 
-            item = Accounts(login=account._name,
+            item = accounts(login=account._name,
                             password=account._password,
                             lastactive=account._lastActive,
                             access_level=account._accessLevel,
@@ -72,7 +72,7 @@ class Account:
         account = None
         try:
             with Session() as session:
-                item = session.query(Accounts).filter(Accounts.login == name).one_or_none()
+                item = session.query(accounts).filter(accounts.login == name).one_or_none()
                 if not item:
                     return account
                 account = Account()
@@ -102,7 +102,7 @@ class Account:
         '''
         try:
             with Session() as session:
-                session.query(Accounts).filter(Accounts.login == account._name).update({Accounts.lastactive : datetime.now(), Accounts.ip : ip})
+                session.query(accounts).filter(accounts.login == account._name).update({accounts.lastactive : datetime.now(), accounts.ip : ip})
 
             logging.info("update lastactive for %s", account._name)
         except Exception as e:
@@ -117,7 +117,7 @@ class Account:
         '''
         try:
             with Session() as session:
-                session.query(Accounts).filter(Accounts.login == account._name).update({Accounts.character_slot : account._characterSlot})
+                session.query(accounts).filter(accounts.login == account._name).update({accounts.character_slot : account._characterSlot})
 
             logging.info("update characterslot for %s", account._name)
         except Exception as e:
@@ -131,7 +131,7 @@ class Account:
         ret = 0
         try:
             with Session() as session:
-                    ret = session.query(Characters).filter(Characters.account_name == self._name).count()
+                    ret = session.query(characters).filter(characters.account_name == self._name).count()
         except Exception as e:
             logging.error(e)
 
@@ -146,7 +146,7 @@ class Account:
         '''
         try:
             with Session() as session:
-                session.query(Accounts).filter(Accounts.login == name).one_or_none().update({Accounts.banned : 1})
+                session.query(accounts).filter(accounts.login == name).one_or_none().update({accounts.banned : 1})
         except Exception as e:
             logging.error(e)
 

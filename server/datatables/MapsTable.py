@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from Datatables import Session,Mapids
+from Datatables import Session,mapids
 from server.utils.Singleton import Singleton
 
 class MapData():
@@ -31,7 +31,7 @@ class MapsTable():
         logging.debug('loading maps from db...')
         try:
             with Session() as session:
-                for rs in session.query(Mapids).all():
+                for rs in session.query(mapids).all():
                     item = MapData()
                     mapId = rs.mapid
                     item.startX = rs.startX

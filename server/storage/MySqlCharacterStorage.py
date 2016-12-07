@@ -2,7 +2,7 @@
 
 import logging
 from datetime import datetime
-from Datatables import Session,Characters,Character_Buddys,Character_Buff,Character_Config,Character_Items,Character_Quests,Character_Skills,Character_Teleport
+from Datatables import Session,characters,character_buddys,character_buff,character_config,character_items,character_quests,character_skills,character_teleport
 from server.utils.TimeUtil import TimeUtil
 from CharacterStorage import CharacterStorage
 
@@ -12,7 +12,7 @@ class MySqlCharacterStorage(CharacterStorage):
         pc = None
         try:
             with Session() as session:
-                item = session.query(Characters).filter(Characters.char_name == charName).one_or_none()
+                item = session.query(characters).filter(characters.char_name == charName).one_or_none()
                 pc = PcInstance()
                 pc._accountName = item.account_name
                 pc._id = item.objid
@@ -93,7 +93,7 @@ class MySqlCharacterStorage(CharacterStorage):
     def createCharacter(self, pc):
         try:
             with Session() as session:
-                item = Characters()
+                item = characters()
                 item.account_name = pc._accountName
                 item.objid = pc._id
                 item.char_name = pc._name
@@ -153,16 +153,16 @@ class MySqlCharacterStorage(CharacterStorage):
     def deleteCharacter(self, accountName, charName):
         try:
             with Session() as session:
-                units = session.query(Characters).filter(Characters.account_name == accountName,
-                                                         Characters.char_name == charName).all()
-                session.query(Character_Buddys).filter(Character_Buddys.char_id.in_(units)).delete()
-                session.query(Character_Buff).filter(Character_Buff.char_obj_id.in_(units)).delete()
-                session.query(Character_Config).filter(Character_Config.object_id.in_(units)).delete()
-                session.query(Character_Items).filter(Character_Items.char_id.in_(units)).delete()
-                session.query(Character_Quests).filter(Character_Quests.char_id.in_(units)).delete()
-                session.query(Character_Skills).filter(Character_Skills.char_obj_id.in_(units)).delete()
-                session.query(Character_Teleport).filter(Character_Teleport.char_id.in_(units)).delete()
-                session.query(Characters).filter(Characters.char_name == charName).delete()
+                units = session.query(characters).filter(characters.account_name == accountName,
+                                                         characters.char_name == charName).all()
+                session.query(character_buddys).filter(character_buddys.char_id.in_(units)).delete()
+                session.query(character_buff).filter(character_buff.char_obj_id.in_(units)).delete()
+                session.query(character_config).filter(character_config.object_id.in_(units)).delete()
+                session.query(character_items).filter(character_items.char_id.in_(units)).delete()
+                session.query(character_quests).filter(character_quests.char_id.in_(units)).delete()
+                session.query(character_skills).filter(character_skills.char_obj_id.in_(units)).delete()
+                session.query(character_teleport).filter(character_teleport.char_id.in_(units)).delete()
+                session.query(characters).filter(characters.char_name == charName).delete()
         except Exception as e:
             logging.error(e)
 
@@ -172,56 +172,56 @@ class MySqlCharacterStorage(CharacterStorage):
             hp = 1
         try:
             with Session() as session:
-                session.query(Characters).filter(Characters.objid == pc._id).update({Characters.level: pc._level,
-                                                                                     Characters.HighLevel: pc._highLevel,
-                                                                                     Characters.Exp: pc.getExp(),
-                                                                                     Characters.MaxHp: pc._baseMaxHp,
-                                                                                     Characters.CurHp: hp,
-                                                                                     Characters.MaxMp: pc._baseMaxMp,
-                                                                                     Characters.CurMp: pc._currentMp,
-                                                                                     Characters.Ac: pc._ac,
-                                                                                     Characters.Str: pc._baseStr,
-                                                                                     Characters.Con: pc._baseCon,
-                                                                                     Characters.Dex: pc._baseDex,
-                                                                                     Characters.Cha: pc._baseCha,
-                                                                                     Characters.Intel: pc._baseInt,
-                                                                                     Characters.Wis: pc._baseWis,
-                                                                                     Characters.Status: pc._currentWeapon,
-                                                                                     Characters.Class: pc._classId,
-                                                                                     Characters.Sex: pc._sex,
-                                                                                     Characters.Type: pc._type,
-                                                                                     Characters.Heading: pc._heading,
-                                                                                     Characters.LocX: pc._loc._x,
-                                                                                     Characters.LocY: pc._loc._y,
-                                                                                     Characters.MapID: pc._loc._map._mapId,
-                                                                                     Characters.Food: pc._food,
-                                                                                     Characters.Lawful: pc._lawful,
-                                                                                     Characters.Title: pc._title,
-                                                                                     Characters.ClanID: pc._clanid,
-                                                                                     Characters.Clanname: pc._clanname,
-                                                                                     Characters.ClanRank: pc._clanRank,
-                                                                                     Characters.BonusStatus: pc._bonusStats,
-                                                                                     Characters.ElixirStatus: pc._elixirStats,
-                                                                                     Characters.ElfAttr: pc._elfAttr,
-                                                                                     Characters.PKcount: pc._PKcount,
-                                                                                     Characters.PkCountForElf: pc._PkCountForElf,
-                                                                                     Characters.ExpRes: pc._expRes,
-                                                                                     Characters.PartnerID: pc._partnerId,
-                                                                                     Characters.AccessLevel: pc._accessLevel,
-                                                                                     Characters.OnlineStatus: pc._onlineStatus,
-                                                                                     Characters.HomeTownID: pc._homeTownId,
-                                                                                     Characters.Contribution: pc._contribution,
-                                                                                     Characters.HellTime: pc._hellTime,
-                                                                                     Characters.Banned: pc._banned,
-                                                                                     Characters.Karma: pc._karma._karma,
-                                                                                     Characters.LastPk: TimeUtil.ts2dt(
+                session.query(characters).filter(characters.objid == pc._id).update({characters.level: pc._level,
+                                                                                     characters.HighLevel: pc._highLevel,
+                                                                                     characters.Exp: pc.getExp(),
+                                                                                     characters.MaxHp: pc._baseMaxHp,
+                                                                                     characters.CurHp: hp,
+                                                                                     characters.MaxMp: pc._baseMaxMp,
+                                                                                     characters.CurMp: pc._currentMp,
+                                                                                     characters.Ac: pc._ac,
+                                                                                     characters.Str: pc._baseStr,
+                                                                                     characters.Con: pc._baseCon,
+                                                                                     characters.Dex: pc._baseDex,
+                                                                                     characters.Cha: pc._baseCha,
+                                                                                     characters.Intel: pc._baseInt,
+                                                                                     characters.Wis: pc._baseWis,
+                                                                                     characters.Status: pc._currentWeapon,
+                                                                                     characters.Class: pc._classId,
+                                                                                     characters.Sex: pc._sex,
+                                                                                     characters.Type: pc._type,
+                                                                                     characters.Heading: pc._heading,
+                                                                                     characters.LocX: pc._loc._x,
+                                                                                     characters.LocY: pc._loc._y,
+                                                                                     characters.MapID: pc._loc._map._mapId,
+                                                                                     characters.Food: pc._food,
+                                                                                     characters.Lawful: pc._lawful,
+                                                                                     characters.Title: pc._title,
+                                                                                     characters.ClanID: pc._clanid,
+                                                                                     characters.Clanname: pc._clanname,
+                                                                                     characters.ClanRank: pc._clanRank,
+                                                                                     characters.BonusStatus: pc._bonusStats,
+                                                                                     characters.ElixirStatus: pc._elixirStats,
+                                                                                     characters.ElfAttr: pc._elfAttr,
+                                                                                     characters.PKcount: pc._PKcount,
+                                                                                     characters.PkCountForElf: pc._PkCountForElf,
+                                                                                     characters.ExpRes: pc._expRes,
+                                                                                     characters.PartnerID: pc._partnerId,
+                                                                                     characters.AccessLevel: pc._accessLevel,
+                                                                                     characters.OnlineStatus: pc._onlineStatus,
+                                                                                     characters.HomeTownID: pc._homeTownId,
+                                                                                     characters.Contribution: pc._contribution,
+                                                                                     characters.HellTime: pc._hellTime,
+                                                                                     characters.Banned: pc._banned,
+                                                                                     characters.Karma: pc._karma._karma,
+                                                                                     characters.LastPk: TimeUtil.ts2dt(
                                                                                          pc._lastPk),
-                                                                                     Characters.LastPkForElf: TimeUtil.ts2dt(
+                                                                                     characters.LastPkForElf: TimeUtil.ts2dt(
                                                                                          pc._lastPkForElf),
-                                                                                     Characters.DeleteTime: TimeUtil.ts2dt(
+                                                                                     characters.DeleteTime: TimeUtil.ts2dt(
                                                                                          pc._deleteTime),
-                                                                                     Characters.LastActive: datetime.now(),
-                                                                                     Characters.AinZone: pc._ainZone,
-                                                                                     Characters.AinPoint: pc._ainPoint})
+                                                                                     characters.LastActive: datetime.now(),
+                                                                                     characters.AinZone: pc._ainZone,
+                                                                                     characters.AinPoint: pc._ainPoint})
         except Exception as e:
             logging.error(e)

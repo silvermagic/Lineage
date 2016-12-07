@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging,random
-from Datatables import Session,Getback
+from Datatables import Session,getback
 from server.model.TownLocation import TownLocation
 from server.templates.GetBack import GetBack
 from server.utils.Singleton import Singleton
@@ -15,7 +15,7 @@ class GetBackTable():
     def loadGetBack(self):
         try:
             with Session() as session:
-                for rs in session.query(Getback).order_by(Getback.area_mapid.desc(), Getback.area_x1.desc()).all():
+                for rs in session.query(getback).order_by(getback.area_mapid.desc(), getback.area_x1.desc()).all():
                     item = GetBack()
                     item._areaX1 = rs.area_x1
                     item._areaY1 = rs.area_y1

@@ -2,7 +2,7 @@
 
 import logging
 from Inventory import Inventory
-from Datatables import Session,Character_Elf_Warehouse
+from Datatables import Session,character_elf_warehouse
 from server.datatables.ItemTable import ItemTable
 from server.model.Instance.ItemInstance import ItemInstance
 from server.utils.TimeUtil import TimeUtil
@@ -24,7 +24,7 @@ class DwarfForElfInventory(Inventory):
 
         try:
             with Session() as session:
-                for rs in session.query(Character_Elf_Warehouse).filter(Character_Elf_Warehouse.account_name == self._owner._accountName).all():
+                for rs in session.query(character_elf_warehouse).filter(character_elf_warehouse.account_name == self._owner._accountName).all():
                     item = ItemInstance()
                     item._id = rs.id
                     item.setItem(ItemTable()._allTemplates[rs.item_id])
@@ -60,7 +60,7 @@ class DwarfForElfInventory(Inventory):
         :return:None
         '''
         try:
-            item = Character_Elf_Warehouse(id = itemInst._id,
+            item = character_elf_warehouse(id = itemInst._id,
                                            account_name = self._owner._accountName,
                                            item_id = itemInst._itemId,
                                            item_name = itemInst._item._name,
@@ -98,7 +98,7 @@ class DwarfForElfInventory(Inventory):
         '''
         try:
             with Session() as session:
-                session.query(Character_Elf_Warehouse).filter(Character_Elf_Warehouse.id == itemInst._id).update({Character_Elf_Warehouse.count : itemInst._count})
+                session.query(character_elf_warehouse).filter(character_elf_warehouse.id == itemInst._id).update({character_elf_warehouse.count : itemInst._count})
         except Exception as e:
             logging.error(e)
 
@@ -110,7 +110,7 @@ class DwarfForElfInventory(Inventory):
         '''
         try:
             with Session() as session:
-                session.query(Character_Elf_Warehouse).filter(Character_Elf_Warehouse.id == itemInst._id).delete()
+                session.query(character_elf_warehouse).filter(character_elf_warehouse.id == itemInst._id).delete()
         except Exception as e:
             logging.error(e)
         self._itemInsts.remove(itemInst)

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from ..utils.IntRange import IntRange
+from server.utils.IntRange import IntRange
 
 KARMA_POINT = [10000, 20000, 100000, 500000, 1500000, 3000000, 5000000, 10000000, 15500000]
 

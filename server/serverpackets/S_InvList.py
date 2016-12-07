@@ -23,3 +23,6 @@ class S_InvList(ServerBasePacket):
                 status = item.getStatusBytes()
                 self.writeC(len(status))
                 self.writeByte(status)
+
+    def getContent(self):
+        return self.getBytes()

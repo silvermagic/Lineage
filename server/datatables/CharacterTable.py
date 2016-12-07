@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import threading,logging
-from Datatables import Session,Characters
+from Datatables import Session,characters
 from server.storage.MySqlCharacterStorage import MySqlCharacterStorage
 from server.utils.Singleton import Singleton
 
@@ -34,33 +34,33 @@ class CharacterTable():
     def clearOnlineStatus(self):
         try:
             with Session() as session:
-                session.query(Characters).update({Characters.OnlineStatus : 0})
+                session.query(characters).update({characters.OnlineStatus : 0})
         except Exception as e:
             logging.error(e)
 
     def updateOnlineStatus(self, pc):
         try:
             with Session() as session:
-                session.query(Characters).filter(Characters.objid == pc._id).update({Characters.OnlineStatus : 0})
+                session.query(characters).filter(characters.objid == pc._id).update({characters.OnlineStatus : 0})
         except Exception as e:
             logging.error(e)
 
     def updatePartnerId(self, targetId, partnerId = 0):
         try:
             with Session() as session:
-                session.query(Characters).filter(Characters.objid == targetId).update({Characters.PartnerID : partnerId})
+                session.query(characters).filter(characters.objid == targetId).update({characters.PartnerID : partnerId})
         except Exception as e:
             logging.error(e)
 
     def saveCharStatus(self, pc):
         try:
             with Session() as session:
-                session.query(Characters).filter(Characters.objid == pc._id).update({Characters.OriginalStr : pc._baseStr,
-                                                                                     Characters.OriginalCon : pc._baseCon,
-                                                                                     Characters.OriginalDex : pc._baseDex,
-                                                                                     Characters.OriginalCha : pc._baseCha,
-                                                                                     Characters.OriginalInt : pc._baseInt,
-                                                                                     Characters.OriginalWis : pc._baseWis})
+                session.query(characters).filter(characters.objid == pc._id).update({characters.OriginalStr : pc._baseStr,
+                                                                                     characters.OriginalCon : pc._baseCon,
+                                                                                     characters.OriginalDex : pc._baseDex,
+                                                                                     characters.OriginalCha : pc._baseCha,
+                                                                                     characters.OriginalInt : pc._baseInt,
+                                                                                     characters.OriginalWis : pc._baseWis})
         except Exception as e:
             logging.error(e)
 
@@ -78,7 +78,7 @@ class CharacterTable():
         ret = None
         try:
             with Session() as session:
-                ret = session.query(Characters).filter(Characters.char_name == name).one_or_none()
+                ret = session.query(characters).filter(characters.char_name == name).one_or_none()
         except Exception as e:
             logging.error(e)
         return ret != None
@@ -86,7 +86,7 @@ class CharacterTable():
     def loadAllCharName(self):
         try:
             with Session() as session:
-                for item in session.query(Characters).all():
+                for item in session.query(characters).all():
                     self._charNameList[item.char_name] = item.objid
         except Exception as e:
             logging.error(e)

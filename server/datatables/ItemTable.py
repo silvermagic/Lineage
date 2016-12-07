@@ -7,7 +7,7 @@ from server.model.World import World
 from server.templates.Weapon import Weapon
 from server.utils.Singleton import Singleton
 from server.IdFactory import IdFactory
-from Datatables import Session,Etcitem,Weapon,Armor
+from Datatables import Session,etcitem,weapon,armor
 
 _etcItemTypes = {'arrow': 0, 'wand': 1, 'light': 2, 'gem': 3, 'totem': 4, 'firecracker': 5, 'potion': 6, 'food': 7,
                  'scroll': 8, 'questitem': 9, 'spellbook': 10, 'petitem': 11, 'other': 12, 'material': 13, 'event': 14,
@@ -56,8 +56,8 @@ class ItemTable():
         '''
         try:
             with Session() as session:
-                for rs in session.query(Etcitem).all():
-                    item = EtcItem()
+                for rs in session.query(etcitem).all():
+                    item = etcitem()
                     item._itemId = rs.item_id
                     item._name = rs.name
                     item._unidentifiedNameId = rs.unidentified_name_id
@@ -100,8 +100,8 @@ class ItemTable():
         '''
         try:
             with Session() as session:
-                for rs in session.query(Weapon).all():
-                    item = Weapon()
+                for rs in session.query(weapon).all():
+                    item = weapon()
                     item._itemId = rs.item_id
                     item._name = rs.name
                     item._unidentifiedNameId = rs.unidentified_name_id
@@ -162,8 +162,8 @@ class ItemTable():
         '''
         try:
             with Session() as session:
-                for rs in session.query(Armor).all():
-                    item = Armor()
+                for rs in session.query(armor).all():
+                    item = armor()
                     item._itemId = rs.item_id
                     item._name = rs.name
                     item._unidentifiedNameId = rs.unidentified_name_id

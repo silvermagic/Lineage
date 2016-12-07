@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from Datatables import Session,Getback_Restart
+from Datatables import Session,getback_restart
 from server.templates.GetBackRestart import GetBackRestart
 from server.utils.Singleton import Singleton
 
@@ -11,7 +11,7 @@ class GetBackRestartTable():
         self._getbackrestart = {}
         try:
             with Session() as session:
-                for rs in session.query(Getback_Restart).all():
+                for rs in session.query(getback_restart).all():
                     item = GetBackRestart()
                     item._area = rs.area
                     item._locX = rs.locx
