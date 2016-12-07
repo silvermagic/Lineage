@@ -50,6 +50,10 @@ class ItemTable():
         self._allTemplates.update(self._armors)
 
     def _loadEtcItem(self):
+        '''
+        加载材料道具模板到内存
+        :return:None
+        '''
         try:
             with Session() as session:
                 for rs in session.query(Etcitem).all():
@@ -90,6 +94,10 @@ class ItemTable():
             logging.error(e)
 
     def _loadWeapon(self):
+        '''
+        加载武器道具模板到内存
+        :return:None
+        '''
         try:
             with Session() as session:
                 for rs in session.query(Weapon).all():
@@ -148,6 +156,10 @@ class ItemTable():
             logging.error(e)
 
     def _loadArmor(self):
+        '''
+        加载防具道具模板到内存
+        :return:None
+        '''
         try:
             with Session() as session:
                 for rs in session.query(Armor).all():
@@ -214,6 +226,11 @@ class ItemTable():
             logging.error(e)
 
     def createItem(self, itemId):
+        '''
+        实例化一个道具模板,并保存到游戏世界
+        :param itemId:道具模板ID(int)
+        :return:道具实例(ItemInstance)
+        '''
         if not self._allTemplates.has_key(itemId):
             return None
 
@@ -223,6 +240,11 @@ class ItemTable():
         return itemInst
 
     def findItemIdByName(self, name):
+        '''
+        根据道具名称获取道具模板ID
+        :param name:道具名称(str)
+        :return:道具模板ID(int)
+        '''
         itemId = 0
         for item in self._allTemplates:
             if item._name == name:
@@ -232,6 +254,11 @@ class ItemTable():
         return itemId
 
     def findItemIdByNameWithoutSpace(self, name):
+        '''
+        根据道具名称获取道具模板ID,匹配名称时忽略空格
+        :param name:道具名称(str)
+        :return:道具模板ID(int)
+        '''
         itemId = 0
         for item in self._allTemplates:
             if item._name.replace(' ','') == name:

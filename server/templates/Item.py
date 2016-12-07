@@ -75,12 +75,12 @@ class Item():
         self._useDragonknight = False
         # 幻术师是否可以装备
         self._useIllusionist = False
-        self._addstr = 0
-        self._adddex = 0
-        self._addcon = 0
-        self._addwis = 0
-        self._addint = 0
-        self._addcha = 0
+        self._addstr = 0 # 力量属性加层
+        self._adddex = 0 # 敏捷属性加层
+        self._addcon = 0 # 体质属性加层
+        self._addwis = 0 # 精神属性加层
+        self._addint = 0 # 智力属性加层
+        self._addcha = 0 # 魅力属性加层
         self._addhp = 0
         self._addmp = 0
         self._addhpr = 0
@@ -179,8 +179,8 @@ class Item():
 
     def getDmgModifier(self):
         '''
-        武器伤害修正
-        :return:伤害修正值(int)
+        武器伤害加层
+        :return:伤害加层值(int)
         '''
         return 0
 
@@ -193,8 +193,8 @@ class Item():
 
     def getMagicDmgModifier(self):
         '''
-        武器魔法伤害修正
-        :return:魔法伤害修正值(int)
+        武器魔法伤害加层
+        :return:魔法伤害加层值(int)
         '''
         return 0
 
@@ -243,8 +243,8 @@ class Item():
 
     def getDmgModifierByArmor(self):
         '''
-        获取防具的伤害修正
-        :return:伤害修正值(int)
+        获取防具的伤害加层
+        :return:伤害加层值(int)
         '''
         return 0
 
@@ -257,8 +257,8 @@ class Item():
 
     def getBowDmgModifierByArmor(self):
         '''
-        获取防御对于弓箭的伤害修正
-        :return:伤害修正值(int)
+        获取防御对于弓箭的伤害加层
+        :return:伤害加层值(int)
         '''
         return 0
 
@@ -307,14 +307,14 @@ class Item():
     def get_regist_sleep(self):
         '''
         获取防具的睡眠耐性,对沉睡之雾的抗性
-        :return:睡觉耐性值(int)
+        :return:睡眠耐性值(int)
         '''
         return 0
 
     def get_regist_freeze(self):
         '''
-        获取防具的冰冻耐性,对木乃伊的诅咒的抗性
-        :return:冰冻耐性值(int)
+        获取防具的冻结耐性,对木乃伊的诅咒的抗性
+        :return:冻结耐性值(int)
         '''
         return 0
 
@@ -327,7 +327,7 @@ class Item():
 
     def get_regist_blind(self):
         '''
-        获取防具的闇黑耐性,对闇盲咒术的抗性
-        :return:闇黑耐性值(int)
+        获取防具的暗闇耐性,对闇盲咒术的抗性
+        :return:暗闇耐性值(int)
         '''
         return 0

@@ -18,17 +18,14 @@ class Session():
         return self._s
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        try:
-            if exc_type is None:
-                try:
-                    self._s.commit()
-                except:
-                    self._s.rollback()
-                    raise
-            else:
+        if exc_type is None:
+            try:
+                self._s.commit()
+            except:
                 self._s.rollback()
-        finally:
-            self._s.remove()
+                raise
+        else:
+            self._s.rollback()
 
 # reflect the tables
 reload(sys)

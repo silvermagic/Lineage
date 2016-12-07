@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import logging,time
+import logging,time,math
 from datetime import datetime
+from Config import Config
 from server.model.Character import Character
 from server.model.Karma import Karma
 from server.model.PcInventory import PcInventory
@@ -120,6 +121,9 @@ class PcInstance(Character):
         self._dwarfForElf = DwarfForElfInventory(self)
         self._party = None
         self.skillList = []
+        self._weightReduction = 0
+        self._originalStrWeightReduction = 0
+        self._originalConWeightReduction = 0
 
     def sendPackets(self, serverbasepacket):
         if not self._netConnection:
@@ -234,6 +238,31 @@ class PcInstance(Character):
 
     def logout(self):
         pass
+
+    def getMaxWeight(self):
+        '''
+        获取玩家最大负重量
+        :return:负重量(double)
+        '''
+        str = self._str
+        con = self._con
+        maxWeight = 150 * math.floor(0.6 * str + 0.4 * con + 1)
+        weightReductionByArmor = self._weightReduction / 100
+        # todo: 娃娃系统
+        weightReductionByDoll = 0
+        # todo: 魔法系统
+        weightReductionByMagic = 0
+        # 角色初始力量和体制提供的负重倍率
+        originalWeightReduction = 0
+        originalWeightReduction += 0.04 * (self._originalStrWeightReduction + self._originalConWeightReduction)
+        weightReduction = 1 + weightReductionByArmor + weightReductionByDoll + originalWeightReduction
+
+        maxWeight *= weightReduction
+        maxWeight += weightReductionByMagic
+        maxWeight *= Config.getint('rates', 'RateWeightLimit')
+
+        return maxWeight
+
 
     '''
     def beginGameTimeCarrier(self):

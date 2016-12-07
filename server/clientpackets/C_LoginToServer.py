@@ -92,7 +92,7 @@ class C_LoginToServer(ClientBasePacket):
 
         # todo: 中毒 水中等视觉
 
-        # self.items(pc)
+        self.items(pc)
         # self.skills(pc)
         # self.buff(client, pc)
         # pc.turnOnOffLight()

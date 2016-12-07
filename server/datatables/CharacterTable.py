@@ -65,6 +65,11 @@ class CharacterTable():
             logging.error(e)
 
     def restoreInventory(self, pc):
+        '''
+        从数据库中加载用户仓库道具信息
+        :param pc:玩家角色(PcInstance)
+        :return:None
+        '''
         pc._inventory.loadItems()
         pc._dwarf.loadItems()
         pc._dwarfForElf.loadItems()

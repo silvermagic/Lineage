@@ -5,7 +5,10 @@ import ConfigParser,logging
 Config = ConfigParser.SafeConfigParser()
 
 def init():
-    Config.read(["config/server.conf", "config/configrates.conf", "config/pack.conf", "config/fights.conf", "config/charsettings.conf", "config/altsettings.conf", "config/additional.conf"])
+    Config.read(["config/server.conf", "config/configrates.conf",
+                 "config/pack.conf", "config/fights.conf",
+                 "config/charsettings.conf", "config/altsettings.conf",
+                 "config/additional.conf", "config/rates.conf"])
     Codes = ('UTF8', 'EUCKR', 'UTF8','BIG5', 'SJIS', 'GBK')
     index = Config.getint('server', 'ClientLanguage')
     if 0 <= index and index < 5:
