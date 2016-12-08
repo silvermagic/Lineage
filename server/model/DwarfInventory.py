@@ -49,73 +49,73 @@ class DwarfInventory(Inventory):
                     item._addMp = rs.addmp
                     item._Hpr = rs.hpr
                     item._Mpr = rs.mpr
-                    self._itemInsts.append(item)
+                    self._item_insts.append(item)
                     World().storeObject(item)
         except Exception as e:
             logging.error(e)
 
 
-    def insertItem(self, itemInst):
+    def insertItem(self, item_inst):
         '''
         存放道具
         :param itemInst:道具(ItemInstance)
         :return:None
         '''
         try:
-            item = character_warehouse(id = itemInst._id,
+            item = character_warehouse(id = item_inst._id,
                                        account_name = self._owner._accountName,
-                                       item_id = itemInst._itemId,
-                                       item_name = itemInst._item._name,
-                                       count = itemInst._count,
+                                       item_id = item_inst._itemId,
+                                       item_name = item_inst._item._name,
+                                       count = item_inst._count,
                                        is_equipped = 0,
-                                       enchantlvl = itemInst._enchantLevel,
-                                       is_id = int(itemInst._isIdentified),
-                                       durability = itemInst._durability,
-                                       charge_count = itemInst._chargeCount,
-                                       remaining_time = itemInst._remainingTime,
-                                       last_used = TimeUtil.ts2dt(itemInst._lastUsed),
-                                       bless = itemInst._bless,
-                                       attr_enchant_kind = itemInst._attrEnchantKind,
-                                       attr_enchant_level = itemInst._attrEnchantLevel,
-                                       firemr = itemInst._FireMr,
-                                       watermr = itemInst._WaterMr,
-                                       earthmr = itemInst._EarthMr,
-                                       windmr = itemInst._WindMr,
-                                       addsp = itemInst._addSp,
-                                       addhp = itemInst._addHp,
-                                       addmp = itemInst._addMp,
-                                       hpr = itemInst._Hpr,
-                                       mpr = itemInst._Mpr)
+                                       enchantlvl = item_inst._enchantLevel,
+                                       is_id = int(item_inst._isIdentified),
+                                       durability = item_inst._durability,
+                                       charge_count = item_inst._chargeCount,
+                                       remaining_time = item_inst._remainingTime,
+                                       last_used = TimeUtil.ts2dt(item_inst._lastUsed),
+                                       bless = item_inst._bless,
+                                       attr_enchant_kind = item_inst._attrEnchantKind,
+                                       attr_enchant_level = item_inst._attrEnchantLevel,
+                                       firemr = item_inst._FireMr,
+                                       watermr = item_inst._WaterMr,
+                                       earthmr = item_inst._EarthMr,
+                                       windmr = item_inst._WindMr,
+                                       addsp = item_inst._addSp,
+                                       addhp = item_inst._addHp,
+                                       addmp = item_inst._addMp,
+                                       hpr = item_inst._Hpr,
+                                       mpr = item_inst._Mpr)
             with Session() as session:
                 session.add(item)
         except Exception as e:
             logging.error(e)
 
-    def updateItem(self, itemInst, colmn = 0):
+    def updateItem(self, item_inst, colmn = 0):
         '''
         更新玩家仓库道具数目
-        :param itemInst:道具(ItemInstance)
+        :param item_inst:道具(ItemInstance)
         :param colmn:
         :return:None
         '''
         try:
             with Session() as session:
-                session.query(character_warehouse).filter(character_warehouse.id == itemInst._id).update({character_warehouse.count : itemInst._count})
+                session.query(character_warehouse).filter(character_warehouse.id == item_inst._id).update({character_warehouse.count : item_inst._count})
         except Exception as e:
             logging.error(e)
 
-    def deleteItem(self, itemInst):
+    def deleteItem(self, item_inst):
         '''
         删除仓库中的道具
-        :param itemInst:道具(ItemInstance)
+        :param item_inst:道具(ItemInstance)
         :return:None
         '''
         try:
             with Session() as session:
-                session.query(character_warehouse).filter(character_warehouse.id == itemInst._id).delete()
+                session.query(character_warehouse).filter(character_warehouse.id == item_inst._id).delete()
         except Exception as e:
             logging.error(e)
-        self._itemInsts.remove(itemInst)
+        self._item_insts.remove(item_inst)
     '''
     @classmethod
     def present(cls, itemid, enchant, count, account=None, lvl=None, accountList=None):
@@ -142,35 +142,35 @@ class DwarfInventory(Inventory):
             isStackable = ItemTable()._allTemplates[itemid].isStackable()
             for name in accountList:
                 if isStackable:
-                    itemInst = ItemTable().createItem(itemid)
-                    item = Character_Warehouse(id=itemInst._id,
+                    item_inst = ItemTable().createItem(itemid)
+                    item = Character_Warehouse(id=item_inst._id,
                                                account_name=name,
-                                               item_id=itemInst._itemId,
-                                               item_name=itemInst._item._name,
+                                               item_id=item_inst._itemId,
+                                               item_name=item_inst._item._name,
                                                count=count,
                                                is_equipped=0,
                                                enchantlvl=enchant,
-                                               is_id=int(itemInst._isIdentified),
-                                               durability=itemInst._durability,
-                                               charge_count=itemInst._chargeCount,
-                                               remaining_time=itemInst._remainingTime)
+                                               is_id=int(item_inst._isIdentified),
+                                               durability=item_inst._durability,
+                                               charge_count=item_inst._chargeCount,
+                                               remaining_time=item_inst._remainingTime)
                     with Session() as session:
                         session.add(item)
                 else:
                     with Session() as session:
                         for i in range(count):
-                            itemInst = ItemTable().createItem(itemid)
-                            item = Character_Warehouse(id=itemInst._id,
+                            item_inst = ItemTable().createItem(itemid)
+                            item = Character_Warehouse(id=item_inst._id,
                                                        account_name=name,
-                                                       item_id=itemInst._itemId,
-                                                       item_name=itemInst._item._name,
-                                                       count=itemInst._count,
+                                                       item_id=item_inst._itemId,
+                                                       item_name=item_inst._item._name,
+                                                       count=item_inst._count,
                                                        is_equipped=0,
                                                        enchantlvl=enchant,
-                                                       is_id=int(itemInst._isIdentified),
-                                                       durability=itemInst._durability,
-                                                       charge_count=itemInst._chargeCount,
-                                                       remaining_time=itemInst._remainingTime)
+                                                       is_id=int(item_inst._isIdentified),
+                                                       durability=item_inst._durability,
+                                                       charge_count=item_inst._chargeCount,
+                                                       remaining_time=item_inst._remainingTime)
                             session.add(item)
 
         except Exception as e:

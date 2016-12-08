@@ -20,7 +20,7 @@ class Inventory(Object):
 
     def __init__(self):
         Object.__init__(self)
-        self._itemInsts = []
+        self._item_insts = []
         self._lock = threading.RLock()
 
     def getWeight(self):
@@ -29,7 +29,7 @@ class Inventory(Object):
         :return:重量(int)
         '''
         weight = 0
-        for item in self._itemInsts:
+        for item in self._item_insts:
             weight += item.getWeight()
         return weight
 
@@ -39,7 +39,7 @@ class Inventory(Object):
         :param objectId:道具实例对象ID(int)
         :return:道具实例(ItemInstance)
         '''
-        for item in self._itemInsts:
+        for item in self._item_insts:
             if item._id == objectId:
                 return item
 
@@ -51,7 +51,7 @@ class Inventory(Object):
         :param itemid:道具模板ID(int)
         :return:道具实例(ItemInstance)
         '''
-        for item in self._itemInsts:
+        for item in self._item_insts:
             if item._itemId == id:
                 return item
 
@@ -64,7 +64,7 @@ class Inventory(Object):
         :return:道具实例集合(ItemInstance[])
         '''
         itemList = []
-        for item in self._itemInsts:
+        for item in self._item_insts:
             if item._itemId == itemid:
                 itemList += item
 
@@ -77,7 +77,7 @@ class Inventory(Object):
         :return:道具实例集合(ItemInstance[])
         '''
         itemList = []
-        for item in self._itemInsts:
+        for item in self._item_insts:
             if item._itemId == itemid:
                 if not item._isEquipped:
                     itemList += item
@@ -94,12 +94,12 @@ class Inventory(Object):
             return 0
 
         if ItemTable()._allTemplates[itemid].isStackable():
-            itemInst = self.findItemId(itemid)
-            if itemInst:
-                return itemInst._count
+            item_inst = self.findItemId(itemid)
+            if item_inst:
+                return item_inst._count
         else:
-            itemInstList = self.findItemsIdNotEquipped(itemid)
-            return len(itemInstList)
+            item_instList = self.findItemsIdNotEquipped(itemid)
+            return len(item_instList)
 
         return 0
 
@@ -115,51 +115,51 @@ class Inventory(Object):
 
         return count <= self.countItems(itemid)
 
-    def checkAddItem(self, itemInst, count):
+    def checkAddItem(self, item_inst, count):
         '''
         检测是否可以添加count个道具实例到宠物背包中
-        :param itemInst:道具实例(ItemInstance)
+        :param item_inst:道具实例(ItemInstance)
         :param count:道具个数(int)
         :return:int
         '''
-        if not itemInst:
+        if not item_inst:
             return -1
 
-        if itemInst._count <= 0 or count <= 0:
+        if item_inst._count <= 0 or count <= 0:
             return -1
 
         # 是否超过仓库容量
-        if len(self._itemInsts) > Config.getint('altsettings', 'MaxNpcItem') \
-                or (len(self._itemInsts) == Config.getint('altsettings', 'MaxNpcItem')
-                    and (not itemInst._item.isStackable() or self.checkItem(itemInst._itemId))):
+        if len(self._item_insts) > Config.getint('altsettings', 'MaxNpcItem') \
+                or (len(self._item_insts) == Config.getint('altsettings', 'MaxNpcItem')
+                    and (not item_inst._item.isStackable() or self.checkItem(item_inst._itemId))):
             return Inventory.SIZE_OVER
 
         # 是否超过宠物的负重率
-        weight = int(self.getWeight() + itemInst._item._weight * count / 1000 + 1)
-        if weight < 0 or (itemInst._item._weight * count / 1000 < 0):
+        weight = int(self.getWeight() + item_inst._item._weight * count / 1000 + 1)
+        if weight < 0 or (item_inst._item._weight * count / 1000 < 0):
             return Inventory.WEIGHT_OVER
         if weight > (Inventory.MAX_WEIGHT * float(Config.getint('rates', 'RateWeightLimitforPet'))):
             return Inventory.WEIGHT_OVER
 
         # 是否超过道具总数限制
-        itemExist = self.findItemId(itemInst._itemId)
+        itemExist = self.findItemId(item_inst._itemId)
         if itemExist and (itemExist._count + count) > Inventory.MAX_AMOUNT:
             return Inventory.AMOUNT_OVER
 
         return Inventory.OK
 
-    def checkAddItemToWarehouse(self, itemInst, count, type):
+    def checkAddItemToWarehouse(self, item_inst, count, type):
         '''
         检测是否可以添加count个道具实例到玩家仓库或血盟仓库中
-        :param itemInst:道具实例(ItemInstance)
+        :param item_inst:道具实例(ItemInstance)
         :param count:道具个数(int)
         :param type:仓库类型(int)
         :return:int
         '''
-        if not itemInst:
+        if not item_inst:
             return -1
 
-        if itemInst._count <= 0 or count <= 0:
+        if item_inst._count <= 0 or count <= 0:
             return -1
 
         maxSize = 100
@@ -168,9 +168,9 @@ class Inventory(Object):
         elif type == Inventory.WAREHOUSE_TYPE_CLAN:
             maxSize = Config.getint('altsettings', 'MaxClanWarehouseItem')
 
-        if len(self._itemInsts) > maxSize \
-                or (len(self._itemInsts) == maxSize
-                    and (not itemInst._item.isStackable() or self.checkItem(itemInst._itemId))):
+        if len(self._item_insts) > maxSize \
+                or (len(self._item_insts) == maxSize
+                    and (not item_inst._item.isStackable() or self.checkItem(item_inst._itemId))):
             return Inventory.SIZE_OVER
 
         return Inventory.OK
@@ -225,10 +225,10 @@ class Inventory(Object):
         :return:True/False
         '''
         num = 0
-        for itemInst in self._itemInsts:
-            if itemInst._isEquipped:
+        for item_inst in self._item_insts:
+            if item_inst._isEquipped:
                 continue
-            if itemInst._itemId == itemid and itemInst._enchantLevel == enchant:
+            if item_inst._itemId == itemid and item_inst._enchantLevel == enchant:
                 num += 1
                 if num == count:
                     return True
@@ -245,19 +245,19 @@ class Inventory(Object):
             return False
 
         if ItemTable()._allTemplates[itemid].isStackable():
-            itemInst = self.findItemId(itemid)
-            if itemInst and itemInst._count >= count:
-                self.removeItem(inst=itemInst, count=count)
+            item_inst = self.findItemId(itemid)
+            if item_inst and item_inst._count >= count:
+                self.removeItem(inst=item_inst, count=count)
                 return True
         else:
-            itemInsts = self.findItemsId(itemid)
-            if len(itemInsts) == count:
-                for itemInst in itemInsts:
-                    self.removeItem(inst=itemInst, count=1)
+            item_insts = self.findItemsId(itemid)
+            if len(item_insts) == count:
+                for item_inst in item_insts:
+                    self.removeItem(inst=item_inst, count=1)
                 return True
-            elif len(itemInsts) > count:
-                for itemInst in sorted(itemInsts, key=lambda inst: inst._enchantLevel):
-                    self.removeItem(inst=itemInst, count=1)
+            elif len(item_insts) > count:
+                for item_inst in sorted(item_insts, key=lambda inst: inst._enchantLevel):
+                    self.removeItem(inst=item_inst, count=1)
                 return True
         return False
 
@@ -269,11 +269,11 @@ class Inventory(Object):
         :param count:消耗的道具个数(int)
         :return:True/False
         '''
-        for itemInst in self._itemInsts:
-            if itemInst._isEquipped:
+        for item_inst in self._item_insts:
+            if item_inst._isEquipped:
                 continue
-            if itemInst._itemId == itemid and itemInst._enchantLevel == enchant:
-                self.removeItem(inst=itemInst)
+            if item_inst._itemId == itemid and item_inst._enchantLevel == enchant:
+                self.removeItem(inst=item_inst)
                 return True
         return False
 
@@ -286,23 +286,23 @@ class Inventory(Object):
         :return:int
         '''
         if objid:
-            itemInst = self.getItem(objid)
-            if not itemInst:
+            item_inst = self.getItem(objid)
+            if not item_inst:
                 return 0
         elif inst:
-            itemInst = inst
+            item_inst = inst
         else:
             return 0
 
         if not count:
-            count = itemInst._count
-        elif itemInst._count < count:
-            count = itemInst._count
+            count = item_inst._count
+        elif item_inst._count < count:
+            count = item_inst._count
         if count <= 0:
             return 0
 
-        if itemInst._count == count:
-            itemId = itemInst._itemId
+        if item_inst._count == count:
+            itemId = item_inst._itemId
             # todo: 宠物 便簽 家具
             if itemId == 40314 or itemId == 40316:
                 pass
@@ -311,11 +311,11 @@ class Inventory(Object):
             elif itemId >= 41383 and itemId <= 41400:
                 pass
 
-            self.deleteItem(itemInst)
-            World().removeObject(itemInst)
+            self.deleteItem(item_inst)
+            World().removeObject(item_inst)
         else:
-            itemInst._count -= count
-            self.updateItem(itemInst)
+            item_inst._count -= count
+            self.updateItem(item_inst)
 
         return count
 
@@ -341,7 +341,7 @@ class Inventory(Object):
                 inst = ItemInstance(item, count)
                 inst._loc = copy.copy(self._loc)
                 World().storeObject(inst)
-                self._itemInsts.append(inst)
+                self._item_insts.append(inst)
                 self.insertItem(inst)
                 return inst
             else:
@@ -353,56 +353,56 @@ class Inventory(Object):
                     c = copy.deepcopy(inst)
                     c._id = IdFactory().nextId()
                     World().storeObject(c)
-                    self._itemInsts.append(c)
+                    self._item_insts.append(c)
                     self.insertItem(c)
                 return c
 
     '''
-    def storeTradeItem(self, itemInst):
-        if itemInst._item.isStackable():
-            findItemInst = self.findItemId(itemInst._itemId)
-            if findItemInst:
-                findItemInst._count += itemInst._count
-                self.updateItem(findItemInst)
-                return findItemInst
+    def storeTradeItem(self, item_inst):
+        if item_inst._item.isStackable():
+            finditem_inst = self.findItemId(item_inst._itemId)
+            if finditem_inst:
+                finditem_inst._count += item_inst._count
+                self.updateItem(finditem_inst)
+                return finditem_inst
 
-        itemInst._loc = self._loc
-        self._itemInsts += itemInst
-        self.insertItem(itemInst)
-        return itemInst
+        item_inst._loc = self._loc
+        self._item_insts += item_inst
+        self.insertItem(item_inst)
+        return item_inst
 
     def tradeItem(self, objectId, count, inventory):
-        return self.tradeItemInst(self.getItem(objectId), count, inventory)
+        return self.tradeitem_inst(self.getItem(objectId), count, inventory)
 
-    def tradeItemInst(self, itemInst, count, inventory):
+    def tradeitem_inst(self, item_inst, count, inventory):
         with self._lock:
-            if not itemInst:
+            if not item_inst:
                 return None
 
-            if itemInst._count <= 0 or count <= 0:
+            if item_inst._count <= 0 or count <= 0:
                 return None
 
-            if itemInst._isEquipped:
+            if item_inst._isEquipped:
                 return None
 
-            if not self.checkItem(itemInst._item._itemId, count):
+            if not self.checkItem(item_inst._item._itemId, count):
                 return None
 
-            if itemInst._count <= count:
-                self._itemInsts.remove(itemInst)
-                carryItem = itemInst
+            if item_inst._count <= count:
+                self._item_insts.remove(item_inst)
+                carryItem = item_inst
             else:
-                itemInst._count -= count
-                self.updateItem(itemInst)
-                carryItem = ItemTable().createItem(itemInst._itemId)
-                carryItem._count = itemInst._count
-                carryItem._enchantLevel = itemInst._enchantLevel
-                carryItem._isIdentified = itemInst._isIdentified
-                carryItem.set_durability(itemInst._durability)
-                carryItem._chargeCount = itemInst._chargeCount
-                carryItem._remainingTime = itemInst._remainingTime
-                carryItem._lastUsed = itemInst._lastUsed
-                carryItem._bless = itemInst._bless
+                item_inst._count -= count
+                self.updateItem(item_inst)
+                carryItem = ItemTable().createItem(item_inst._itemId)
+                carryItem._count = item_inst._count
+                carryItem._enchantLevel = item_inst._enchantLevel
+                carryItem._isIdentified = item_inst._isIdentified
+                carryItem.set_durability(item_inst._durability)
+                carryItem._chargeCount = item_inst._chargeCount
+                carryItem._remainingTime = item_inst._remainingTime
+                carryItem._lastUsed = item_inst._lastUsed
+                carryItem._bless = item_inst._bless
             return inventory.storeTradeItem(carryItem)
     '''
 
@@ -416,7 +416,7 @@ class Inventory(Object):
         '''
         return None
 
-    def recoveryDamage(self, itemInst):
+    def recoveryDamage(self, item_inst):
         '''
         道具的耐久度和损坏度修复计算
         :param inst:道具实例(ItemInstance)
@@ -429,29 +429,29 @@ class Inventory(Object):
         清除仓库中的道具
         :return:None
         '''
-        for itemInst in self._itemInsts:
-            World().removeObject(itemInst)
-        self._itemInsts = []
+        for item_inst in self._item_insts:
+            World().removeObject(item_inst)
+        self._item_insts = []
 
     def loadItems(self):
         return
 
-    def insertItem(self, itemInst):
+    def insertItem(self, item_inst):
         return
 
-    def updateItem(self, itemInst, column = 0):
+    def updateItem(self, item_inst, column = 0):
         '''
         更新道具状态
-        :param itemInst:道具实例(ItemInstance)
+        :param item_inst:道具实例(ItemInstance)
         :param column:需要更新的道具属性集(long)
         :return:None
         '''
         return
 
-    def deleteItem(self, itemInst):
+    def deleteItem(self, item_inst):
         '''
         删除仓库中的道具(子类要重写此方法移除数据库中的数据)
-        :param itemInst:
+        :param item_inst:
         :return:
         '''
-        self._itemInsts.remove(itemInst)
+        self._item_insts.remove(item_inst)

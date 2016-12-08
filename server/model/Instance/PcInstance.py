@@ -112,7 +112,7 @@ class PcInstance(Character):
         self._braveSpeed = 0
         self._gmInvis = False
         self._tempCharGfxAtDead = 0
-        self._ghost = False
+        self._ghost = False # 幽灵之家游戏
         self._isInCharReset = False
         self._gc = None
 

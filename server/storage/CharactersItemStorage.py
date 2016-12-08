@@ -10,77 +10,77 @@ class CharactersItemStorage():
             cls._instance = MySqlCharactersItemStorage()
         return cls._instance
 
-    def updateFireMr(self, itemInst):
+    def updateFireMr(self, item_inst):
         raise NotImplementedError
 
-    def updateWaterMr(self, itemInst):
+    def updateWaterMr(self, item_inst):
         raise NotImplementedError
 
-    def updateEarthMr(self, itemInst):
+    def updateEarthMr(self, item_inst):
         raise NotImplementedError
 
-    def updateWindMr(self, itemInst):
+    def updateWindMr(self, item_inst):
         raise NotImplementedError
 
-    def updateaddSp(self, itemInst):
+    def updateaddSp(self, item_inst):
         raise NotImplementedError
 
-    def updateaddHp(self, itemInst):
+    def updateaddHp(self, item_inst):
         raise NotImplementedError
 
-    def updateaddMp(self, itemInst):
+    def updateaddMp(self, item_inst):
         raise NotImplementedError
 
-    def updateHpr(self, itemInst):
+    def updateHpr(self, item_inst):
         raise NotImplementedError
 
-    def updateMpr(self, itemInst):
+    def updateMpr(self, item_inst):
         raise NotImplementedError
 
     def loadItems(self, objId):
         raise NotImplementedError
 
-    def storeItem(self, objId, itemInst):
+    def storeItem(self, objId, item_inst):
         raise NotImplementedError
 
-    def deleteItem(self, itemInst):
+    def deleteItem(self, item_inst):
         raise NotImplementedError
 
-    def updateItemId(self, itemInst):
+    def updateItemId(self, item_inst):
         raise NotImplementedError
 
-    def updateItemCount(self, itemInst):
+    def updateItemCount(self, item_inst):
         raise NotImplementedError
 
-    def updateItemIdentified(self, itemInst):
+    def updateItemIdentified(self, item_inst):
         raise NotImplementedError
 
-    def updateItemEquipped(self, itemInst):
+    def updateItemEquipped(self, item_inst):
         raise NotImplementedError
 
-    def updateItemEnchantLevel(self, itemInst):
+    def updateItemEnchantLevel(self, item_inst):
         raise NotImplementedError
 
-    def updateItemDurability(self, itemInst):
+    def updateItemDurability(self, item_inst):
         raise NotImplementedError
 
-    def updateItemChargeCount(self, itemInst):
+    def updateItemChargeCount(self, item_inst):
         raise NotImplementedError
 
-    def updateItemRemainingTime(self, itemInst):
+    def updateItemRemainingTime(self, item_inst):
         raise NotImplementedError
 
-    def updateItemDelayEffect(self, itemInst):
+    def updateItemDelayEffect(self, item_inst):
         raise NotImplementedError
 
     def getItemCount(self, objId):
         raise NotImplementedError
 
-    def updateItemBless(self, itemInst):
+    def updateItemBless(self, item_inst):
         raise NotImplementedError
 
-    def updateItemAttrEnchantKind(self, itemInst):
+    def updateItemAttrEnchantKind(self, item_inst):
         raise NotImplementedError
 
-    def updateItemAttrEnchantLevel(self, itemInst):
+    def updateItemAttrEnchantLevel(self, item_inst):
         raise NotImplementedError

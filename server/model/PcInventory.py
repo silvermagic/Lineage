@@ -43,8 +43,8 @@ class PcInventory(Inventory):
         self._arrowId = 0
         self._stingId = 0
 
-    def checkAddItem(self, itemInst, count):
-        ret = Inventory.checkAddItem(self, itemInst, count)
+    def checkAddItem(self, item_inst, count):
+        ret = Inventory.checkAddItem(self, item_inst, count)
         if ret == Inventory.SIZE_OVER:
             self._owner.sendPackets(S_ServerMessage(263))
         elif ret == Inventory.WEIGHT_OVER:
@@ -55,95 +55,95 @@ class PcInventory(Inventory):
 
     def receiveDamage(self, objid=None, inst=None, count=1):
         if objid:
-            itemInst = self.getItem(objid)
-            if not itemInst:
+            item_inst = self.getItem(objid)
+            if not item_inst:
                 return 0
         elif inst:
-            itemInst = inst
+            item_inst = inst
         else:
             return 0
-        curDurability = itemInst._durability
-        clsType = itemInst._item._clsType
+        curDurability = item_inst._durability
+        clsType = item_inst._item._clsType
 
         if (curDurability == 0 and clsType == 0) or curDurability < 0:
-            itemInst._durability = 0
+            item_inst._durability = 0
             return None
 
         if clsType == 0: # 材料耐久度计算
-            minDurability = (itemInst._enchantLevel + 5) * -1
+            minDurability = (item_inst._enchantLevel + 5) * -1
             durability = curDurability - count
             if durability < minDurability:
                 durability = minDurability
             if curDurability > durability:
-                itemInst._durability = durability
+                item_inst._durability = durability
         else: # 武器 防具的损坏度计算
-            maxDurability = itemInst._enchantLevel + 5
+            maxDurability = item_inst._enchantLevel + 5
             durability = curDurability + count
             if durability > maxDurability:
                 durability = maxDurability
             if curDurability < durability:
-                itemInst._durability = durability
+                item_inst._durability = durability
 
-        self.updateItem(itemInst, PcInventory.COL_DURABILITY)
-        return itemInst
+        self.updateItem(item_inst, PcInventory.COL_DURABILITY)
+        return item_inst
 
-    def recoveryDamage(self, itemInst):
-        if not itemInst:
+    def recoveryDamage(self, item_inst):
+        if not item_inst:
             return None
 
-        clsType = itemInst._item._clsType
-        durability = itemInst._durability
+        clsType = item_inst._item._clsType
+        durability = item_inst._durability
 
         if (durability == 0 and clsType != 0) or durability < 0:
-            itemInst._durability = 0
+            item_inst._durability = 0
             return None
 
         if clsType == 0: # 耐久度修复
-            itemInst._durability += durability + 1
+            item_inst._durability += durability + 1
         else: # 损坏度修复
-            itemInst._durability += durability - 1
+            item_inst._durability += durability - 1
 
-        self.updateItem(itemInst, PcInventory.COL_DURABILITY)
-        return itemInst
+        self.updateItem(item_inst, PcInventory.COL_DURABILITY)
+        return item_inst
 
     def loadItems(self):
         from server.model.World import World
 
         try:
-            for itemInst in CharactersItemStorage.create().loadItems(self._owner._id):
-                self._itemInsts.append(itemInst)
-                if itemInst._isEquipped:
-                    itemInst._isEquipped = False
-                    self.setEquipped(itemInst, True, True, False)
-                if itemInst._item._clsType == 2 and itemInst._item._type == 2:
-                    itemInst._remainingTime = itemInst._item.getLightFuel()
-                World().storeObject(itemInst)
+            for item_inst in CharactersItemStorage.create().loadItems(self._owner._id):
+                self._item_insts.append(item_inst)
+                if item_inst._isEquipped:
+                    item_inst._isEquipped = False
+                    self.setEquipped(item_inst, True, True, False)
+                if item_inst._item._clsType == 2 and item_inst._item._type == 2:
+                    item_inst._remainingTime = item_inst._item.getLightFuel()
+                World().storeObject(item_inst)
         except Exception as e:
             logging.error(e)
 
-    def insertItem(self, itemInst):
-        # self._owner.sendPackets(S_AddItem(itemInst))
-        if itemInst._item._weight != 0:
+    def insertItem(self, item_inst):
+        # self._owner.sendPackets(S_AddItem(item_inst))
+        if item_inst._item._weight != 0:
             self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
         try:
-            CharactersItemStorage.create().storeItem(self._owner._id, itemInst)
+            CharactersItemStorage.create().storeItem(self._owner._id, item_inst)
         except Exception as e:
             logging.error(e)
 
-    def deleteItem(self, itemInst):
+    def deleteItem(self, item_inst):
         try:
-            CharactersItemStorage.create().deleteItem(itemInst)
+            CharactersItemStorage.create().deleteItem(item_inst)
         except Exception as e:
             logging.error(e)
 
-        if itemInst._isEquipped:
-            self.setEquipped(itemInst, False)
-        # self._owner.sendPackets(S_DeleteInventoryItem(itemInst))
-        self._itemInsts.remove(itemInst)
-        if itemInst._item._weight != 0:
+        if item_inst._isEquipped:
+            self.setEquipped(item_inst, False)
+        # self._owner.sendPackets(S_DeleteInventoryItem(item_inst))
+        self._item_insts.remove(item_inst)
+        if item_inst._item._weight != 0:
             self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
 
-    def updateItem(self, itemInst, col=None):
+    def updateItem(self, item_inst, col=None):
         if not col:
             column = PcInventory.COL_COUNT
         else:
@@ -154,37 +154,37 @@ class PcInventory(Inventory):
                          | PcInventory.COL_HPR | PcInventory.COL_MPR | PcInventory.COL_ATTR_ENCHANT_LEVEL
                          | PcInventory.COL_ATTR_ENCHANT_KIND | PcInventory.COL_BLESS | PcInventory.COL_REMAINING_TIME
                          | PcInventory.COL_CHARGE_COUNT | PcInventory.COL_ENCHANTLVL | PcInventory.COL_DURABILITY):
-            self._owner.sendPackets(S_ItemStatus(itemInst))
+            self._owner.sendPackets(S_ItemStatus(item_inst))
         if column & PcInventory.COL_ITEMID:
-            self._owner.sendPackets(S_ItemStatus(itemInst))
-            self._owner.sendPackets(S_ItemColor(itemInst))
+            self._owner.sendPackets(S_ItemStatus(item_inst))
+            self._owner.sendPackets(S_ItemColor(item_inst))
             self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
         if column & PcInventory.COL_DELAY_EFFECT:
             pass
         if column & PcInventory.COL_COUNT:
-            self._owner.sendPackets(S_ItemAmount(itemInst))
-            weight = itemInst.getWeight()
-            if weight != itemInst._lastWeight:
-                itemInst._lastWeight = weight
-                self._owner.sendPackets(S_ItemStatus(itemInst))
+            self._owner.sendPackets(S_ItemAmount(item_inst))
+            weight = item_inst.getWeight()
+            if weight != item_inst._lastWeight:
+                item_inst._lastWeight = weight
+                self._owner.sendPackets(S_ItemStatus(item_inst))
             else:
-                self._owner.sendPackets(S_ItemName(itemInst))
-            if itemInst._item._weight != 0:
+                self._owner.sendPackets(S_ItemName(item_inst))
+            if item_inst._item._weight != 0:
                 self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
         if column & PcInventory.COL_EQUIPPED:
-            self._owner.sendPackets(S_ItemName(itemInst))
+            self._owner.sendPackets(S_ItemName(item_inst))
         if column & PcInventory.COL_IS_ID:
-            self._owner.sendPackets(S_ItemStatus(itemInst))
-            self._owner.sendPackets(S_ItemColor(itemInst))
+            self._owner.sendPackets(S_ItemStatus(item_inst))
+            self._owner.sendPackets(S_ItemColor(item_inst))
 
         if not col:
-            if itemInst._item._save_at_once:
-                self.saveItem(itemInst, PcInventory.COL_COUNT)
+            if item_inst._item._save_at_once:
+                self.saveItem(item_inst, PcInventory.COL_COUNT)
 
-    def saveItem(self, itemInst, column):
+    def saveItem(self, item_inst, column):
         '''
         更新数据库中的道具信息
-        :param itemInst:道具实例(ItemInstance)
+        :param item_inst:道具实例(ItemInstance)
         :param column:需要更新的道具属性集(long)
         :return:None
         '''
@@ -193,54 +193,54 @@ class PcInventory(Inventory):
         try:
             storage = CharactersItemStorage.create()
             if column & PcInventory.COL_ATTR_ENCHANT_LEVEL:
-                storage.updateItemAttrEnchantLevel(itemInst)
+                storage.updateItemAttrEnchantLevel(item_inst)
             if column & PcInventory.COL_ATTR_ENCHANT_KIND:
-                storage.updateItemAttrEnchantKind(itemInst)
+                storage.updateItemAttrEnchantKind(item_inst)
             if column & PcInventory.COL_BLESS:
-                storage.updateItemBless(itemInst)
+                storage.updateItemBless(item_inst)
             if column & PcInventory.COL_FIREMR:
-                storage.updateFireMr(itemInst)
+                storage.updateFireMr(item_inst)
             if column & PcInventory.COL_WATERMR:
-                storage.updateWaterMr(itemInst)
+                storage.updateWaterMr(item_inst)
             if column & PcInventory.COL_EARTHMR:
-                storage.updateEarthMr(itemInst)
+                storage.updateEarthMr(item_inst)
             if column & PcInventory.COL_WINDMR:
-                storage.updateWindMr(itemInst)
+                storage.updateWindMr(item_inst)
             if column & PcInventory.COL_ADDSP:
-                storage.updateaddSp(itemInst)
+                storage.updateaddSp(item_inst)
             if column & PcInventory.COL_ADDHP:
-                storage.updateaddHp(itemInst)
+                storage.updateaddHp(item_inst)
             if column & PcInventory.COL_ADDMP:
-                storage.updateaddMp(itemInst)
+                storage.updateaddMp(item_inst)
             if column & PcInventory.COL_HPR:
-                storage.updateHpr(itemInst)
+                storage.updateHpr(item_inst)
             if column & PcInventory.COL_MPR:
-                storage.updateMpr(itemInst)
+                storage.updateMpr(item_inst)
             if column & PcInventory.COL_REMAINING_TIME:
-                storage.updateItemRemainingTime(itemInst)
+                storage.updateItemRemainingTime(item_inst)
             if column & PcInventory.COL_CHARGE_COUNT:
-                storage.updateItemChargeCount(itemInst)
+                storage.updateItemChargeCount(item_inst)
             if column & PcInventory.COL_ITEMID:
-                storage.updateItemId(itemInst)
+                storage.updateItemId(item_inst)
             if column & PcInventory.COL_DELAY_EFFECT:
-                storage.updateItemDelayEffect(itemInst)
+                storage.updateItemDelayEffect(item_inst)
             if column & PcInventory.COL_COUNT:
-                storage.updateItemCount(itemInst)
+                storage.updateItemCount(item_inst)
             if column & PcInventory.COL_EQUIPPED:
-                storage.updateItemEquipped(itemInst)
+                storage.updateItemEquipped(item_inst)
             if column & PcInventory.COL_ENCHANTLVL:
-                storage.updateItemEnchantLevel(itemInst)
+                storage.updateItemEnchantLevel(item_inst)
             if column & PcInventory.COL_IS_ID:
-                storage.updateItemIdentified(itemInst)
+                storage.updateItemIdentified(item_inst)
             if column & PcInventory.COL_DURABILITY:
-                storage.updateItemDurability(itemInst)
+                storage.updateItemDurability(item_inst)
         except Exception as e:
             logging.error(e)
 
-    def setEquipped(self, itemInst, equipped, loaded = False, changeWeapon = False):
+    def setEquipped(self, item_inst, equipped, loaded = False, changeWeapon = False):
         '''
         设置道具装备状态
-        :param itemInst:道具实例(ItemInstance)
+        :param item_inst:道具实例(ItemInstance)
         :param equipped:是否装备(True/False)
         :param loaded:
         :param changeWeapon:切换武器(True/False)
@@ -258,8 +258,8 @@ class PcInventory(Inventory):
         if type(ids) != type([]):
             ids = [ids]
         for id in ids:
-            for itemInst in self._itemInsts:
-                if itemInst._itemId == id and itemInst._isEquipped:
+            for item_inst in self._item_insts:
+                if item_inst._itemId == id and item_inst._isEquipped:
                     ret = True
                     break
             if not ret:
@@ -275,8 +275,8 @@ class PcInventory(Inventory):
         :return:int
         '''
         count = 0
-        for itemInst in self._itemInsts:
-            if itemInst._item._clsType == clsType and itemInst._item._type == type:
+        for item_inst in self._item_insts:
+            if item_inst._item._clsType == clsType and item_inst._item._type == type:
                 count += 1
         return count
 
@@ -287,9 +287,9 @@ class PcInventory(Inventory):
         :param type:道具详细类型(int)
         :return:道具实例(ItemInstance)
         '''
-        for itemInst in self._itemInsts:
-            if itemInst._item._clsType == clsType and itemInst._item._type == type and itemInst._isEquipped:
-                return itemInst
+        for item_inst in self._item_insts:
+            if item_inst._item._clsType == clsType and item_inst._item._type == type and item_inst._isEquipped:
+                return item_inst
         return None
 
     def getRingEquipped(self):
@@ -298,9 +298,9 @@ class PcInventory(Inventory):
         :return:道具实例集(ItemInstance[])
         '''
         rings = []
-        for itemInst in self._itemInsts:
-            if itemInst._item._clsType == 2 and itemInst._item._type == 9 and itemInst._isEquipped:
-                rings.append(itemInst)
+        for item_inst in self._item_insts:
+            if item_inst._item._clsType == 2 and item_inst._item._type == 9 and item_inst._isEquipped:
+                rings.append(item_inst)
                 if len(rings) == 2:
                     return rings
 
@@ -357,7 +357,7 @@ class PcInventory(Inventory):
             else:
                 return bullet
 
-        for bullet in self._itemInsts:
+        for bullet in self._item_insts:
             if bullet._item._type == type:
                 if type == 0:
                     self._arrowId = bullet._itemId
@@ -372,9 +372,9 @@ class PcInventory(Inventory):
         :return:HP回复量(int)
         '''
         hpr = 0
-        for itemInst in self._itemInsts:
-            if itemInst._isEquipped:
-                hpr += itemInst._item._addhpr + itemInst._Hpr
+        for item_inst in self._item_insts:
+            if item_inst._isEquipped:
+                hpr += item_inst._item._addhpr + item_inst._Hpr
         return hpr
 
     def mpRegenPerTick(self):
@@ -383,9 +383,9 @@ class PcInventory(Inventory):
         :return:MP回复量(int)
         '''
         mpr = 0
-        for itemInst in self._itemInsts:
-            if itemInst._isEquipped:
-                mpr += itemInst._item._addmpr + itemInst._Mpr
+        for item_inst in self._item_insts:
+            if item_inst._isEquipped:
+                mpr += item_inst._item._addmpr + item_inst._Mpr
         return mpr
 
     def CaoPenalty(self):

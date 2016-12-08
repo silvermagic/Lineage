@@ -19,6 +19,7 @@ from server.serverpackets.S_OwnCharPack import S_OwnCharPack
 from server.serverpackets.S_SPMR import S_SPMR
 from server.serverpackets.S_CharTitle import S_CharTitle
 from server.serverpackets.S_InvList import S_InvList
+from server.serverpackets.S_Weather import S_Weather
 from server.serverpackets.S_CharacterConfig import S_CharacterConfig
 from ClientBasePacket import ClientBasePacket
 
@@ -89,6 +90,7 @@ class C_LoginToServer(ClientBasePacket):
         # pc.broadcastPacket(S_CharTitle(pc._id, pc._title))
 
         # todo: 中毒 水中等视觉
+        pc.sendPackets(S_Weather(World()._weather))
 
         self.items(pc)
         # self.skills(pc)
@@ -136,7 +138,7 @@ class C_LoginToServer(ClientBasePacket):
 
     def items(self, pc):
         CharacterTable().restoreInventory(pc)
-        pc.sendPackets(S_InvList(pc._inventory._itemInsts))
+        pc.sendPackets(S_InvList(pc._inventory._item_insts))
 
     def skills(self, pc):
         try:
