@@ -12,7 +12,7 @@ class Item():
         # 道具详细类型
         # [etcitem]
         # 0=arrow	    	1=wand			    2=light					3=gem				4=totem
-        # 5=firecracker		6=potion		    7=food					8=scrol				l9=questitem
+        # 5=firecracker		6=potion		    7=food					8=scroll            9=questitem
         # 10=spellbook		11=petitem		    12=other				13=material			14=event
         # 15=sting
         # [weapon]
@@ -21,9 +21,9 @@ class Item():
         # 11=claw			12=edoryu		    13=singlebow			14=singlespear		15=tohandblunt
         # 16=tohandstaff	17=kiringku		    18=chainsword
         # [armor]
-        # 1=helm			2=armor				3=T						4=cloak				5=glove
-        # 6=boots			7=shield			8=amulet				9=ring				10=belt
-        # 11=ring2		    12=earring
+        # 1=helm			2=armor(盔甲)		3=T(内衣)				4=cloak(斗篷)		5=glove
+        # 6=boots			7=shield(盾牌)		8=amulet				9=ring				10=belt
+        # 11=ring2		    12=earring          13=guarder(臂甲)
         self._type = 0
         self._useType = 0
         # 武器类型

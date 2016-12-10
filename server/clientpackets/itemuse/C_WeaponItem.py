@@ -15,6 +15,12 @@ class C_WeaponItem():
         return self._handle(self._fd, self._item_inst)
 
     def _handle(self, fd, item_inst):
+        '''
+        处理来自客户端的武器使用动作,更新用户当前使用的武器信息,并返回更新后的状态到客户端
+        :param fd:数据包操作句柄(ClientBasePacket)
+        :param item_inst:被使用的武器道具实例(ItemInstance)
+        :return:None
+        '''
         pc = self._pc
         minlvl = item_inst._item._minLevel
         maxlvl = item_inst._item._maxLevel
@@ -46,7 +52,7 @@ class C_WeaponItem():
             # polyid = pc._tempCharGfx
             # todo: 变身状态检测
 
-            if weapon._item.isTwohandedWeapon() and inventory.getTypeEquipped(2, 7) >= 1:
+            if weapon._item.isTwohandedWeapon() and inventory.getTypeEquipped(2, 7) >= 1: # 双手武器不能使用盾牌
                 pc.sendPackets(S_ServerMessage(128))
 
         if pc._weapon:

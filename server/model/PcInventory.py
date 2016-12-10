@@ -305,7 +305,7 @@ class PcInventory(Inventory):
         '''
         count = 0
         for item_inst in self._item_insts:
-            if item_inst._item._clsType == clsType and item_inst._item._type == type:
+            if item_inst._item._clsType == clsType and item_inst._item._type == type and item_inst._isEquipped:
                 count += 1
         return count
 
