@@ -8,6 +8,9 @@ from server.serverpackets.S_ItemColor import S_ItemColor
 from server.serverpackets.S_PacketBox import S_PacketBox
 from server.serverpackets.S_ItemAmount import S_ItemAmount
 from server.serverpackets.S_ItemName import S_ItemName
+from server.serverpackets.S_OwnCharStatus import S_OwnCharStatus
+from server.serverpackets.S_CharVisualUpdate import S_CharVisualUpdate
+from server.serverpackets.S_DeleteInventoryItem import S_DeleteInventoryItem
 from server.storage.CharactersItemStorage import CharactersItemStorage
 from Inventory import Inventory
 
@@ -138,48 +141,51 @@ class PcInventory(Inventory):
 
         if item_inst._isEquipped:
             self.setEquipped(item_inst, False)
-        # self._owner.sendPackets(S_DeleteInventoryItem(item_inst))
+        self._owner.sendPackets(S_DeleteInventoryItem(item_inst))
         self._item_insts.remove(item_inst)
         if item_inst._item._weight != 0:
             self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
 
     def updateItem(self, item_inst, col=None):
-        if not col:
-            column = PcInventory.COL_COUNT
-        else:
-            column = col
-
-        if column & (PcInventory.COL_FIREMR | PcInventory.COL_WATERMR | PcInventory.COL_EARTHMR
-                         | PcInventory.COL_WINDMR | PcInventory.COL_ADDSP | PcInventory.COL_ADDHP
-                         | PcInventory.COL_HPR | PcInventory.COL_MPR | PcInventory.COL_ATTR_ENCHANT_LEVEL
-                         | PcInventory.COL_ATTR_ENCHANT_KIND | PcInventory.COL_BLESS | PcInventory.COL_REMAINING_TIME
-                         | PcInventory.COL_CHARGE_COUNT | PcInventory.COL_ENCHANTLVL | PcInventory.COL_DURABILITY):
-            self._owner.sendPackets(S_ItemStatus(item_inst))
-        if column & PcInventory.COL_ITEMID:
-            self._owner.sendPackets(S_ItemStatus(item_inst))
-            self._owner.sendPackets(S_ItemColor(item_inst))
-            self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
-        if column & PcInventory.COL_DELAY_EFFECT:
-            pass
-        if column & PcInventory.COL_COUNT:
-            self._owner.sendPackets(S_ItemAmount(item_inst))
-            weight = item_inst.getWeight()
-            if weight != item_inst._lastWeight:
-                item_inst._lastWeight = weight
-                self._owner.sendPackets(S_ItemStatus(item_inst))
+        try:
+            if not col:
+                column = PcInventory.COL_COUNT
             else:
-                self._owner.sendPackets(S_ItemName(item_inst))
-            if item_inst._item._weight != 0:
-                self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
-        if column & PcInventory.COL_EQUIPPED:
-            self._owner.sendPackets(S_ItemName(item_inst))
-        if column & PcInventory.COL_IS_ID:
-            self._owner.sendPackets(S_ItemStatus(item_inst))
-            self._owner.sendPackets(S_ItemColor(item_inst))
+                column = col
 
-        if not col:
-            if item_inst._item._save_at_once:
-                self.saveItem(item_inst, PcInventory.COL_COUNT)
+            if column & (PcInventory.COL_FIREMR | PcInventory.COL_WATERMR | PcInventory.COL_EARTHMR
+                             | PcInventory.COL_WINDMR | PcInventory.COL_ADDSP | PcInventory.COL_ADDHP
+                             | PcInventory.COL_HPR | PcInventory.COL_MPR | PcInventory.COL_ATTR_ENCHANT_LEVEL
+                             | PcInventory.COL_ATTR_ENCHANT_KIND | PcInventory.COL_BLESS | PcInventory.COL_REMAINING_TIME
+                             | PcInventory.COL_CHARGE_COUNT | PcInventory.COL_ENCHANTLVL | PcInventory.COL_DURABILITY):
+                self._owner.sendPackets(S_ItemStatus(item_inst))
+            if column & PcInventory.COL_ITEMID:
+                self._owner.sendPackets(S_ItemStatus(item_inst))
+                self._owner.sendPackets(S_ItemColor(item_inst))
+                self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, value=self.getWeight240()))
+            if column & PcInventory.COL_DELAY_EFFECT:
+                pass
+            if column & PcInventory.COL_COUNT:
+                self._owner.sendPackets(S_ItemAmount(item_inst))
+                weight = item_inst.getWeight()
+                if weight != item_inst._lastWeight:
+                    item_inst._lastWeight = weight
+                    self._owner.sendPackets(S_ItemStatus(item_inst))
+                else:
+                    self._owner.sendPackets(S_ItemName(item_inst))
+                if item_inst._item._weight != 0:
+                    self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, value=self.getWeight240()))
+            if column & PcInventory.COL_EQUIPPED:
+                self._owner.sendPackets(S_ItemName(item_inst))
+            if column & PcInventory.COL_IS_ID:
+                self._owner.sendPackets(S_ItemStatus(item_inst))
+                self._owner.sendPackets(S_ItemColor(item_inst))
+
+            if not col:
+                if item_inst._item._save_at_once:
+                    self.saveItem(item_inst, PcInventory.COL_COUNT)
+        except Exception as e:
+            logging.error(e)
 
     def saveItem(self, item_inst, column):
         '''
@@ -246,7 +252,30 @@ class PcInventory(Inventory):
         :param changeWeapon:切换武器(True/False)
         :return:None
         '''
-        pass
+        item_id = item_inst._itemId
+        clsType = item_inst._item._clsType
+        if item_inst._isEquipped != equipped:
+            if equipped:
+                item_inst._isEquipped = True
+                self._owner._equipSlot.set(item_inst)
+            else:
+                if not loaded:
+                    if item_id in (20077, # 炎魔的血光斗篷
+                                   20062, # 隐身斗篷
+                                   120077): # 隐身斗篷
+                        if self._owner.isInvisble():
+                            self._owner.delInvis()
+                item_inst._isEquipped = False
+                self._owner._equipSlot.remove(item_inst)
+
+            if not loaded:
+                self._owner.setCurrentHp(self._owner._currentHp)
+                self._owner.setCurrentMp(self._owner._currentMp)
+                self.updateItem(item_inst,PcInventory.COL_EQUIPPED)
+                self._owner.sendPackets(S_OwnCharStatus(self._owner))
+                if clsType == 1 and not changeWeapon:
+                    self._owner.sendPackets(S_CharVisualUpdate(self._owner))
+                    self._owner.broadcastPacket(S_CharVisualUpdate(self._owner))
 
     def checkEquipped(self, ids):
         '''

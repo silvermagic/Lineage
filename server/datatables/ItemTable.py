@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from server.templates.EtcItem import EtcItem
 from server.model.Instance.ItemInstance import ItemInstance
 from server.model.World import World
+from server.templates.EtcItem import EtcItem
 from server.templates.Weapon import Weapon
+from server.templates.Armor import Armor
 from server.utils.Singleton import Singleton
 from server.IdFactory import IdFactory
 from Datatables import Session,etcitem,weapon,armor
@@ -57,7 +58,7 @@ class ItemTable():
         try:
             with Session() as session:
                 for rs in session.query(etcitem).all():
-                    item = etcitem()
+                    item = EtcItem()
                     item._itemId = rs.item_id
                     item._name = rs.name
                     item._unidentifiedNameId = rs.unidentified_name_id
@@ -101,7 +102,7 @@ class ItemTable():
         try:
             with Session() as session:
                 for rs in session.query(weapon).all():
-                    item = weapon()
+                    item = Weapon()
                     item._itemId = rs.item_id
                     item._name = rs.name
                     item._unidentifiedNameId = rs.unidentified_name_id
@@ -163,7 +164,7 @@ class ItemTable():
         try:
             with Session() as session:
                 for rs in session.query(armor).all():
-                    item = armor()
+                    item = Armor()
                     item._itemId = rs.item_id
                     item._name = rs.name
                     item._unidentifiedNameId = rs.unidentified_name_id

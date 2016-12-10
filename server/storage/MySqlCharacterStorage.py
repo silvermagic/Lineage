@@ -32,7 +32,7 @@ class MySqlCharacterStorage(CharacterStorage):
                 pc.addBaseCha(item.Cha)
                 pc.addBaseInt(item.Intel)
                 pc.addBaseWis(item.Wis)
-                pc._currentWeapon = item.Status
+                pc._weaponType = item.Status
                 pc._classId = item.Class
                 pc._tempCharGfx = item.Class
                 pc._gfxid = item.Class
@@ -114,7 +114,7 @@ class MySqlCharacterStorage(CharacterStorage):
                 item.Cha = pc._cha
                 item.Intel = pc._int
                 item.Wis = pc._wis
-                item.Status = pc._currentWeapon
+                item.Status = pc._weaponType
                 item.Class = pc._classId
                 item.Sex = pc._sex
                 item.Type = pc._type
@@ -186,7 +186,7 @@ class MySqlCharacterStorage(CharacterStorage):
                                                                                      characters.Cha: pc._baseCha,
                                                                                      characters.Intel: pc._baseInt,
                                                                                      characters.Wis: pc._baseWis,
-                                                                                     characters.Status: pc._currentWeapon,
+                                                                                     characters.Status: pc._weaponType,
                                                                                      characters.Class: pc._classId,
                                                                                      characters.Sex: pc._sex,
                                                                                      characters.Type: pc._type,

@@ -10,4 +10,4 @@ class S_ItemName(ServerBasePacket):
             return
         self.writeC(Opcodes.S_OPCODE_ITEMNAME)
         self.writeD(itemInst._id)
-        self.writeC(itemInst.getViewName())
+        self.writeS(itemInst.getViewName())

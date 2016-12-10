@@ -439,11 +439,11 @@ class Inventory(Object):
     def insertItem(self, item_inst):
         return
 
-    def updateItem(self, item_inst, column = 0):
+    def updateItem(self, item_inst, col = None):
         '''
         更新道具状态
         :param item_inst:道具实例(ItemInstance)
-        :param column:需要更新的道具属性集(long)
+        :param col:需要更新的道具属性集(long)
         :return:None
         '''
         return

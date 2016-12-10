@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from clientpackets.C_AuthLogin import C_AuthLogin
-from clientpackets.C_ServerVersion import C_ServerVersion
 from clientpackets.C_CommonClick import C_CommonClick
 from clientpackets.C_CreateChar import C_CreateChar
-from clientpackets.C_LoginToServer import C_LoginToServer
 from clientpackets.C_KeepALIVE import C_KeepALIVE
+from clientpackets.C_LoginToServer import C_LoginToServer
 from clientpackets.C_LoginToServerOK import C_LoginToServerOK
+from clientpackets.C_ServerVersion import C_ServerVersion
+from clientpackets.C_ItemUse import C_ItemUse
 from server.codes import Opcodes
+
 
 class PacketHandler:
     def __init__(self, client):
@@ -35,6 +37,8 @@ class PacketHandler:
             C_KeepALIVE(abytes, self._client)
         elif opcode == Opcodes.C_OPCODE_LOGINTOSERVEROK:
             C_LoginToServerOK(abytes, self._client)
+        elif opcode == Opcodes.C_OPCODE_USEITEM:
+            C_ItemUse(abytes, self._client)
         else:
             pass
 

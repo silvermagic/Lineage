@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import threading
+from server.model.skill import SkillId
 from server.utils.IntRange import IntRange
 from Object import Object
 
@@ -67,13 +68,17 @@ class Character(Object):
         self._title = ''
         self._lawful = 0
         self._heading = 0 # 0.左上 1.上 2.右上 3.右 4.右下 5.下 6.左下 7.左
-        self._moveSpeed = 0
-        self._braveSpeed = 0
+        self._moveSpeed = 0 # 一段加速
+        self._braveSpeed = 0 # 二段加速
         self._tempCharGfx = 0
         self._gfxid = 0
         self._chaLightSize = 0
         self._ownLightSize = 0
         self._lock = threading.Lock()
+
+        self._skillEffect = {}
+        self._itemdelay = {}
+        # todo: 延迟系统
 
     def setExp(self, exp):
         self._exp = exp
@@ -270,3 +275,24 @@ class Character(Object):
 
     def turnOnOffLight(self):
         pass
+
+    def hasItemDelay(self, delayId):
+        return self._itemdelay.has_key(delayId)
+
+    def isInvisble(self):
+        return self.hasSkillEffect(SkillId.INVISIBILITY) or self.hasSkillEffect(SkillId.BLIND_HIDING)
+
+    def broadcastPacketForFindInvis(self):
+        return
+
+    def hasSkillEffect(self, skillId):
+        return self._skillEffect.has_key(skillId)
+
+    def setSkillEffect(self, skillId, timeMillis):
+        return
+
+    def removeSkillEffect(self, skillId):
+        return
+
+    def killSkillEffectTimer(self, skillId):
+        return

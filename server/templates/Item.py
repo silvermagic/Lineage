@@ -87,7 +87,7 @@ class Item():
         self._addmpr = 0
         self._addsp = 0
         self._mdef = 0
-        self._isHasteItem = False
+        self._isHasteItem = False # 道具自带加速效果
         self._maxUseTime = 0
         self._foodVolume = 0
 

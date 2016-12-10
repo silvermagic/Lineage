@@ -38,7 +38,7 @@ class S_OwnCharPack(ServerBasePacket):
         if pc._isDead:
             self.writeC(pc._status)
         else:
-            self.writeC(pc._currentWeapon)
+            self.writeC(pc._weaponType)
 
         self.writeC(pc._heading)
         self.writeC(pc._moveSpeed)

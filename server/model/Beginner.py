@@ -41,7 +41,7 @@ class Beginner():
                     item.durability = 0
                     item.charge_count = rs.charge_count
                     item.remaining_time = 0
-                    item.last_used = datetime.now()
+                    item.last_used = None
                     item.bless = 1
                     session.add(item)
         except Exception as e:

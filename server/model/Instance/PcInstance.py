@@ -8,6 +8,7 @@ from server.model.Karma import Karma
 from server.model.PcInventory import PcInventory
 from server.model.DwarfInventory import DwarfInventory
 from server.model.DwarfForElfInventory import DwarfForElfInventory
+from server.model.EquipmentSlot import EquipmentSlot
 # from server.model.gametime.GameTimeCarrier import GameTimeCarrier
 from server.serverpackets.S_HPUpdate import S_HPUpdate
 from server.serverpackets.S_MPUpdate import S_MPUpdate
@@ -93,7 +94,7 @@ class PcInstance(Character):
         self._expRes = 0
         self._partnerId = 0
         self._accessLevel = 0
-        self._currentWeapon = 0
+        self._weaponType = 0
         self._gm = False
         self._monitor = False
         self._onlineStatus = 0
@@ -119,11 +120,21 @@ class PcInstance(Character):
         self._inventory = PcInventory(self)
         self._dwarf = DwarfInventory(self)
         self._dwarfForElf = DwarfForElfInventory(self)
+        self._equipSlot = EquipmentSlot(self)
+        self._weapon = None
         self._party = None
-        self.skillList = []
+        self._isTeleport = False # 是否在瞬间移动
+        self.skillList = {}
         self._weightReduction = 0
         self._originalStrWeightReduction = 0
         self._originalConWeightReduction = 0
+        self._hasteItemEquipped = 0
+        self._damageReductionByArmor = 0
+        self._weightReduction = 0
+        self._hitModifierByArmor = 0
+        self._dmgModifierByArmor = 0
+        self._bowHitModifierByArmor = 0
+        self._bowDmgModifierByArmor = 0
 
     def sendPackets(self, serverbasepacket):
         if not self._netConnection:
@@ -263,6 +274,31 @@ class PcInstance(Character):
 
         return maxWeight
 
+    def turnOnOffLight(self):
+        # todo: 照明
+        return
+
+    def resetLevel(self):
+        # todo: 等级计算
+        return
+
+    def resetBaseAc(self):
+        return
+
+    def resetBaseMr(self):
+        return
+
+    def resetBaseHitup(self):
+        return
+
+    def resetBaseDmgup(self):
+        return
+
+    def save(self):
+        return
+
+    def delInvis(self):
+        return
 
     '''
     def beginGameTimeCarrier(self):

@@ -14,7 +14,7 @@ class ItemInstance(Object):
             self._item = None
             self._chargeCount = 0
             self._remainingTime = 0
-            self._bless = 0
+            self._bless = 0 # 道具封印状态
         else:
             self._itemId = item._itemId
             self._item = item
@@ -41,6 +41,7 @@ class ItemInstance(Object):
         self._timer = None
         self._attrEnchantKind = 0 # 属性强化类型: 1地 2火 3水 4风
         self._attrEnchantLevel = 0 # 属性强化等级: +4
+        # 使用道具模板创建实例后,道具实例经过强化会获得额外的属性加层
         self._FireMr = 0
         self._WaterMr = 0
         self._EarthMr = 0
@@ -50,7 +51,6 @@ class ItemInstance(Object):
         self._addHp = 0 # 血量加层
         self._addMp = 0 # 魔量加层
         self._addSp = 0 # 魔功加层
-        self._Pt = False
         self._acByMagic = 0
         self._dmgByMagic = 0
         self._holyDmgByMagic = 0
@@ -58,6 +58,7 @@ class ItemInstance(Object):
         self._itemOwnerId = 0
         self._equipmentTimer = None
         self._isNowLighting = False
+        self._Pt = False
 
     def setItem(self, item):
         self._item = item
@@ -123,7 +124,6 @@ class ItemInstance(Object):
             if itemId == 40001 or itemId == 40002: # 灯笼
                 if self._remainingTime <= 0: # 显示:
                     name += ' ($11)'
-
 
         if self._isEquipped: # 道具使用时显示的字符
             if clsType == 1: # 武器显示: 挥舞
@@ -368,7 +368,7 @@ class ItemInstance(Object):
             if self._item._isHasteItem:
                 # 加速加持
                 os.writeC(18)
-            '''
+
             if self._item.get_defense_fire() != 0:
                 # 火属性防御
                 os.writeC(27)
@@ -385,7 +385,7 @@ class ItemInstance(Object):
                 # 地属性防御
                 os.writeC(30)
                 os.writeC(self._item.get_defense_earth())
-            '''
+
             if self._item._addhp != 0 or self._addHp != 0:
                 # 道具模板或道具实例有血量加层
                 os.writeC(14)
@@ -453,6 +453,12 @@ class ItemInstance(Object):
                 os.writeC(33)
                 os.writeC(6)
         return os.getBytes()
+
+    def startEquipmentTimer(self, pc):
+        return
+
+    def stopEquipmentTimer(self, pc):
+        return
 
 class LastStatus():
     '''

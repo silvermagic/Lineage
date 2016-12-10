@@ -4,6 +4,9 @@ from server.codes import Opcodes
 from ServerBasePacket import ServerBasePacket
 
 class S_SPMR(ServerBasePacket):
+    '''
+    返回魔功和魔防
+    '''
     def __init__(self, pc):
         ServerBasePacket.__init__(self)
         self.writeC(Opcodes.S_OPCODE_SPMR)

@@ -21,7 +21,7 @@ class MySqlCharactersItemStorage(CharactersItemStorage):
                 item._id = rs.id
                 item.setItem(ItemTable()._allTemplates[itemId])
                 item._count = rs.count
-                item._isEquipped = rs.is_equipped != 0
+                item._isEquipped = (rs.is_equipped != 0)
                 item._enchantLevel = rs.enchantlvl
                 item._isIdentified = rs.is_id != 0
                 item.set_durability(rs.durability)
