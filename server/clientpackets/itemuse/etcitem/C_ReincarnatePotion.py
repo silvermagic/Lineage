@@ -19,7 +19,7 @@ class C_ReincarnatePotion(C_EtcItemBase):
     def _handle(self, fd, item_inst):
         pc = self._pc
         pc._inventory.takeoffEquip(945)
-        if pc._level == 99:
+        if pc.getLevel() == 99:
             pc.setExp(1)
             pc.resetLevel()
             revival_potion = Config.getint('charsettings', 'Revival_Potion')

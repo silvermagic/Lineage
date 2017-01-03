@@ -52,7 +52,7 @@ class GetBackTable():
         nPosition = random.randrange(3)
 
         pcLocX = pc._loc._x
-        pcLocY = pc._loc._x
+        pcLocY = pc._loc._y
         pcMapId = pc._loc._map._mapId
         getbackList = None
         if self._getback.has_key(pcMapId):
@@ -62,10 +62,7 @@ class GetBackTable():
             getback = None
             for gb in getbackList:
                 if gb.isSpecifyArea():
-                    if gb._areaX1 <= pcLocX \
-                            and pcLocX <= gb._areaX2 \
-                            and gb._areaY1 <= pcLocY \
-                            and pcLocY <= gb._areaY2:
+                    if gb._areaX1 <= pcLocX and pcLocX <= gb._areaX2 and gb._areaY1 <= pcLocY and pcLocY <= gb._areaY2:
                         getback = gb
                         break
                 else:

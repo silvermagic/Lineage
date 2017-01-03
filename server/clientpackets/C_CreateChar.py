@@ -118,6 +118,9 @@ class C_CreateChar(ClientBasePacket):
         pc.addBaseMaxMp(initMp)
         pc.setCurrentMp(initMp)
         pc._accountName = client._account._name
+        pc.resetBaseAc()
+        pc.resetBaseSp()
+        pc.resetBaseMr()
         # todo:
         #   1.角色创建广播
         #   2.pc.isWizard
@@ -125,8 +128,7 @@ class C_CreateChar(ClientBasePacket):
         CharacterTable().storeNewCharacter(pc)
         client.sendPacket(S_NewCharPacket(pc))
         CharacterTable().saveCharStatus(pc)
-        # todo:
-        #   1.pc.refresh()
+        pc.refresh()
 
     @classmethod
     def isInvalidName(cls, name):

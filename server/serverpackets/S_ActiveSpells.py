@@ -9,6 +9,3 @@ class S_ActiveSpells(ServerBasePacket):
         self.writeC(Opcodes.S_OPCODE_ACTIVESPELLS)
         self.writeC(0x14)
         self.writeC(0x69)
-
-    def getContent(self):
-        return self.getBytes()

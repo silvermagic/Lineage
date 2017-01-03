@@ -61,8 +61,7 @@ class C_ArmorItem():
         if equipe_space and not armor._isEquipped: # 没有装备过同类道具,并且道具当前是未使用状态
             polyid = pc._tempCharGfx
             # todo: 变身系统
-            import logging
-            logging.info('take on:' + str(armor.__dict__))
+
             if type == 13 and inventory.getTypeEquipped(2, 7) >= 1 \
                     or type == 7 and inventory.getTypeEquipped(2, 13) >= 1: # 准备装备臂甲但是已经装备了盾牌/准备装备盾牌但是已经装备了臂甲
                 return  pc.sendPackets(S_ServerMessage(124))
@@ -92,6 +91,7 @@ class C_ArmorItem():
         else: # 已经装备了同类道具,并且道具当前是未使用状态,不能和武器一样直接替换,需要先脱下当前使用的装备,然后再使用其他装备
             pc.sendPackets(S_ServerMessage(124))
 
+        pc.setCurrentHp(pc._currentHp)
         pc.setCurrentMp(pc._currentMp)
         pc.sendPackets(S_OwnCharAttrDef(pc))
         pc.sendPackets(S_OwnCharStatus(pc))

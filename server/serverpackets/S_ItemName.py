@@ -11,3 +11,6 @@ class S_ItemName(ServerBasePacket):
         self.writeC(Opcodes.S_OPCODE_ITEMNAME)
         self.writeD(itemInst._id)
         self.writeS(itemInst.getViewName())
+
+    def getContent(self):
+        return self.getBytes()

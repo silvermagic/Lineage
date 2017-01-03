@@ -11,9 +11,9 @@ class S_SPMR(ServerBasePacket):
         ServerBasePacket.__init__(self)
         self.writeC(Opcodes.S_OPCODE_SPMR)
         if False:
-            self.writeC(pc._sp - 2)
+            self.writeC(pc._trueSp - pc._baseSp - 2)
         else:
-            self.writeC(pc._sp)
+            self.writeC(pc._trueSp - pc._baseSp)
         self.writeC(pc._trueMr - pc._baseMr)
 
     def getContent(self):

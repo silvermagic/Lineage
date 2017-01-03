@@ -46,6 +46,32 @@ class CalcStat():
         return mrBonus
 
     @classmethod
+    def calcStatSp(cls, i):
+        if i <= 5:
+            spBonus = -2
+        elif i <= 8:
+            spBonus = -1
+        elif i <= 11:
+            spBonus = 0
+        elif i <= 14:
+            spBonus = 1
+        elif i <= 17:
+            spBonus = 2
+        elif i <= 24:
+            spBonus = i - 15
+        elif i <= 35:
+            spBonus = 10
+        elif i <= 42:
+            spBonus = 11
+        elif i <= 49:
+            spBonus = 12
+        elif i <= 50:
+            spBonus = 13
+        else:
+            spBonus = i - 25
+        return spBonus
+
+    @classmethod
     def calcDiffMr(cls, wis, diff):
         cls.calcStatMr(wis + diff) - cls.calcStatMr(wis)
 

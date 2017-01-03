@@ -40,7 +40,7 @@ class C_LoginToServer(ClientBasePacket):
             return
 
         if Config.getint('server', 'LevelDownRange') > 0:
-            if (pc._highLevel - pc._level) >=  Config.getint('server', 'LevelDownRange'):
+            if (pc._highLevel - pc.getLevel()) >=  Config.getint('server', 'LevelDownRange'):
                 logging.info("不允许的等级要求范围的角色: 角色名称=" + charName + " 玩家帐号=" + login + " 玩家IP=" + client._hostname)
                 client.kick()
                 return
@@ -61,13 +61,11 @@ class C_LoginToServer(ClientBasePacket):
         pc.sendPackets(S_Unknown2())
 
         # self.bookmarks(pc)
-
         for gbr in GetBackRestartTable()._getbackrestart.values():
             if pc._loc._map._mapId == gbr._mapId:
                 pc._loc._x = gbr._locX
                 pc._loc._y = gbr._locY
                 pc.setMap(gbr._mapId)
-
         if Config.getboolean('altsettings', 'GetBack'):
             loc = GetBackTable().GetBack_Location(pc)
             pc._loc._x = loc[0]

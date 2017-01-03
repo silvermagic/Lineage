@@ -55,6 +55,7 @@ class ClientThread(Thread):
         if len(buf) != length:
             raise Exception("Length Error")
 
+        logging.debug('[Recv Encrypt C]' + '\n' + ByteArrayUtil.dumpToString(bytearray(buf)))
         return self._cipher.decrypt(buf)
 
     def sendPacket(self, packet):
@@ -63,11 +64,17 @@ class ClientThread(Thread):
         :param packet:未加密的数据包(bytes)
         :return:None
         '''
-        data = bytearray(packet.getContent())
-        logging.debug('[Send C]' + '\n' + ByteArrayUtil.dumpToString(data))
-        data = self._cipher.encrypt(data)
-        data = struct.pack('<H', len(data) + 2) + data
-        self._csocket.sendall(data)
+        try:
+            data = bytearray(packet.getContent())
+            if len(data) == 0:
+                return
+            logging.debug('[Send C]' + '\n' + ByteArrayUtil.dumpToString(data))
+            data = self._cipher.encrypt(data)
+            logging.debug('[Send Encrypt C]' + '\n' + ByteArrayUtil.dumpToString(data))
+            data = struct.pack('<H', len(data) + 2) + data
+            self._csocket.sendall(data)
+        except:
+            pass
 
     def run(self):
         '''
@@ -82,7 +89,8 @@ class ClientThread(Thread):
         try:
             # 初始包格式:长度+操作码+密钥+数据
             bogus = len(_FIRST_PACKET) + 7
-            key = random.randrange(2147483647) + 1
+            # key = random.randrange(2147483647) + 1
+            key = 2147483647
             data = struct.pack('<HBI', bogus, Opcodes.S_OPCODE_INITPACKET, key) + _FIRST_PACKET
             self._csocket.sendall(data)
 

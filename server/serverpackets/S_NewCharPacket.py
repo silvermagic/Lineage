@@ -15,7 +15,7 @@ class S_NewCharPacket(ServerBasePacket):
         self.writeH(pc._maxHp)
         self.writeH(pc._maxMp)
         self.writeC(pc._ac)
-        self.writeC(pc._level)
+        self.writeC(pc.getLevel())
         self.writeC(pc._str)
         self.writeC(pc._dex)
         self.writeC(pc._con)

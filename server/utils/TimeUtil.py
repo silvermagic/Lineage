@@ -22,6 +22,6 @@ class TimeUtil():
         :param ts:日期(timestamp)
         :return:日期(datetime)
         '''
-        if ts < 0:
-            ts = 0
+        if not ts:
+            return None
         return datetime.fromtimestamp(ts)

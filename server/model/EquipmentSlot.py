@@ -18,16 +18,89 @@ class EquipmentSlot():
         self._currentArmorSet = []
         self._armors = []
 
+    # ============================================================装备道具============================================================
+    def set(self, equipment):
+        '''
+        装备武器/防具,根据装备奖励的属性更新角色属性信息,先处理道具共有的属性加成,然后根据道具类型分别处理道具的特殊属性加成
+        :param equipment:待装备的道具(ItemInstance)
+        :return:None
+        '''
+        item = equipment._item
+        if item._clsType == 0:
+            return
+
+        if item._addhp != 0:
+            self._owner.addMaxHp(item._addhp)
+        if item._addmp != 0:
+            self._owner.addMaxMp(item._addmp)
+        if equipment._addHp != 0:
+            self._owner.addMaxHp(equipment._addHp)
+        if equipment._addMp != 0:
+            self._owner.addMaxMp(equipment._addMp)
+
+        self._owner.addStr(item._addstr)
+        self._owner.addCon(item._addcon)
+        self._owner.addDex(item._adddex)
+        self._owner.addInt(item._addint)
+        if item._addint != 0:
+            self._owner.resetBaseSp()
+        self._owner.addWis(item._addwis)
+        if item._addwis != 0:
+            self._owner.resetBaseMr()
+        self._owner.addCha(item._addcha)
+
+        addMr = 0
+        addMr += equipment.getMr()
+        if item._itemId == 20236 and self._owner.isElf():
+            addMr += 5
+        if addMr != 0:
+            self._owner.addMr(addMr)
+        if item._addsp != 0:
+            self._owner.addSp(item._addsp)
+        self._owner.sendPackets(S_SPMR(self._owner))
+
+        if item._isHasteItem:
+            self._owner._hasteItemEquipped += 1
+            self._owner.removeHasteSkillEffect()
+            if self._owner._moveSpeed != 1:
+                self._owner._moveSpeed = 1
+                self._owner.sendPackets(S_SkillHaste(self._owner._id, 1, -1))
+                self._owner.broadcastPacket(S_SkillHaste(self._owner._id, 1, 0))
+
+        if item._itemId == 20383:
+            if self._owner.hasSkillEffect(SkillId.STATUS_BRAVE):
+                self._owner.killSkillEffectTimer(SkillId.STATUS_BRAVE)
+                self._owner.sendPackets(S_SkillBrave(self._owner._id, 0, 0))
+                self._owner.broadcastPacket(S_SkillBrave(self._owner._id, 0, 0))
+                self._owner._braveSpeed = 0
+
+        self._owner._equipSlot.setMagicHelm(equipment)
+        if item._clsType == 1:
+            self.setWeapon(equipment)
+        elif item._clsType == 2:
+            self.setArmor(equipment)
+            self._owner.sendPackets(S_SPMR(self._owner))
+
     def setWeapon(self, weapon):
+        '''
+        装备武器并更新角色信息
+        :param weapon:武器道具实例(ItemInstance)
+        :return:None
+        '''
         self._owner._weapon = weapon
         self._owner._weaponType = weapon._item._weaponType
         weapon.startEquipmentTimer(self._owner)
 
     def setArmor(self, armor):
+        '''
+        装备防具,根据防具奖励的属性防御 抗性 魔法防御 魔法攻击更新角色信息
+        :param armor:防具道具实例(ItemInstance)
+        :return:None
+        '''
         item = armor._item
         item_id = armor._itemId
 
-        if item._clsType == 2 and item._type >=8 and item._type <= 12:
+        if item._clsType == 2 and item._type >= 8 and item._type <= 12:
             self._owner.addAc(item.get_ac() - armor._acByMagic)
         else:
             self._owner.addAc(item.get_ac() - armor._enchantLevel - armor._acByMagic)
@@ -56,9 +129,9 @@ class EquipmentSlot():
 
         # todo: 套装
 
-        if item_id in (20077, # 炎魔的血光斗篷
-                       20062, # 隐身斗篷
-                       120077): # 受祝福的隐身斗篷
+        if item_id in (20077,  # 炎魔的血光斗篷
+                       20062,  # 隐身斗篷
+                       120077):  # 受祝福的隐身斗篷
             if not self._owner.hasSkillEffect(SkillId.INVISIBILITY):
                 self._owner.killSkillEffectTimer(SkillId.BLIND_HIDING)
                 self._owner.setSkillEffect(SkillId.INVISIBILITY, 0)
@@ -73,7 +146,94 @@ class EquipmentSlot():
 
         armor.startEquipmentTimer(self._owner)
 
+    def setMagicHelm(self, item_inst):
+        item_id = item_inst._itemId
+
+        if item_id == 20013:
+            self._owner.setSkillMastery(SkillId.PHYSICAL_ENCHANT_DEX)
+            self._owner.setSkillMastery(SkillId.HASTE)
+            self._owner.sendPackets(
+                S_AddSkill(0, 0, 0, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        elif item_id == 20014:
+            self._owner.setSkillMastery(SkillId.HEAL)
+            self._owner.setSkillMastery(SkillId.EXTRA_HEAL)
+            self._owner.sendPackets(
+                S_AddSkill(1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        elif item_id == 20015:
+            self._owner.setSkillMastery(SkillId.ENCHANT_WEAPON)
+            self._owner.setSkillMastery(SkillId.DETECTION)
+            self._owner.setSkillMastery(SkillId.PHYSICAL_ENCHANT_STR)
+            self._owner.sendPackets(
+                S_AddSkill(0, 24, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        elif item_id == 20008:
+            self._owner.setSkillMastery(SkillId.HASTE)
+            self._owner.sendPackets(
+                S_AddSkill(0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+        elif item_id == 20023:
+            self._owner.setSkillMastery(SkillId.GREATER_HASTE)
+            self._owner.sendPackets(
+                S_AddSkill(0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+
+    # ============================================================脱下道具============================================================
+    def remove(self, equipment):
+        '''
+        脱下武器/防具,根据装备奖励的属性更新角色属性信息,先处理道具共有的属性加成,然后根据道具类型分别处理道具的特殊属性加成
+        :param equipment:待脱下的道具(ItemInstance)
+        :return:None
+        '''
+        item = equipment._item
+        if item._clsType == 0:
+            return
+
+        if item._addhp != 0:
+            self._owner.addMaxHp(-item._addhp)
+        if item._addmp != 0:
+            self._owner.addMaxMp(-item._addmp)
+        if equipment._addHp != 0:
+            self._owner.addMaxHp(-equipment._addHp)
+        if equipment._addMp != 0:
+            self._owner.addMaxMp(-equipment._addMp)
+
+        self._owner.addStr(-item._addstr)
+        self._owner.addCon(-item._addcon)
+        self._owner.addDex(-item._adddex)
+        self._owner.addInt(-item._addint)
+        if item._addint != 0:
+            self._owner.resetBaseSp()
+        self._owner.addWis(-item._addwis)
+        if item._addwis != 0:
+            self._owner.resetBaseMr()
+        self._owner.addCha(-item._addcha)
+
+        addMr = 0
+        addMr -= equipment.getMr()
+        if item._itemId == 20236 and self._owner.isElf():
+            addMr -= 5
+        if addMr != 0:
+            self._owner.addMr(addMr)
+        if item._addsp != 0:
+            self._owner.addSp(-item._addsp)
+        self._owner.sendPackets(S_SPMR(self._owner))
+
+        if item._isHasteItem:
+            self._owner._hasteItemEquipped -= 1
+            if self._owner._hasteItemEquipped == 0:
+                self._owner._moveSpeed = 0
+                self._owner.sendPackets(S_SkillHaste(self._owner._id, 0, 0))
+                self._owner.broadcastPacket(S_SkillHaste(self._owner._id, 0, 0))
+
+        self._owner._equipSlot.removeMagicHelm(self._owner._id, equipment)
+        if item._clsType == 1:
+            self.removeWeapon(equipment)
+        elif item._clsType == 2:
+            self.removeArmor(equipment)
+
     def removeWeapon(self, weapon):
+        '''
+        脱下武器并更新角色信息
+        :param weapon:武器道具实例(ItemInstance)
+        :return:None
+        '''
         self._owner._weapon = None
         self._owner._weaponType = 0
         weapon.stopEquipmentTimer(self._owner)
@@ -81,6 +241,11 @@ class EquipmentSlot():
             self._owner.removeSkillEffect(SkillId.COUNTER_BARRIER)
 
     def removeArmor(self, armor):
+        '''
+        脱下防具,根据防具奖励的属性防御 抗性 魔法防御 魔法攻击更新角色信息
+        :param armor:防具道具实例(ItemInstance)
+        :return:None
+        '''
         item = armor._item
         item_id = armor._itemId
 
@@ -121,130 +286,6 @@ class EquipmentSlot():
             self._owner.sendPackets(S_Ability(1, False))
 
         armor.stopEquipmentTimer(self._owner)
-
-    def set(self, equipment):
-        item = equipment._item
-        if item._clsType == 0:
-            return
-
-        if item._addhp != 0:
-            self._owner.addMaxHp(item._addhp)
-        if item._addmp != 0:
-            self._owner.addMaxMp(item._addmp)
-        if equipment._addHp != 0:
-            self._owner.addMaxHp(equipment._addHp)
-        if equipment._addMp != 0:
-            self._owner.addMaxMp(equipment._addMp)
-
-        self._owner.addStr(item._addstr)
-        self._owner.addCon(item._addcon)
-        self._owner.addDex(item._adddex)
-        self._owner.addInt(item._addint)
-        self._owner.addWis(item._addwis)
-        if item._addwis != 0:
-            self._owner.resetBaseMr()
-        self._owner.addCha(item._addcha)
-
-        addMr = 0
-        addMr += equipment.getMr()
-        if item._itemId == 20236 and self._owner.isElf():
-            addMr += 5
-        if addMr != 0:
-            self._owner.addMr(addMr)
-        if item._addsp != 0:
-            self._owner.addSp(item._addsp)
-        self._owner.sendPackets(S_SPMR(self._owner))
-
-        if item._isHasteItem:
-            self._owner._hasteItemEquipped += 1
-            self._owner.removeHasteSkillEffect()
-            if self._owner._moveSpeed != 1:
-                self._owner._moveSpeed = 1
-                self._owner.sendPackets(S_SkillHaste(self._owner._id, 1, -1))
-                self._owner.broadcastPacket(S_SkillHaste(self._owner._id, 1, 0))
-
-        if item._itemId == 20383:
-            if self._owner.hasSkillEffect(SkillId.STATUS_BRAVE):
-                self._owner.killSkillEffectTimer(SkillId.STATUS_BRAVE)
-                self._owner.sendPackets(S_SkillBrave(self._owner._id, 0, 0))
-                self._owner.broadcastPacket(S_SkillBrave(self._owner._id, 0, 0))
-                self._owner._braveSpeed = 0
-
-        self._owner._equipSlot.setMagicHelm(equipment)
-        if item._clsType == 1:
-            self.setWeapon(equipment)
-        elif item._clsType == 2:
-            self.setArmor(equipment)
-            self._owner.sendPackets(S_SPMR(self._owner))
-
-    def remove(self, equipment):
-        item = equipment._item
-        if item._clsType == 0:
-            return
-
-        if item._addhp != 0:
-            self._owner.addMaxHp(-item._addhp)
-        if item._addmp != 0:
-            self._owner.addMaxMp(-item._addmp)
-        if equipment._addHp != 0:
-            self._owner.addMaxHp(-equipment._addHp)
-        if equipment._addMp != 0:
-            self._owner.addMaxMp(-equipment._addMp)
-
-        self._owner.addStr(-item._addstr)
-        self._owner.addCon(-item._addcon)
-        self._owner.addDex(-item._adddex)
-        self._owner.addInt(-item._addint)
-        self._owner.addWis(-item._addwis)
-        if item._addwis != 0:
-            self._owner.resetBaseMr()
-        self._owner.addCha(-item._addcha)
-
-        addMr = 0
-        addMr -= equipment.getMr()
-        if item._itemId == 20236 and self._owner.isElf():
-            addMr -= 5
-        if addMr != 0:
-            self._owner.addMr(addMr)
-        if item._addsp != 0:
-            self._owner.addSp(-item._addsp)
-        self._owner.sendPackets(S_SPMR(self._owner))
-
-        if item._isHasteItem:
-            self._owner._hasteItemEquipped -= 1
-            if self._owner._hasteItemEquipped == 0:
-                self._owner._moveSpeed = 0
-                self._owner.sendPackets(S_SkillHaste(self._owner._id, 0, 0))
-                self._owner.broadcastPacket(S_SkillHaste(self._owner._id, 0, 0))
-
-        self._owner._equipSlot.removeMagicHelm(self._owner._id, equipment)
-        if item._clsType == 1:
-            self.removeWeapon(equipment)
-        elif item._clsType == 2:
-            self.removeArmor(equipment)
-
-    def setMagicHelm(self, item_inst):
-        item_id = item_inst._itemId
-
-        if item_id == 20013:
-            self._owner.setSkillMastery(SkillId.PHYSICAL_ENCHANT_DEX)
-            self._owner.setSkillMastery(SkillId.HASTE)
-            self._owner.sendPackets(S_AddSkill(0, 0, 0, 2, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-        elif item_id == 20014:
-            self._owner.setSkillMastery(SkillId.HEAL)
-            self._owner.setSkillMastery(SkillId.EXTRA_HEAL)
-            self._owner.sendPackets(S_AddSkill(1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-        elif item_id == 20015:
-            self._owner.setSkillMastery(SkillId.ENCHANT_WEAPON)
-            self._owner.setSkillMastery(SkillId.DETECTION)
-            self._owner.setSkillMastery(SkillId.PHYSICAL_ENCHANT_STR)
-            self._owner.sendPackets(S_AddSkill(0, 24, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-        elif item_id == 20008:
-            self._owner.setSkillMastery(SkillId.HASTE)
-            self._owner.sendPackets(S_AddSkill(0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
-        elif item_id == 20023:
-            self._owner.setSkillMastery(SkillId.GREATER_HASTE)
-            self._owner.sendPackets(S_AddSkill(0, 0, 0, 0, 0, 0, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
 
     def removeMagicHelm(self, objid, item_inst):
         item_id = item_inst._itemId

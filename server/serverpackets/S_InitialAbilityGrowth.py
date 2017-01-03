@@ -82,7 +82,7 @@ class S_InitialAbilityGrowth(ServerBasePacket):
             cha = originCha - 8
             int = originInt - 12
 
-        self.writeC(Opcodes.S_OPCODE_HOUSEMAP)
+        self.writeC(121)
         self.writeC(0x04)
         self.writeC(int * 16 + str)
         self.writeC(dex * 16 + wis)

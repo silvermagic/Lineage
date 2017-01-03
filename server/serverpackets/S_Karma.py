@@ -8,7 +8,7 @@ class S_Karma(ServerBasePacket):
         ServerBasePacket.__init__(self)
         self.writeC(Opcodes.S_OPCODE_PACKETBOX)
         self.writeC(0x57)
-        self.writeC(pc._karma._karma)
+        self.writeD(pc._karma._karma)
 
     def getContent(self):
         return self.getBytes()

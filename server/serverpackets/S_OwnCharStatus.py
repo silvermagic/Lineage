@@ -12,12 +12,13 @@ class S_OwnCharStatus(ServerBasePacket):
         time -= time % 300
         self.writeC(Opcodes.S_OPCODE_OWNCHARSTATUS)
         self.writeD(pc._id)
-        if pc._level < 1:
+        lvl = pc.getLevel()
+        if lvl < 1:
             self.writeC(1)
-        elif pc._level > 127:
+        elif lvl > 127:
             self.writeC(127)
         else:
-            self.writeC(pc._level)
+            self.writeC(lvl)
         self.writeD(pc.getExp())
         self.writeC(pc._str)
         self.writeC(pc._int)
@@ -38,6 +39,3 @@ class S_OwnCharStatus(ServerBasePacket):
         self.writeC(pc._water)
         self.writeC(pc._wind)
         self.writeC(pc._earth)
-
-    def getContent(self):
-        return self.getBytes()

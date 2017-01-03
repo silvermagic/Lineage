@@ -20,11 +20,11 @@ class MySqlCharacterStorage(CharacterStorage):
                 pc._birthday = TimeUtil.dt2ts(item.birthday)
                 pc._highLevel = item.HighLevel
                 pc.setExp(item.Exp)
-                pc.addBaseMaxHp(item.MaxMp)
+                pc.addBaseMaxHp(item.MaxHp)
                 pc._currentHp = item.CurHp
                 if pc._currentHp < 1:
                     pc._currentHp = 1
-                pc.addMaxMp(item.MaxMp)
+                pc.addBaseMaxMp(item.MaxMp)
                 pc._currentMp = item.CurMp
                 pc.addBaseStr(item.Str)
                 pc.addBaseCon(item.Con)
@@ -85,6 +85,7 @@ class MySqlCharacterStorage(CharacterStorage):
                 pc._lastActive = TimeUtil.dt2ts(item.LastActive)
                 pc._ainZone = item.AinZone
                 pc._ainPoint = item.AinPoint
+                pc.refresh()
         except Exception as e:
             logging.error(e)
 
@@ -98,7 +99,7 @@ class MySqlCharacterStorage(CharacterStorage):
                 item.objid = pc._id
                 item.char_name = pc._name
                 item.birthday = TimeUtil.ts2dt(pc.getSimpleBirthday())
-                item.level = pc._level
+                item.level = pc.getLevel()
                 item.HighLevel = pc._highLevel
                 item.Exp = pc.getExp()
                 item.MaxHp = pc._baseMaxHp
@@ -172,7 +173,7 @@ class MySqlCharacterStorage(CharacterStorage):
             hp = 1
         try:
             with Session() as session:
-                session.query(characters).filter(characters.objid == pc._id).update({characters.level: pc._level,
+                session.query(characters).filter(characters.objid == pc._id).update({characters.level: pc.getLevel(),
                                                                                      characters.HighLevel: pc._highLevel,
                                                                                      characters.Exp: pc.getExp(),
                                                                                      characters.MaxHp: pc._baseMaxHp,

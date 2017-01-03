@@ -18,7 +18,7 @@ class RebornPotion(C_EtcItemBase):
 
     def _handle(self, fd, item_inst):
         pc = self._pc
-        if pc._level <= 10:
+        if pc.getLevel() <= 10:
             pc.sendPackets(S_ServerMessage(79))
             return
         pc.sendPackets(S_SkillSound(pc._id, 6505))

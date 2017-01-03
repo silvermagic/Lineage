@@ -229,6 +229,8 @@ class TownLocation():
             ret[1] = GETBACK_LOC_SILVER_KNIGHT_TOWN[rnd][1]
             ret[2] = GETBACK_MAP_SILVER_KNIGHT_TOWN
 
+        return ret
+
     @classmethod
     def getTownTaxRateByNpcid(cls, npcid):
         pass
