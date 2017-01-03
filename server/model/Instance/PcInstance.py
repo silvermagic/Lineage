@@ -103,6 +103,7 @@ class PcInstance(Character):
         # 其他属性
         self._netConnection = None
         self._accountName = ''
+        self._skillList = []
         self._birthday = time.time()
         self._highLevel = 0
         self._classId = 0
@@ -146,7 +147,6 @@ class PcInstance(Character):
         self._equipSlot = EquipmentSlot(self)
         self._party = None
         self._isTeleport = False # 是否在瞬间移动
-        self.skillList = {}
         self._hasteItemEquipped = 0
 
     # ============================================================角色力量、敏捷、体质、智力、精神、魅力属性计算============================================================
@@ -1236,6 +1236,20 @@ class PcInstance(Character):
         self.resetOriginalStrWeightReduction()
         self.resetOriginalConWeightReduction()
         self.resetOriginalMagicConsumeReduction()
+
+    def setSkillMastery(self, skillid):
+        if skillid not in self._skillList:
+            self._skillList.append(skillid)
+
+    def removeSkillMastery(self, skillid):
+        if skillid in self._skillList:
+            self._skillList.remove(skillid)
+
+    def isSkillMastery(self, skillid):
+        return (skillid in self._skillList)
+
+    def clearSkillMastery(self):
+        self._skillList = []
 
     def getSimpleBirthday(self):
         dt = datetime.fromtimestamp(self._birthday).date().timetuple()

@@ -5,6 +5,7 @@ from Config import Config
 from ClientThread import ClientThread
 from LoginController import LoginController
 from server.datatables.MapsTable import MapsTable
+from server.datatables.SkillsTable import SkillsTable
 from server.model.map.WorldMap import WorldMap
 from server.model.gametime.GameTimeClock import GameTimeClock
 
@@ -26,6 +27,7 @@ class GameServer():
         MapsTable()
         WorldMap()
         GameTimeClock()
+        SkillsTable()
 
     def start(self):
         '''

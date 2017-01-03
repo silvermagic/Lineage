@@ -6,7 +6,7 @@ from sqlalchemy.ext.automap import automap_base
 Base = automap_base()
 
 # engine, suppose it has two tables 'user' and 'address' set up
-engine = create_engine("mysql+pymysql://root:root@localhost/l1jdb?charset=GBK")
+engine = create_engine("mysql+pymysql://root:root@localhost/l1jdb?charset=UTF8")
 SessionMaker = scoped_session(sessionmaker(bind=engine))
 
 class Session():
@@ -102,10 +102,10 @@ spawnlist_ub             = Base.classes.spawnlist_ub
 spr_action               = Base.classes.spr_action
 town                     = Base.classes.town
 trap                     = Base.classes.trap
-ub_managers              = Base.classes.ub_managers
+# ub_managers              = Base.classes.ub_managers
 ub_settings              = Base.classes.ub_settings
 ub_supplies              = Base.classes.ub_supplies
-ub_times                 = Base.classes.ub_times
+# ub_times                 = Base.classes.ub_times
 weapon                   = Base.classes.weapon
 weapon_skill             = Base.classes.weapon_skill
 william_auto_add_skill   = Base.classes.william_auto_add_skill

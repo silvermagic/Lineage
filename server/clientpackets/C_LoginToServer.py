@@ -7,6 +7,7 @@ from server import ActionCodes
 from server.datatables.CharacterTable import CharacterTable
 from server.datatables.GetBackRestartTable import GetBackRestartTable
 from server.datatables.GetBackTable import GetBackTable
+from server.datatables.SkillsTable import SkillsTable
 from server.model.World import World
 from server.serverpackets.S_InitialAbilityGrowth import S_InitialAbilityGrowth
 from server.serverpackets.S_LoginToGame import S_LoginToGame
@@ -20,6 +21,7 @@ from server.serverpackets.S_SPMR import S_SPMR
 from server.serverpackets.S_CharTitle import S_CharTitle
 from server.serverpackets.S_InvList import S_InvList
 from server.serverpackets.S_Weather import S_Weather
+from server.serverpackets.S_AddSkill import S_AddSkill
 from server.serverpackets.S_CharacterConfig import S_CharacterConfig
 from ClientBasePacket import ClientBasePacket
 
@@ -91,7 +93,7 @@ class C_LoginToServer(ClientBasePacket):
         pc.sendPackets(S_Weather(World()._weather))
 
         self.items(pc)
-        # self.skills(pc)
+        self.skills(pc)
         # self.buff(client, pc)
         # pc.turnOnOffLight()
 
@@ -170,8 +172,75 @@ class C_LoginToServer(ClientBasePacket):
             lv27 = 0
             lv28 = 0
             with Session() as session:
-                for item in session.query(character_skills).all():
-                    pass
+                for rs in session.query(character_skills).all():
+                    skills = SkillsTable()._skills[rs.skill_id]
+                    if skills._skillLevel == 1:
+                        lv1 |= skills._id
+                    elif skills._skillLevel == 2:
+                        lv2 |= skills._id
+                    elif skills._skillLevel == 3:
+                        lv3 |= skills._id
+                    elif skills._skillLevel == 4:
+                        lv4 |= skills._id
+                    elif skills._skillLevel == 5:
+                        lv5 |= skills._id
+                    elif skills._skillLevel == 6:
+                        lv6 |= skills._id
+                    elif skills._skillLevel == 7:
+                        lv7 |= skills._id
+                    elif skills._skillLevel == 8:
+                        lv8 |= skills._id
+                    elif skills._skillLevel == 9:
+                        lv9 |= skills._id
+                    elif skills._skillLevel == 10:
+                        lv10 |= skills._id
+                    elif skills._skillLevel == 11:
+                        lv11 |= skills._id
+                    elif skills._skillLevel == 12:
+                        lv12 |= skills._id
+                    elif skills._skillLevel == 13:
+                        lv13 |= skills._id
+                    elif skills._skillLevel == 14:
+                        lv14 |= skills._id
+                    elif skills._skillLevel == 15:
+                        lv15 |= skills._id
+                    elif skills._skillLevel == 16:
+                        lv16 |= skills._id
+                    elif skills._skillLevel == 17:
+                        lv17 |= skills._id
+                    elif skills._skillLevel == 18:
+                        lv18 |= skills._id
+                    elif skills._skillLevel == 19:
+                        lv19 |= skills._id
+                    elif skills._skillLevel == 20:
+                        lv20 |= skills._id
+                    elif skills._skillLevel == 21:
+                        lv21 |= skills._id
+                    elif skills._skillLevel == 22:
+                        lv22 |= skills._id
+                    elif skills._skillLevel == 23:
+                        lv23 |= skills._id
+                    elif skills._skillLevel == 24:
+                        lv24 |= skills._id
+                    elif skills._skillLevel == 25:
+                        lv25 |= skills._id
+                    elif skills._skillLevel == 26:
+                        lv26 |= skills._id
+                    elif skills._skillLevel == 27:
+                        lv27 |= skills._id
+                    elif skills._skillLevel == 28:
+                        lv28 |= skills._id
+
+                    i = lv1 + lv2 + lv3 + lv4 + lv5 + lv6 + lv7 + lv8 + lv9 + lv10 \
+                        + lv11 + lv12 + lv13 + lv14 + lv15 + lv16 + lv17 + lv18 \
+                        + lv19 + lv20 + lv21 + lv22 + lv23 + lv24 + lv25 + lv26 \
+                        + lv27 + lv28
+                    pc.setSkillMastery(rs.skill_id)
+
+            if i > 0:
+                pc.sendPackets(S_AddSkill(lv1, lv2, lv3, lv4, lv5, lv6, lv7, lv8, lv9, lv10,
+                                          lv11, lv12, lv13, lv14, lv15, lv16, lv17, lv18, lv19,
+                                          lv20, lv21, lv22, lv23, lv24, lv25, lv26, lv27, lv28))
         except Exception as e:
             logging.error(e)
 

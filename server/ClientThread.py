@@ -66,8 +66,6 @@ class ClientThread(Thread):
         '''
         try:
             data = bytearray(packet.getContent())
-            if len(data) == 0:
-                return
             logging.debug('[Send C]' + '\n' + ByteArrayUtil.dumpToString(data))
             data = self._cipher.encrypt(data)
             logging.debug('[Send Encrypt C]' + '\n' + ByteArrayUtil.dumpToString(data))
