@@ -2,6 +2,7 @@
 
 import threading
 from server.model.skill import SkillId
+from server.serverpackets.S_RemoveObject import S_RemoveObject
 from server.utils.IntRange import IntRange
 from Object import Object
 
@@ -81,7 +82,7 @@ class Character(Object):
         self._heading = 0 # 0.左上 1.上 2.右上 3.右 4.右下 5.下 6.左下 7.左
         self._moveSpeed = 0 # 一段加速
         self._braveSpeed = 0 # 二段加速
-        self._tempCharGfx = 0
+        self._tempCharGfx = 0 # 怪物变身索引
         self._gfxid = 0
         self._chaLightSize = 0
         self._ownLightSize = 0
@@ -362,9 +363,12 @@ class Character(Object):
             self._lawful = IntRange.ensure(self._lawful, -32768, 32767)
 
     def broadcastPacket(self, packet):
+        pass
+        '''
         from server.model.World import World
         for pc in World().getVisiblePlayer(self):
             pc.sendPackets(packet)
+        '''
 
     def turnOnOffLight(self):
         pass

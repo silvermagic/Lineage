@@ -9,6 +9,3 @@ class S_CharVisualUpdate(ServerBasePacket):
         self.writeC(Opcodes.S_OPCODE_CHARVISUALUPDATE)
         self.writeD(pc._id)
         self.writeC(pc._weaponType)
-
-    def getContent(self):
-        return self.getBytes()

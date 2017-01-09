@@ -6,6 +6,8 @@ from ClientThread import ClientThread
 from LoginController import LoginController
 from server.datatables.MapsTable import MapsTable
 from server.datatables.SkillsTable import SkillsTable
+from server.datatables.ArmorSetTable import ArmorSetTable
+from server.datatables.PolyTable import PolyTable
 from server.model.map.WorldMap import WorldMap
 from server.model.gametime.GameTimeClock import GameTimeClock
 
@@ -28,6 +30,8 @@ class GameServer():
         WorldMap()
         GameTimeClock()
         SkillsTable()
+        ArmorSetTable()
+        PolyTable()
 
     def start(self):
         '''

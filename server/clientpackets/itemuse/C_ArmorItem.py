@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from server.model.skill import SkillId
+from server.model.PolyMorph import PolyMorph
 from server.serverpackets.S_PacketBox import S_PacketBox
 from server.serverpackets.S_SystemMessage import S_SystemMessage
 from server.serverpackets.S_ServerMessage import S_ServerMessage
@@ -46,7 +47,6 @@ class C_ArmorItem():
         :param armor:被使用的装备道具实例(ItemInstance)
         :return:None
         '''
-
         item = armor._item
         type = armor._item._type
         inventory = self._pc._inventory
@@ -60,7 +60,8 @@ class C_ArmorItem():
 
         if equipe_space and not armor._isEquipped: # 没有装备过同类道具,并且道具当前是未使用状态
             polyid = pc._tempCharGfx
-            # todo: 变身系统
+            if not PolyMorph.isEquipableArmor(polyid, type):
+                return
 
             if type == 13 and inventory.getTypeEquipped(2, 7) >= 1 \
                     or type == 7 and inventory.getTypeEquipped(2, 13) >= 1: # 准备装备臂甲但是已经装备了盾牌/准备装备盾牌但是已经装备了臂甲

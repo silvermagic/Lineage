@@ -55,7 +55,6 @@ class ClientThread(Thread):
         if len(buf) != length:
             raise Exception("Length Error")
 
-        logging.debug('[Recv Encrypt C]' + '\n' + ByteArrayUtil.dumpToString(bytearray(buf)))
         return self._cipher.decrypt(buf)
 
     def sendPacket(self, packet):
@@ -66,9 +65,8 @@ class ClientThread(Thread):
         '''
         try:
             data = bytearray(packet.getContent())
-            logging.debug('[Send C]' + '\n' + ByteArrayUtil.dumpToString(data))
             data = self._cipher.encrypt(data)
-            logging.debug('[Send Encrypt C]' + '\n' + ByteArrayUtil.dumpToString(data))
+            logging.debug('[Send C]' + '\n' + ByteArrayUtil.dumpToString(bytearray(packet.getContent())))
             data = struct.pack('<H', len(data) + 2) + data
             self._csocket.sendall(data)
         except:

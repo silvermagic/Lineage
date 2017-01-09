@@ -189,8 +189,8 @@ class ItemTable():
                     item._addstr = rs.add_str
                     item._adddex = rs.add_dex
                     item._addcon = rs.add_con
-                    item._addwis = rs.add_int
-                    item._addint = rs.add_wis
+                    item._addwis = rs.add_wis
+                    item._addint = rs.add_int
                     item._addcha = rs.add_cha
                     item._addhp = rs.add_hp
                     item._addmp = rs.add_mp

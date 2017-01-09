@@ -2,6 +2,7 @@
 
 from server.datatables.SkillsTable import SkillsTable
 from server.model.PcInventory import PcInventory
+from server.model.ArmorSet import ArmorSet
 from server.serverpackets.S_Invis import S_Invis
 from server.serverpackets.S_RemoveObject import S_RemoveObject
 from server.serverpackets.S_Ability import S_Ability
@@ -55,9 +56,10 @@ class EquipmentSlot():
             addMr += 5
         if addMr != 0:
             self._owner.addMr(addMr)
+            self._owner.sendPackets(S_SPMR(self._owner))
         if item._addsp != 0:
             self._owner.addSp(item._addsp)
-        self._owner.sendPackets(S_SPMR(self._owner))
+            self._owner.sendPackets(S_SPMR(self._owner))
 
         if item._isHasteItem:
             self._owner._hasteItemEquipped += 1
@@ -127,7 +129,15 @@ class EquipmentSlot():
         self._owner.addFire(item.get_defense_fire() + armor._FireMr)
         self._armors.append(armor)
 
-        # todo: 套装
+        for armorSet in ArmorSet()._allSet:
+            if armorSet.isPartOfSet(item_id) and armorSet.isValid(self._owner):
+                if armor._item._clsType == 2 and armor._item._type == 9:
+                    if not armorSet.isEquippedRingOfArmorSet(self._owner, armor):
+                        armorSet.giveEffect(self._owner)
+                        self._currentArmorSet.append(armorSet)
+                else:
+                    armorSet.giveEffect(self._owner)
+                    self._currentArmorSet.append(armorSet)
 
         if item_id in (20077,  # 炎魔的血光斗篷
                        20062,  # 隐身斗篷
@@ -211,9 +221,10 @@ class EquipmentSlot():
             addMr -= 5
         if addMr != 0:
             self._owner.addMr(addMr)
+            self._owner.sendPackets(S_SPMR(self._owner))
         if item._addsp != 0:
             self._owner.addSp(-item._addsp)
-        self._owner.sendPackets(S_SPMR(self._owner))
+            self._owner.sendPackets(S_SPMR(self._owner))
 
         if item._isHasteItem:
             self._owner._hasteItemEquipped -= 1
@@ -246,9 +257,9 @@ class EquipmentSlot():
         :param armor:防具道具实例(ItemInstance)
         :return:None
         '''
+        # todo:脱下装备属性更新不准确
         item = armor._item
         item_id = armor._itemId
-
         if item._clsType == 2 and item._type >= 8 and item._type <= 12:
             self._owner.addAc(-(item.get_ac() - armor._acByMagic))
         else:
@@ -274,9 +285,13 @@ class EquipmentSlot():
         self._owner.addWind(-item.get_defense_wind() - armor._WindMr)
         self._owner.addWater(-item.get_defense_water() - armor._WaterMr)
         self._owner.addFire(-item.get_defense_fire() - armor._FireMr)
-        self._armors.remove(armor)
 
-        # todo: 套装
+        for armorSet in ArmorSet()._allSet:
+            if armorSet.isPartOfSet(item_id) \
+                    and (armorSet in self._currentArmorSet) \
+                    and not armorSet.isValid(self._owner):
+                armorSet.cancelEffect(self._owner)
+                self._currentArmorSet.remove(armorSet)
 
         if item_id in (20077,  # 炎魔的血光斗篷
                        20062,  # 隐身斗篷
@@ -286,6 +301,7 @@ class EquipmentSlot():
             self._owner.sendPackets(S_Ability(1, False))
 
         armor.stopEquipmentTimer(self._owner)
+        self._armors.remove(armor)
 
     def removeMagicHelm(self, objid, item_inst):
         item_id = item_inst._itemId

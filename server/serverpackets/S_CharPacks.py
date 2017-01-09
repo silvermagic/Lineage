@@ -26,3 +26,6 @@ class S_CharPacks(ServerBasePacket):
         self.writeC(intel)
         self.writeC(0) # is Administrator
         self.writeD(birthday)
+
+    def getContent(self):
+        return self.getBytes()

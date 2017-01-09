@@ -16,4 +16,5 @@ def init():
     else:
         Config.set('server', 'ClientLanguageCode', 'GBK')
 
-    logging.basicConfig(format='%(filename)20s(%(funcName)10s):[%(levelname)s] %(message)s', level=logging.DEBUG)
+    # logging.basicConfig(format='%(filename)20s(%(funcName)10s):[%(levelname)s] %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='%(message)s', level=logging.DEBUG)

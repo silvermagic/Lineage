@@ -148,6 +148,7 @@ class PcInstance(Character):
         self._party = None
         self._isTeleport = False # 是否在瞬间移动
         self._hasteItemEquipped = 0
+        self._awakeSkillId = 0 # 龙骑士觉醒技能
 
     # ============================================================角色力量、敏捷、体质、智力、精神、魅力属性计算============================================================
     def addBaseStr(self, i):
@@ -1287,8 +1288,10 @@ class PcInstance(Character):
         return
 
     def resetLevel(self):
-        # todo: 等级计算
-        return
+        from server.datatables.ExpTable import ExpTable
+        self.setLevel(ExpTable.getLevelByExp(self.getExp()))
+
+        # todo: 回血系统
 
     def isCrown(self):
         return (self._classId == CLASSID_PRINCE or self._classId == CLASSID_PRINCESS)

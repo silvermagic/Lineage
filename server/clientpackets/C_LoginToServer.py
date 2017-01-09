@@ -119,9 +119,9 @@ class C_LoginToServer(ClientBasePacket):
         # todo: 结婚系统
 
         if currentHpAtLoad > pc._currentHp:
-            pc._currentHp = currentHpAtLoad
+            pc.setCurrentHp(currentHpAtLoad)
         if currentMpAtLoad > pc._currentMp:
-            pc._currentMp = currentMpAtLoad
+            pc.setCurrentMp(currentMpAtLoad)
 
         # todo: 回血 回魔 自动更新系统
         client._charRestart = False
@@ -143,104 +143,103 @@ class C_LoginToServer(ClientBasePacket):
     def skills(self, pc):
         try:
             i = 0
-            lv1 = 0
-            lv2 = 0
-            lv3 = 0
-            lv4 = 0
-            lv5 = 0
-            lv6 = 0
-            lv7 = 0
-            lv8 = 0
-            lv9 = 0
-            lv10 = 0
-            lv11 = 0
-            lv12 = 0
-            lv13 = 0
-            lv14 = 0
-            lv15 = 0
-            lv16 = 0
-            lv17 = 0
-            lv18 = 0
-            lv19 = 0
-            lv20 = 0
-            lv21 = 0
-            lv22 = 0
-            lv23 = 0
-            lv24 = 0
-            lv25 = 0
-            lv26 = 0
-            lv27 = 0
-            lv28 = 0
+            Wizard = 0
+            Wizard2 = 0
+            Wizard3 = 0
+            Wizard4 = 0
+            Wizard5 = 0
+            Wizard6 = 0
+            Wizard7 = 0
+            Wizard8 = 0
+            Wizard9 = 0
+            Wizard10 = 0
+            Knight = 0
+            Knight2 = 0
+            Darkelf = 0
+            Darkelf2 = 0
+            Crown = 0
+            unused = 0
+            Elf = 0
+            Elf2 = 0
+            Elf3 = 0
+            Elf4 = 0
+            Elf5 = 0
+            Elf6 = 0
+            DragonKnight = 0
+            DragonKnight2 = 0
+            DragonKnight3 = 0
+            Illusionist = 0
+            Illusionist2 = 0
+            Illusionist3 = 0
             with Session() as session:
-                for rs in session.query(character_skills).all():
+                for rs in session.query(character_skills).filter(character_skills.char_obj_id == pc._id).all():
                     skills = SkillsTable()._skills[rs.skill_id]
                     if skills._skillLevel == 1:
-                        lv1 |= skills._id
+                        Wizard |= skills._id
                     elif skills._skillLevel == 2:
-                        lv2 |= skills._id
+                        Wizard2 |= skills._id
                     elif skills._skillLevel == 3:
-                        lv3 |= skills._id
+                        Wizard3 |= skills._id
                     elif skills._skillLevel == 4:
-                        lv4 |= skills._id
+                        Wizard4 |= skills._id
                     elif skills._skillLevel == 5:
-                        lv5 |= skills._id
+                        Wizard5 |= skills._id
                     elif skills._skillLevel == 6:
-                        lv6 |= skills._id
+                        Wizard6 |= skills._id
                     elif skills._skillLevel == 7:
-                        lv7 |= skills._id
+                        Wizard7 |= skills._id
                     elif skills._skillLevel == 8:
-                        lv8 |= skills._id
+                        Wizard8 |= skills._id
                     elif skills._skillLevel == 9:
-                        lv9 |= skills._id
+                        Wizard9 |= skills._id
                     elif skills._skillLevel == 10:
-                        lv10 |= skills._id
+                        Wizard10 |= skills._id
                     elif skills._skillLevel == 11:
-                        lv11 |= skills._id
+                        Knight |= skills._id
                     elif skills._skillLevel == 12:
-                        lv12 |= skills._id
+                        Knight2 |= skills._id
                     elif skills._skillLevel == 13:
-                        lv13 |= skills._id
+                        Darkelf |= skills._id
                     elif skills._skillLevel == 14:
-                        lv14 |= skills._id
+                        Darkelf2 |= skills._id
                     elif skills._skillLevel == 15:
-                        lv15 |= skills._id
+                        Crown |= skills._id
                     elif skills._skillLevel == 16:
-                        lv16 |= skills._id
+                        unused |= skills._id
                     elif skills._skillLevel == 17:
-                        lv17 |= skills._id
+                        Elf |= skills._id
                     elif skills._skillLevel == 18:
-                        lv18 |= skills._id
+                        Elf2 |= skills._id
                     elif skills._skillLevel == 19:
-                        lv19 |= skills._id
+                        Elf3 |= skills._id
                     elif skills._skillLevel == 20:
-                        lv20 |= skills._id
+                        Elf4 |= skills._id
                     elif skills._skillLevel == 21:
-                        lv21 |= skills._id
+                        Elf5 |= skills._id
                     elif skills._skillLevel == 22:
-                        lv22 |= skills._id
+                        Elf6 |= skills._id
                     elif skills._skillLevel == 23:
-                        lv23 |= skills._id
+                        DragonKnight |= skills._id
                     elif skills._skillLevel == 24:
-                        lv24 |= skills._id
+                        DragonKnight2 |= skills._id
                     elif skills._skillLevel == 25:
-                        lv25 |= skills._id
+                        DragonKnight3 |= skills._id
                     elif skills._skillLevel == 26:
-                        lv26 |= skills._id
+                        Illusionist |= skills._id
                     elif skills._skillLevel == 27:
-                        lv27 |= skills._id
+                        Illusionist2 |= skills._id
                     elif skills._skillLevel == 28:
-                        lv28 |= skills._id
-
-                    i = lv1 + lv2 + lv3 + lv4 + lv5 + lv6 + lv7 + lv8 + lv9 + lv10 \
-                        + lv11 + lv12 + lv13 + lv14 + lv15 + lv16 + lv17 + lv18 \
-                        + lv19 + lv20 + lv21 + lv22 + lv23 + lv24 + lv25 + lv26 \
-                        + lv27 + lv28
+                        Illusionist3 |= skills._id
                     pc.setSkillMastery(rs.skill_id)
 
+            i = Wizard + Wizard2 + Wizard3 + Wizard4 + Wizard5 + Wizard6 + Wizard7 + Wizard8 + Wizard9 + Wizard10 \
+                + Knight + Knight2 + Darkelf + Darkelf2 + Crown + unused + Elf \
+                + Elf2 + Elf3 + Elf4 + Elf5 + Elf6 + DragonKnight + DragonKnight2 + DragonKnight3 \
+                + Illusionist + Illusionist2 + Illusionist3
             if i > 0:
-                pc.sendPackets(S_AddSkill(lv1, lv2, lv3, lv4, lv5, lv6, lv7, lv8, lv9, lv10,
-                                          lv11, lv12, lv13, lv14, lv15, lv16, lv17, lv18, lv19,
-                                          lv20, lv21, lv22, lv23, lv24, lv25, lv26, lv27, lv28))
+                pc.sendPackets(S_AddSkill(Wizard, Wizard2, Wizard3, Wizard4, Wizard5, Wizard6, Wizard7, Wizard8, Wizard9, Wizard10,
+                                          Knight, Knight2, Darkelf, Darkelf2, Crown, unused, Elf, Elf2, Elf3, Elf4, Elf5, Elf6,
+                                          DragonKnight, DragonKnight2, DragonKnight3, Illusionist, Illusionist2, Illusionist3))
         except Exception as e:
             logging.error(e)
 

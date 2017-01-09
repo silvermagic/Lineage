@@ -10,9 +10,9 @@ class SkillsTable():
     __metaclass__ = Singleton
     def __init__(self):
         self._skills = {}
-        self.LoadSkills()
+        self.loadSkills()
 
-    def LoadSkills(self):
+    def loadSkills(self):
         '''
         加载魔法清单到内存中
         :return:None

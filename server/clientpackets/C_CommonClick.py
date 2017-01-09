@@ -60,6 +60,7 @@ class C_CommonClick(ClientBasePacket):
                     cha = item.Cha
                     intel = item.Intel
                     accessLevel = item.AccessLevel
+                    # todo: 日期似乎不对
                     birthday = time.mktime(item.birthday.date().timetuple())
                     client.sendPacket(S_CharPacks(name, clanname, type, sex, lawful, currenthp, currentmp, ac, lvl, str, dex, con, wis, cha, intel, accessLevel, birthday))
         except Exception as e:

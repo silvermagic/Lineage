@@ -11,9 +11,9 @@ class ByteArrayUtil():
         for k in range(len(byteArray)):
             # 打印起始字节号
             if j % 16 == 0:
-                str += '{:0>4X}'.format(k) + ': '
+                str += '{:0>4x}'.format(k) + ': '
             # 十六进制打印bytes数据
-            str += '{:0>2X}'.format(byteArray[k] & 0xFF) + ' '
+            str += '{:0>2x}'.format(byteArray[k] & 0xFF) + ' '
             j += 1
             if j != 16:
                 continue

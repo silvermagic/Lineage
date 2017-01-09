@@ -183,10 +183,10 @@ class ItemInstance(Object):
 
             if self._item._clsType == 1 or self._item._clsType == 2:# 武器 防具
                 # 显示强化等级(武卷 防卷强化成功次数): +3
-                if self._attrEnchantLevel >= 0:
-                    name += '+' + str(self._attrEnchantLevel) + ' '
-                elif self._attrEnchantLevel < 0:
-                    name += str(self._attrEnchantLevel) + ' '
+                if self._enchantLevel >= 0:
+                    name += '+' + str(self._enchantLevel) + ' '
+                elif self._enchantLevel < 0:
+                    name += str(self._enchantLevel) + ' '
 
         # 祝福 诅咒 普通
         if self._isIdentified:

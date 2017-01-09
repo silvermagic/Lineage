@@ -41,6 +41,7 @@ class S_OwnCharPack(ServerBasePacket):
             self.writeC(pc._weaponType)
 
         self.writeC(pc._heading)
+        self.writeC(pc._ownLightSize)
         self.writeC(pc._moveSpeed)
         self.writeD(pc._exp)
         self.writeH(pc._lawful)

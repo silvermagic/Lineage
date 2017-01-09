@@ -26,7 +26,7 @@ class Skills:
     def __init__(self):
         self._skillId = 0
         self._name = '' # 技能名
-        self._skillLevel = 0 # 技能等级
+        self._skillLevel = 0 # 技能等级: 1~10:法师一到十级魔法 11~12:骑士一到二级魔法 13~14:黑暗精灵一到二级魔法 15:王族一级魔法 17~22:精灵一到六级魔法 23~25:龙骑士一到三级魔法 26~28:幻术师一到三级魔法
         self._skillNumber = 0
         self._mpConsume = 0 # 魔力消耗
         self._hpConsume = 0 # 体力消耗

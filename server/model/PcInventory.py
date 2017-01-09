@@ -11,6 +11,7 @@ from server.serverpackets.S_ItemName import S_ItemName
 from server.serverpackets.S_OwnCharStatus import S_OwnCharStatus
 from server.serverpackets.S_CharVisualUpdate import S_CharVisualUpdate
 from server.serverpackets.S_DeleteInventoryItem import S_DeleteInventoryItem
+from server.serverpackets.S_AddItem import S_AddItem
 from server.storage.CharactersItemStorage import CharactersItemStorage
 from Inventory import Inventory
 
@@ -110,6 +111,10 @@ class PcInventory(Inventory):
         return item_inst
 
     def loadItems(self):
+        '''
+        从数据库加载个人仓库道具,如果道具是装备状态,则执行装备动作,使用装备属性来更新人物属性
+        :return:
+        '''
         from server.model.World import World
 
         try:
@@ -118,14 +123,14 @@ class PcInventory(Inventory):
                 if item_inst._isEquipped:
                     item_inst._isEquipped = False
                     self.setEquipped(item_inst, True, True, False)
-                if item_inst._item._clsType == 2 and item_inst._item._type == 2:
+                if item_inst._item._clsType == 0 and item_inst._item._type == 2:
                     item_inst._remainingTime = item_inst._item.getLightFuel()
                 World().storeObject(item_inst)
         except Exception as e:
             logging.error(e)
 
     def insertItem(self, item_inst):
-        # self._owner.sendPackets(S_AddItem(item_inst))
+        self._owner.sendPackets(S_AddItem(item_inst))
         if item_inst._item._weight != 0:
             self._owner.sendPackets(S_PacketBox(S_PacketBox.WEIGHT, self.getWeight240()))
         try:
@@ -245,7 +250,7 @@ class PcInventory(Inventory):
 
     def setEquipped(self, item_inst, equipped, loaded = False, changeWeapon = False):
         '''
-        设置道具装备状态
+        设置道具装备状态,加载时更新装备对人物属性的影响
         :param item_inst:道具实例(ItemInstance)
         :param equipped:是否装备(True/False)
         :param loaded:
@@ -286,7 +291,9 @@ class PcInventory(Inventory):
         ret = False
         if type(ids) != type([]):
             ids = [ids]
+
         for id in ids:
+            ret = False
             for item_inst in self._item_insts:
                 if item_inst._itemId == id and item_inst._isEquipped:
                     ret = True
