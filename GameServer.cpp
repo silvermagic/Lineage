@@ -3,6 +3,7 @@
 //
 
 #include <atomic>
+#include <Poco/ThreadPool.h>
 #include <Poco/Util/HelpFormatter.h>
 #include <Poco/Net/TCPServer.h>
 #include <Poco/Net/TCPServerParams.h>
@@ -14,6 +15,7 @@
 
 namespace Lineage {
 
+using Poco::ThreadPool;
 using Poco::Data::SessionPool;
 using Poco::Util::HelpFormatter;
 using Poco::Net::TCPServer;
@@ -21,7 +23,7 @@ using Poco::Net::TCPServerParams;
 using Poco::Net::ServerSocket;
 
 // 全局变量
-std::atomic_bool g_Running = true;
+std::atomic_bool g_Running;
 
 GameServer::GameServer() :
         help_(false) {
@@ -81,6 +83,7 @@ int GameServer::main(const std::vector<std::string> &args) {
         displayHelp();
     } else {
         // 全局变量初始化
+        g_Running.store(true);
         Storage s(config());
         WorldMap wm;
         if (!wm.initialize(config()))

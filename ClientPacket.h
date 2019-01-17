@@ -14,7 +14,7 @@ public:
     ClientPacket(std::vector<char> &data);
 
     // 获取操作码
-    unsigned char getOpcode();
+    unsigned int getOpcode();
 
     // 读取字节流
     std::vector<char> readBytes();
@@ -39,7 +39,7 @@ public:
 
 protected:
     size_t offset_; // 已读取位置偏移
-    unsigned char opcode_; // 操作码
+    unsigned int opcode_; // 操作码
     std::vector<char> data_;
 };
 

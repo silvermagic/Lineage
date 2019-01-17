@@ -3,22 +3,18 @@
 //
 
 #include <iostream>
-
 #include "GameServer.h"
 
-namespace Lineage {
-
 using Poco::Exception;
+using Poco::Util::Application;
 
 int main(int argc, char **argv) {
     try {
-        GameServer app;
+        Lineage::GameServer app;
         return app.run(argc, argv);
     }
     catch (Exception &exc) {
         std::cerr << exc.displayText() << std::endl;
         return Application::EXIT_SOFTWARE;
     }
-}
-
 }

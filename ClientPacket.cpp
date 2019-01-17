@@ -11,11 +11,11 @@ namespace Lineage {
 ClientPacket::ClientPacket(std::vector<char> &data)
 {
     data_.swap(data);
-    opcode_ = data_[0];
+    opcode_ = (unsigned int)data_[0] & 0xFF;
     offset_ = 1;
 }
 
-unsigned char ClientPacket::getOpcode()
+unsigned int ClientPacket::getOpcode()
 {
     return opcode_;
 }
@@ -29,13 +29,13 @@ std::vector<char> ClientPacket::readBytes()
 
 unsigned int ClientPacket::readC()
 {
-    unsigned int i = data_[offset_++] & 0xFF;
+    unsigned int i = (unsigned int)data_[offset_++] & 0xFF;
     return i;
 }
 
 unsigned int ClientPacket::readCH()
 {
-    unsigned int i = data_[offset_++] & 0xFF;
+    unsigned int i = (unsigned int)data_[offset_++] & 0xFF;
     i |= data_[offset_++] << 8 & 0xFF00;
     i |= data_[offset_++] << 16 & 0xFF0000;
     return i;
@@ -43,28 +43,29 @@ unsigned int ClientPacket::readCH()
 
 unsigned int ClientPacket::readD()
 {
-    unsigned int i = data_[offset_++] & 0xFF;
+    unsigned int i = (unsigned int)data_[offset_++] & 0xFF;
     i |= data_[offset_++] << 8 & 0xFF00;
     i |= data_[offset_++] << 16 & 0xFF0000;
-    i |= data_[offset_++] << 32 & 0xFF000000;
+    i |= data_[offset_++] << 24 & 0xFF000000;
     return i;
 }
 
 double ClientPacket::readF()
 {
-    unsigned long long i = unsigned long long(data_[offset_++]) & 0xFFL;
-    i |= unsigned long long(data_[offset_++] << 8) & 0xFF00L;
-    i |= unsigned long long(data_[offset_++] << 16) & 0xFF0000L;
-    i |= unsigned long long(data_[offset_++] << 32) & 0xFF000000L;
-    i |= unsigned long long(data_[offset_++] << 40) & 0xFF00000000L;
-    i |= unsigned long long(data_[offset_++] << 48) & 0xFF0000000000L;
-    i |= unsigned long long(data_[offset_++] << 56) & 0xFF000000000000L;
+    unsigned long long i = (unsigned long long)data_[offset_++] & 0xFFL;
+    i |= (unsigned long long)data_[offset_++] << 8 & 0xFF00L;
+    i |= (unsigned long long)data_[offset_++] << 16 & 0xFF0000L;
+    i |= (unsigned long long)data_[offset_++] << 24 & 0xFF000000L;
+    i |= (unsigned long long)data_[offset_++] << 32 & 0xFF00000000L;
+    i |= (unsigned long long)data_[offset_++] << 40 & 0xFF0000000000L;
+    i |= (unsigned long long)data_[offset_++] << 48 & 0xFF000000000000L;
+    i |= (unsigned long long)data_[offset_++] << 56 & 0xFF00000000000000L;
     return *reinterpret_cast<double *>(&i);
 }
 
 unsigned int ClientPacket::readH()
 {
-    unsigned int i = data_[offset_++] & 0xFF;
+    unsigned int i = (unsigned int)data_[offset_++] & 0xFF;
     i |= data_[offset_++] << 8 & 0xFF00;
     return i;
 }

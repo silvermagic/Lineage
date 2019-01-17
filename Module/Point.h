@@ -5,6 +5,8 @@
 #ifndef LINEAGE_POINT_H
 #define LINEAGE_POINT_H
 
+#include <string>
+
 namespace Lineage {
 
 /**

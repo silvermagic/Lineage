@@ -9,6 +9,7 @@
 #include <memory>
 #include <Poco/Runnable.h>
 #include <Poco/Util/LayeredConfiguration.h>
+#include "Module/Map.h"
 #include "Singleton.h"
 
 namespace Lineage {
@@ -27,14 +28,13 @@ protected:
     int rindex_;
 };
 
-class Map;
 class WorldMap : public Singleton<WorldMap> {
 public:
     // 地图数据初始化
     bool initialize(LayeredConfiguration& cfg);
 
     // 获取地图信息
-    std::shared_ptr<Map> operator[](int id);
+    Map& operator[](int id);
 
 protected:
     // 生成缓存
@@ -50,7 +50,7 @@ protected:
     friend class MapReader;
 
 protected:
-    std::map<int, std::shared_ptr<Map>> maps_; // 游戏地图信息
+    std::map<int, Map> maps_; // 游戏地图信息
 };
 
 }

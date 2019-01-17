@@ -14,13 +14,14 @@ public:
     ServerPacket();
 
     // 带预留大小的数据包，可避免频发的内存重分配
-    ServerPacket(int size);
+    ServerPacket(unsigned int size);
 
     // 获取字节流
-    char * getBytes() const;
+    char * getBytes();
+    const char * getBytes() const;
 
     // 获取包长度
-    int getLength();
+    unsigned int getLength();
 
     // 写入字节流
     void writeBytes(const char *, int);

@@ -21,7 +21,7 @@ public:
         singleton_ = static_cast<T*>(this);
     }
 
-    ~Singleton(void) { assert(singleton_);  singleton_ = 0; }
+    ~Singleton(void) { poco_assert(singleton_);  singleton_ = 0; }
 
     static T& getSingleton(void) { poco_assert(singleton_);  return (*singleton_); }
 };

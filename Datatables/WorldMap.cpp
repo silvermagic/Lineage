@@ -7,8 +7,6 @@
 #include <vector>
 #include <cassert>
 #include <boost/serialization/map.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/shared_ptr.hpp>
 #include <boost/archive/binary_iarchive.hpp>
 #include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/archive_exception.hpp>
@@ -16,7 +14,6 @@
 #include <Poco/Exception.h>
 #include <Poco/Util/Application.h>
 #include "Storage.h"
-#include "Module/Map.h"
 #include "WorldMap.h"
 
 namespace Lineage {
@@ -38,7 +35,7 @@ enum MAPINFO {
     HEIGHT // 地图高度
 };
 
-static std::string mapFilePath = ""; // 地图瓦片文件读取路径
+static std::string mapFilePath; // 地图瓦片文件读取路径
 static const char *cacheFile = "~/.cache/world_map"; // 游戏地图信息序列化文件
 static const int FILES_PER_THREAD = 10; // 单线程处理地图文件数目
 
@@ -599,20 +596,20 @@ MapReader::MapReader(int rindex) :
 
 void MapReader::run() {
     Application &app = Application::instance();
-    WorldMap & wm = WorldMap::getSingleton();
+    WorldMap &wm = WorldMap::getSingleton();
     for (int i = rindex_; i < MAP_INFO_SIZE; i += NUMS_OF_THREAD) {
         int id = MAP_INFO[i][MAP_ID];
 
         try {
-            std::shared_ptr<Map> map = std::make_shared<Map>();
-            map->id = id;
-            map->leftTop.x = MAP_INFO[i][START_X];
-            map->rightBottom.x = MAP_INFO[i][END_X];
-            map->leftTop.y = MAP_INFO[i][START_Y];
-            map->rightBottom.y = MAP_INFO[i][END_Y];
-            map->width = MAP_INFO[i][WIDTH];
-            map->height = MAP_INFO[i][HEIGHT];
-            map->tiles.reserve(MAP_INFO[i][WIDTH * HEIGHT]);
+            Map &map = wm.maps_[id];
+            map.id = id;
+            map.leftTop.x = MAP_INFO[i][START_X];
+            map.rightBottom.x = MAP_INFO[i][END_X];
+            map.leftTop.y = MAP_INFO[i][START_Y];
+            map.rightBottom.y = MAP_INFO[i][END_Y];
+            map.width = MAP_INFO[i][WIDTH];
+            map.height = MAP_INFO[i][HEIGHT];
+            map.tiles.reserve(MAP_INFO[i][WIDTH * HEIGHT]);
 
             // 获取地图地形信息
             std::ifstream ifs(Poco::format("%s/%d.txt", mapFilePath, id).c_str());
@@ -627,7 +624,7 @@ void MapReader::run() {
                 for (size_t i = 0; i < line.length(); i++) {
                     if (line[i] == ',')
                         continue;
-                    map->tiles.emplace_back(line[i]);
+                    map.tiles.emplace_back(line[i]);
                 }
             }
             if (!ifs.eof()) {
@@ -663,12 +660,13 @@ bool WorldMap::initialize(LayeredConfiguration &cfg) {
     return true;
 }
 
-std::shared_ptr<Map> WorldMap::operator[](int id) {
+Map& WorldMap::operator[](int id) {
+    static Map none;
     auto iter = maps_.find(id);
     if (iter != maps_.end()) {
         return iter->second;
     } else {
-        return nullptr;
+        return none;
     }
 }
 
@@ -704,7 +702,7 @@ bool WorldMap::loadDB() {
     // 多线程读取地图数据
     std::vector<MapReader> readers;
     for (int i = 0; i < NUMS_OF_THREAD; i++)
-        readers.push_back(i);
+        readers.emplace_back(i);
     ThreadPool tp(NUMS_OF_THREAD, NUMS_OF_THREAD);
     for (auto reader : readers)
         tp.start(reader);
@@ -722,40 +720,36 @@ bool WorldMap::loadDB() {
         RecordSet rs(select);
         for (auto iter = rs.begin(); iter != rs.end(); iter++) {
             std::size_t col = 0;
-            std::shared_ptr<Map> map = nullptr;
             int id = iter->get(col++).convert<int>();
-            {
-                auto iter = maps_.find(id);
-                if (iter != maps_.end()) {
-                    map = iter->second;
-                } else {
-                    app.logger().error(Poco::format("invalid map(%d)!", id));
-                    return false;
-                }
+            auto value = maps_.find(id);
+            if (value == maps_.end()) {
+                app.logger().error(Poco::format("invalid map(%d)!", id));
+                return false;
             }
-            map->name = iter->get(col++).convert<std::string>();
-            assert(map->leftTop.x == iter->get(col).convert<int>());
+            Map &map = value->second;
+            map.name = iter->get(col++).convert<std::string>();
+            assert(map.leftTop.x == iter->get(col).convert<int>());
             col++;
-            assert(map->rightBottom.x == iter->get(col).convert<int>());
+            assert(map.rightBottom.x == iter->get(col).convert<int>());
             col++;
-            assert(map->leftTop.y == iter->get(col).convert<int>());
+            assert(map.leftTop.y == iter->get(col).convert<int>());
             col++;
-            assert(map->rightBottom.y == iter->get(col).convert<int>());
+            assert(map.rightBottom.y == iter->get(col).convert<int>());
             col++;
-            map->monsterAmount = iter->get(col++).convert<double>();
-            map->dropRate = iter->get(col++).convert<double>();
-            map->isUnderwater = iter->get(col++).convert<bool>();
-            map->isMarkable = iter->get(col++).convert<bool>();
-            map->isTeleportable = iter->get(col++).convert<bool>();
-            map->isEscapable = iter->get(col++).convert<bool>();
-            map->isUseResurrection = iter->get(col++).convert<bool>();
-            map->isUsePainwand = iter->get(col++).convert<bool>();
-            map->isEnabledDeathPenalty = iter->get(col++).convert<bool>();
-            map->isTakePets = iter->get(col++).convert<bool>();
-            map->isRecallPets = iter->get(col++).convert<bool>();
-            map->isUsableItem = iter->get(col++).convert<bool>();
-            map->isUsableSkill = iter->get(col++).convert<bool>();
-            map->isArena = iter->get(col++).convert<bool>();
+            map.monsterAmount = iter->get(col++).convert<double>();
+            map.dropRate = iter->get(col++).convert<double>();
+            map.isUnderwater = iter->get(col++).convert<bool>();
+            map.isMarkable = iter->get(col++).convert<bool>();
+            map.isTeleportable = iter->get(col++).convert<bool>();
+            map.isEscapable = iter->get(col++).convert<bool>();
+            map.isUseResurrection = iter->get(col++).convert<bool>();
+            map.isUsePainwand = iter->get(col++).convert<bool>();
+            map.isEnabledDeathPenalty = iter->get(col++).convert<bool>();
+            map.isTakePets = iter->get(col++).convert<bool>();
+            map.isRecallPets = iter->get(col++).convert<bool>();
+            map.isUsableItem = iter->get(col++).convert<bool>();
+            map.isUsableSkill = iter->get(col++).convert<bool>();
+            map.isArena = iter->get(col++).convert<bool>();
         }
 
         return true;

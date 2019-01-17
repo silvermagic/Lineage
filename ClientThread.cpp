@@ -40,7 +40,7 @@ Connect::Connect(const StreamSocket &s) :
 
 void Connect::sendBytes(ServerPacket &&pkt) {
     FastMutex::ScopedLock lock(mutex_);
-    int len = pkt.getLength();
+    unsigned int len = pkt.getLength();
     if (len <= 0)
         return;
 
@@ -52,10 +52,10 @@ void Connect::sendBytes(ServerPacket &&pkt) {
     poco_assert(n == len);
 }
 
-void Connect::decrypt(char *pbuf, int size) {
+void Connect::decrypt(char *pbuf, unsigned int size) {
     char *key = reinterpret_cast<char *>(&decrypt_);
     pbuf[0] ^= key[0];
-    for (int i = 0; i < size; i++) {
+    for (unsigned int i = 0; i < size; i++) {
         pbuf[i] = pbuf[i - 1] ^ key[i & 7];
     }
     pbuf[3] ^= key[2];
@@ -64,10 +64,10 @@ void Connect::decrypt(char *pbuf, int size) {
     pbuf[0] ^= pbuf[1] ^ key[5];
     unsigned int mask = bytes2uint(pbuf);
     decrypt_[0] ^= mask;
-    decrypt_[1] = (decrypt_[1] + C4) & 0xFFFFFFFFL;
+    decrypt_[1] = (unsigned int)((decrypt_[1] + C4) & 0xFFFFFFFFL);
 }
 
-void Connect::encrypt(char *pbuf, int size) {
+void Connect::encrypt(char *pbuf, unsigned int size) {
     char *key = reinterpret_cast<char *>(&encrypt_);
     unsigned int mask = bytes2uint(pbuf);
     char k = pbuf[0] ^pbuf[1] ^key[5];
@@ -75,20 +75,20 @@ void Connect::encrypt(char *pbuf, int size) {
     pbuf[1] ^= pbuf[2] ^ key[4];
     pbuf[2] ^= pbuf[3] ^ key[3];
     pbuf[3] ^= key[2];
-    for (int i = 0; i < size; i++) {
+    for (unsigned int i = 0; i < size; i++) {
         char t = pbuf[i];
         pbuf[i] ^= key[i & 7] ^ k;
         k = t;
     }
     encrypt_[0] ^= mask;
-    encrypt_[1] = (encrypt_[1] + C4) & 0xFFFFFFFFL;
+    encrypt_[1] = (unsigned int)((encrypt_[1] + C4) & 0xFFFFFFFFL);
 }
 
 unsigned int Connect::bytes2uint(char *pbuf) {
-    unsigned int i = pbuf[0] & 0xFF;
+    unsigned int i = (unsigned int)pbuf[0] & 0xFF;
     i |= pbuf[1] << 8 & 0xFF00L;
     i |= pbuf[2] << 16 & 0xFF0000L;
-    i |= pbuf[3] << 32 & 0xFF000000L;
+    i |= pbuf[3] << 24 & 0xFF000000L;
     return i;
 }
 
@@ -108,13 +108,13 @@ void ClientThread::run() {
     app.logger().information("请求来自: " + socket().peerAddress().toString());
     try {
         // 数据包处理线程
-        AutoPtr<Timer> workers(new Timer());
+        Timer workers;
         AutoPtr<PacketHandler> work_for_item(new PacketHandler(*this));
         AutoPtr<PacketHandler> work_for_move(new PacketHandler(*this));
         AutoPtr<PacketHandler> work_for_all(new PacketHandler(*this));
-        workers->scheduleAtFixedRate(work_for_item, 0, 400);
-        workers->scheduleAtFixedRate(work_for_move, 0, 400);
-        workers->scheduleAtFixedRate(work_for_all, 0, 400);
+        workers.scheduleAtFixedRate(work_for_item, 0, 400);
+        workers.scheduleAtFixedRate(work_for_move, 0, 400);
+        workers.scheduleAtFixedRate(work_for_all, 0, 400);
 
         // 初始包发送
         ServerPacket body;
@@ -133,17 +133,16 @@ void ClientThread::run() {
                 app.logger().error(std::string("获取数据头失败"));
                 break;
             }
-            int len = int(header[1] << 8) & 0xFF00 + int(header[0]) & 0xFF - 2;
-            poco_assert(len > MAX_PACKET_SIZE);
-            std::vector<char> buf(len);
+            int len = (int)header[1] << 8 & 0xFF00 + (int)header[0] & 0xFF - 2;
+            poco_assert(len < MAX_PACKET_SIZE);
+            std::vector<char> buf((unsigned int)len);
             if (socket().receiveBytes(buf.data(), len) != len) {
                 app.logger().error(std::string("获取数据失败"));
                 break;
             }
-            decrypt(buf.data(), buf.size());
+            decrypt(buf.data(), (unsigned int)buf.size());
 
-            unsigned int opcode = buf[0] & 0xFF;
-
+            unsigned int opcode = (unsigned int)buf[0] & 0xFF;
             // 客户端状态机
             if (opcode == C_OPCODE_COMMONCLICK || opcode == C_OPCODE_CHANGECHAR)
                 status_ = SELECT;
@@ -151,7 +150,6 @@ void ClientThread::run() {
                 continue;
             if (opcode == C_OPCODE_LOGINTOSERVEROK || opcode == C_OPCODE_RETURNTOLOGIN)
                 status_ = LOGIN;
-
             // 将数据包交由对应处理队列
             if (opcode == C_OPCODE_CHANGECHAR || opcode == C_OPCODE_DROPITEM || opcode == C_OPCODE_DELETEINVENTORYITEM)
                 work_for_item->append(buf);

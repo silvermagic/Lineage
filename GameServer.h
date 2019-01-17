@@ -39,5 +39,6 @@ private:
     bool help_;
 };
 
+}
 
 #endif //LINEAGE_GAMESERVER_H

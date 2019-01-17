@@ -35,10 +35,10 @@ public:
 
 protected:
     // 加密
-    void encrypt(char *pbuf, int size);
+    void encrypt(char *pbuf, unsigned int size);
 
     // 解密
-    void decrypt(char *pbuf, int size);
+    void decrypt(char *pbuf, unsigned int size);
 
     // 字节和无符号整形转换
     unsigned int bytes2uint(char *pbuf);

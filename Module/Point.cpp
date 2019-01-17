@@ -46,10 +46,6 @@ int32_t Point::getTileLineDistance(const Point &pt) {
     return std::abs(diffX) + std::abs(diffY);
 }
 
-std::list<Point> Point::getLineMap(const Point &pt) {
-
-}
-
 int32_t Point::hashCode() {
     return 7 * x + y;
 }

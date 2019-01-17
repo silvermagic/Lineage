@@ -6,7 +6,6 @@
 #define LINEAGE_MAP_H
 
 #include <vector>
-#include <boost/serialization/vector.hpp>
 #include "Point.h"
 
 namespace Lineage {
@@ -57,27 +56,9 @@ public:
     // 返回指定坐标是否存在门
     bool isExistDoor(int x, int y);
 
-    // 对象序列化
-    template<class Archive>
-    void serialize(Archive & ar, const unsigned int version) {
-        ar & id;
-        ar & leftTop;
-        ar & rightBottom;
-        ar & isUnderwater;
-        ar & isMarkable;
-        ar & isTeleportable;
-        ar & isEscapable;
-        ar & isUseResurrection;
-        ar & isUsePainwand;
-        ar & isEnabledDeathPenalty;
-        ar & isTakePets;
-        ar & isRecallPets;
-        ar & isUsableItem;
-        ar & isUsableSkill;
-        ar & width;
-        ar & height;
-        ar & tiles;
-    }
+    // 读取/设置地图数据
+    char tile(int x, int y);
+    void tile(int x, int y, char value);
 
 public:
     int id;
