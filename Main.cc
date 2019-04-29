@@ -6,7 +6,7 @@
 int main(int argc, char *argv[]) {
   try {
     Config::load(argc, argv);
-    LOG_INFO << "Loading configuration is finished.";
+    LOG_INFO << "Loading configuration is finished";
     GameServer srv;
     srv.run();
   }

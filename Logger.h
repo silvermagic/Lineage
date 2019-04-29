@@ -8,7 +8,7 @@
 #include <boost/log/trivial.hpp>
 #include <boost/log/sources/global_logger_storage.hpp>
 
-#define LOG(severity) BOOST_LOG_SEV(boost::log::trivial::logger::get(), boost::log::trivial::severity) << __FUNCTION__ << ": "
+#define LOG(severity) BOOST_LOG_SEV(boost::log::trivial::logger::get(), boost::log::trivial::severity)
 #define LOG_TRACE   LOG(trace)
 #define LOG_DEBUG   LOG(debug)
 #define LOG_INFO    LOG(info)
