@@ -22,6 +22,7 @@ public:
   static std::string DB_NAME;
   static std::string DB_HOST;
   static unsigned int DB_PORT;
+  static unsigned int DB_POOL_SIZE;
   static int CLIENT_LANGUAGE;
   static std::string CLIENT_LANGUAGE_CODE;
   static std::string TIME_ZONE;

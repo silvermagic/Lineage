@@ -3,8 +3,12 @@
 //
 
 #include "Logger.h"
-#include "ConnectionManager.h"
 #include "Opcodes.h"
+#include "ConnectionManager.h"
+#include "Account.h"
+#include "LoginController.h"
+#include "ClientPackets/C_AuthLogin.h"
+#include "ClientPackets/C_CommonClick.h"
 #include "ClientPackets/C_ServerVersion.h"
 #include "Player.h"
 
@@ -15,9 +19,17 @@ Player::Player(boost::asio::ip::tcp::socket socket, ConnectionManager &manager) 
 Player::~Player() {
 }
 
+void Player::stop() {
+  if (account_ != nullptr) {
+    account(nullptr);
+  }
+
+  Connection::stop();
+}
+
 void Player::handle() {
   try {
-    std::shared_ptr<ClientPacket> pkt = nullptr;
+    std::shared_ptr <ClientPacket> pkt = nullptr;
     unsigned int opcode = (unsigned int)read_msg_[0] & 0xFF;
     switch (opcode) {
       case Opcodes::C_OPCODE_BANPARTY:
@@ -87,6 +99,7 @@ void Player::handle() {
       case Opcodes::C_OPCODE_CHECKPK: // 请求查询PK次数 請求查詢PK次數
         break;
       case Opcodes::C_OPCODE_COMMONCLICK: // 请求下一步(伺服器公告)
+        pkt = std::make_shared<C_CommonClick>(read_msg_);
         break;
       case Opcodes::C_OPCODE_QUITGAME: // 请求离开游戏
         break;
@@ -182,6 +195,7 @@ void Player::handle() {
       case Opcodes::C_OPCODE_LOGINTOSERVEROK: // 请求配置角色设定
         break;
       case Opcodes::C_OPCODE_LOGINPACKET: // 请求登入伺服器
+        pkt = std::make_shared<C_AuthLogin>(read_msg_);
         break;
       case Opcodes::C_OPCODE_DOOR: // 请求开门或关门
         break;
@@ -226,7 +240,7 @@ void Player::handle() {
       case Opcodes::C_OPCODE_PUTBOWSOLDIER: // 请求配置城墙上的弓箭手
         break;
       default:
-        LOG_WARNING << "未处理的消息";
+        LOG_WARNING << "unknown opcode [" << opcode << "]";
         connection_manager_.stop(shared_from_this());
         return;
     }
@@ -235,4 +249,20 @@ void Player::handle() {
     LOG_ERROR << e.what();
     connection_manager_.stop(shared_from_this());
   }
+}
+
+std::shared_ptr<Account> Player::account() {
+  return account_;
+}
+
+void Player::account(std::shared_ptr<Account> account) {
+  // 将之前账户的登入信息移除
+  if (account_ != nullptr) {
+    LoginController::instance().remove(account_);
+    account_ = nullptr;
+  }
+
+  // 添加新的登入账户信息
+  if (LoginController::instance().add(account))
+    account_ = account;
 }

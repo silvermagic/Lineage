@@ -24,6 +24,7 @@ std::string Config::DB_PASSWORD = "123456";
 std::string Config::DB_NAME = "l1jdb";
 std::string Config::DB_HOST = "localhost";
 unsigned int Config::DB_PORT = 3306;
+unsigned int Config::DB_POOL_SIZE = 50;
 int Config::CLIENT_LANGUAGE = 5;
 std::string Config::CLIENT_LANGUAGE_CODE = LANGUAGE_CODE_ARRAY[CLIENT_LANGUAGE];
 std::string Config::TIME_ZONE = "JST";
@@ -218,6 +219,7 @@ void Config::load(int argc, char *argv[]) {
           ("Name", value<std::string>(&DB_NAME), "")
           ("Host", value<std::string>(&DB_HOST), "")
           ("Port", value<unsigned int>(&DB_PORT), "")
+          ("PoolSize", value<unsigned int>(&DB_POOL_SIZE), "")
           ("ClientLanguage", value<int>(&CLIENT_LANGUAGE), "")
           ("TimeZone", value<std::string>(&TIME_ZONE), "")
           ("AutomaticKick", value<int>(&AUTOMATIC_KICK), "")
