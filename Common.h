@@ -23,6 +23,13 @@ enum {
   SOUTH_WEST = 7
 };
 
+enum {
+  OBJECT_TYPE_UNKNOWN = 1 << 0,
+  OBJECT_TYPE_PC      = 1 << 1,
+  OBJECT_TYPE_NPC     = 1 << 2,
+  OBJECT_TYPE_PET     = 1 << 3
+};
+
 // 获取一个随机数（平均分布）
 int random(int);
 

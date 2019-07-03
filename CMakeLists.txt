@@ -13,11 +13,12 @@ include_directories(${CMAKE_SOURCE_DIR} /usr/include/soci)
 
 ### 可执行文件名、源文件列表
 add_subdirectory("ClientPackets")
+add_subdirectory("Coordinate")
 add_subdirectory("ServerPackets")
 add_subdirectory("Tables")
 add_subdirectory("Templates")
 file(GLOB SRC "${CMAKE_CURRENT_SOURCE_DIR}/*.cc")
-add_executable(l1j ${SRC} $<TARGET_OBJECTS:ClientPackets> $<TARGET_OBJECTS:ServerPackets> $<TARGET_OBJECTS:Tables> $<TARGET_OBJECTS:Templates>)
+add_executable(l1j ${SRC} $<TARGET_OBJECTS:ClientPackets> $<TARGET_OBJECTS:Coordinate> $<TARGET_OBJECTS:ServerPackets> $<TARGET_OBJECTS:Tables> $<TARGET_OBJECTS:Templates>)
 
 ### 设置链接库
 target_link_libraries(l1j -lboost_system -lboost_program_options -lboost_log_setup -lboost_log -lboost_thread -lpthread -lsoci_core -lsoci_empty -lsoci_postgresql)

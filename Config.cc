@@ -17,6 +17,7 @@ static std::string LANGUAGE_CODE_ARRAY[] = {"UTF8", "EUCKR", "UTF8", "BIG5", "SJ
 
 /** 服务配置 */
 bool Config::DEBUG = true;
+unsigned int Config::POOL_SIZE = 64;
 int Config::SERVER_PORT = 2000;
 std::string Config::MAP_DIR = "../maps";
 std::string Config::DB_USER = "postgres";
@@ -31,8 +32,6 @@ std::string Config::TIME_ZONE = "JST";
 int Config::AUTOMATIC_KICK = 10;
 bool Config::AUTO_CREATE_ACCOUNTS = true;
 short Config::MAX_ONLINE_USERS = 30;
-bool Config::CACHE_MAP_FILES = false;
-bool Config::LOAD_V2_MAP_FILES = false;
 bool Config::CHECK_MOVE_INTERVAL = false;
 bool Config::CHECK_ATTACK_INTERVAL = false;
 bool Config::CHECK_SPELL_INTERVAL = false;
@@ -55,7 +54,9 @@ int Config::SKILLTIMER_IMPLTYPE = 1;
 int Config::NPCAI_IMPLTYPE = 1;
 bool Config::TELNET_SERVER = false;
 int Config::TELNET_SERVER_PORT = 23;
-int Config::PC_RECOGNIZE_RANGE = 20;
+int Config::PC_RECOGNIZE_RANGE = 15;
+int Config::NPC_RECOGNIZE_RANGE = 20;
+int Config::AOI_RECOGNIZE_RANGE = 5;
 bool Config::CHARACTER_CONFIG_IN_SERVER_SIDE = true;
 bool Config::ALLOW_2PC = true;
 int Config::LEVEL_DOWN_RANGE = 0;
@@ -225,8 +226,6 @@ void Config::load(int argc, char *argv[]) {
           ("AutomaticKick", value<int>(&AUTOMATIC_KICK), "")
           ("AutoCreateAccounts", value<bool>(&AUTO_CREATE_ACCOUNTS), "")
           ("MaximumOnlineUsers", value<short>(&MAX_ONLINE_USERS), "")
-          ("CacheMapFiles", value<bool>(&CACHE_MAP_FILES), "")
-          ("LoadV2MapFiles", value<bool>(&LOAD_V2_MAP_FILES), "")
           ("CheckMoveInterval", value<bool>(&CHECK_MOVE_INTERVAL), "")
           ("CheckAttackInterval", value<bool>(&CHECK_ATTACK_INTERVAL), "")
           ("CheckSpellInterval", value<bool>(&CHECK_SPELL_INTERVAL), "")
@@ -250,6 +249,8 @@ void Config::load(int argc, char *argv[]) {
           ("TelnetServer", value<bool>(&TELNET_SERVER), "")
           ("TelnetServerPort", value<int>(&TELNET_SERVER_PORT), "")
           ("PcRecognizeRange", value<int>(&PC_RECOGNIZE_RANGE), "")
+          ("NpcRecognizeRange", value<int>(&NPC_RECOGNIZE_RANGE), "")
+          ("NpcRecognizeRange", value<int>(&AOI_RECOGNIZE_RANGE), "")
           ("CharacterConfigInServerSide", value<bool>(&CHARACTER_CONFIG_IN_SERVER_SIDE), "")
           ("Allow2PC", value<bool>(&ALLOW_2PC), "")
           ("LevelDownRange", value<int>(&LEVEL_DOWN_RANGE), "")

@@ -15,6 +15,7 @@ public:
 public:
   /** 服务器配置 */
   static bool DEBUG;
+  static unsigned int POOL_SIZE;
   static int SERVER_PORT;
   static std::string MAP_DIR;
   static std::string DB_USER;
@@ -29,8 +30,6 @@ public:
   static int AUTOMATIC_KICK;
   static bool AUTO_CREATE_ACCOUNTS;
   static short MAX_ONLINE_USERS;
-  static bool CACHE_MAP_FILES;
-  static bool LOAD_V2_MAP_FILES;
   static bool CHECK_MOVE_INTERVAL;
   static bool CHECK_ATTACK_INTERVAL;
   static bool CHECK_SPELL_INTERVAL;
@@ -54,6 +53,8 @@ public:
   static bool TELNET_SERVER;
   static int TELNET_SERVER_PORT;
   static int PC_RECOGNIZE_RANGE;
+  static int NPC_RECOGNIZE_RANGE;
+  static int AOI_RECOGNIZE_RANGE;
   static bool CHARACTER_CONFIG_IN_SERVER_SIDE;
   static bool ALLOW_2PC;
   static int LEVEL_DOWN_RANGE;
