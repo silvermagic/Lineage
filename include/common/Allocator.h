@@ -14,7 +14,7 @@ namespace kge {
 
 // 简易内存分配器
 class Buffer;
-class Allocator:Singleton<Allocator> {
+class Allocator : public Singleton<Allocator> {
 public:
   Allocator(std::size_t size);
   ~Allocator();

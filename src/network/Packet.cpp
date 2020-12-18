@@ -5,68 +5,22 @@
 #include <cassert>
 #include "common/Buffer.h"
 #include "common/Allocator.h"
-#include "common/Packet.h"
+#include "network/Packet.h"
 
 namespace kge {
 
-Packet::Packet(std::size_t headroom):headroom_(headroom), size_(headroom), rpos_(headroom)  {
-  assert(headroom <= sizeof(std::size_t));
+Packet::Packet():size_(0), rpos_(0), transfered_(0)  {
   data_ = Allocator::instance().balloc(MAX_BUF_SIZE);
 }
 
-Packet::Packet(std::size_t headroom, std::size_t size):headroom_(headroom), size_(size), rpos_(headroom) {
-  assert(headroom <= sizeof(std::size_t));
+Packet::Packet(std::size_t size):size_(size), rpos_(0), transfered_(0) {
   data_ = Allocator::instance().balloc(size);
 }
 
 Packet::~Packet() {
   if (data_)
     Allocator::instance().bfree(data_);
-  rpos_ = headroom_ = size_ = 0;
-}
-
-std::size_t Packet::hdr() {
-  switch (headroom_) {
-    case sizeof(uint8_t):
-      return static_cast<std::size_t>(data_->read<uint8_t>(0));
-    case sizeof(uint16_t):
-      return static_cast<std::size_t>(data_->read<uint16_t>(0));
-    case sizeof(uint32_t):
-      return static_cast<std::size_t>(data_->read<uint32_t>(0));
-    case sizeof(uint64_t):
-      return static_cast<std::size_t>(data_->read<uint64_t>(0));
-    default:
-      return 0;
-  }
-}
-
-void Packet::hdr(std::size_t value) {
-  switch (headroom_) {
-    case sizeof(uint8_t): {
-      uint8_t v = static_cast<uint8_t>(value);
-      EndianConvert(v);
-      data_->write(0, v);
-      break;
-    }
-    case sizeof(uint16_t): {
-      uint16_t v = static_cast<uint16_t>(value);
-      EndianConvert(v);
-      data_->write(0, v);
-      break;
-    }
-    case sizeof(uint32_t): {
-      uint32_t v = static_cast<uint32_t>(value);
-      EndianConvert(v);
-      data_->write(0, v);
-      break;
-    }
-    case sizeof(uint64_t): {
-      uint64_t v = static_cast<uint64_t>(value);
-      EndianConvert(v);
-      data_->write(0, v);
-      break;
-    }
-  }
+  rpos_ = size_ = 0;
 }
 
 Packet &Packet::operator<<(uint8_t value) {
